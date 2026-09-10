@@ -27,7 +27,7 @@ export default defineNuxtConfig({
       // the per-tenant URL since every school has its own API subdomain).
       BASE_API_URL: process.env.BASE_API_URL || '',
       // Base URL of the tenant-management service the settings-gate calls
-      // (see app/plugins/01.settings.ts) — `${TENANT_BASE_DOMAIN}/profile/settings?domain=`.
+      // (see app/plugins/01.settings.ts) — `${TENANT_BASE_DOMAIN}/api/v1/{locale}/tenant?domain=`.
       // Read directly from the bare `TENANT_BASE_DOMAIN` var in .env, same as
       // `SETTINGS_DOMAIN` below.
       TENANT_BASE_DOMAIN: process.env.TENANT_BASE_DOMAIN || '',
