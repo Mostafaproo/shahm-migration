@@ -1,0 +1,11 @@
+{
+  "common": {
+    "appName": "Shaham",
+    "save": "Save",
+    "cancel": "Cancel",
+    "submit": "Submit",
+    "loading": "Loading…",
+    "search": "Search",
+    "noResults": "No results found"
+  }
+}

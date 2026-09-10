@@ -1,0 +1,24 @@
+/* app/assets/css/main.css
+   Single entry stylesheet. Import order is critical: tailwindcss must come
+   before @nuxt/ui so Nuxt UI can layer its own utilities on top of it. */
+@import "tailwindcss";
+@import "@nuxt/ui";
+
+/* Default brand palette — overridden per-tenant at runtime via CSS custom
+   properties written by the settings-gate (see app/plugins/01.settings.ts). */
+@theme static {
+  --font-sans: 'Public Sans', sans-serif;
+}
+
+@layer base {
+  /* Native and Nuxt UI buttons should consistently signal that they are clickable. */
+  button:not(:disabled) {
+    cursor: pointer;
+  }
+
+  /* Force LTR inputs in RTL contexts to align right (e.g., national IDs, phones). */
+  html[dir="rtl"] input[dir="ltr"],
+  html[dir="rtl"] [dir="ltr"] input {
+    text-align: right;
+  }
+}

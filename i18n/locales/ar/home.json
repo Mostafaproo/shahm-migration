@@ -1,0 +1,19 @@
+{
+  "home": {
+    "nav": {
+      "home": "الرئيسية",
+      "courses": "الدورات",
+      "instructors": "المدربين",
+      "packages": "الحزم",
+      "contact_us": "تواصل معنا",
+      "about_us": "من نحن",
+      "search_placeholder": "ابحث فى الدورات...",
+      "login": "تسجيل دخول",
+      "create_account": "إنشاء حساب",
+      "dashboard": "لوحة التحكم",
+      "logout": "تسجيل الخروج",
+      "open_menu": "فتح القائمة",
+      "close_menu": "إغلاق القائمة"
+    }
+  }
+}

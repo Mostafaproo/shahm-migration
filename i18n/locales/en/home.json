@@ -1,0 +1,19 @@
+{
+  "home": {
+    "nav": {
+      "home": "Home",
+      "courses": "Courses",
+      "instructors": "Instructors",
+      "packages": "Packages",
+      "contact_us": "Contact us",
+      "about_us": "About us",
+      "search_placeholder": "Search in courses...",
+      "login": "Sign in",
+      "create_account": "Create account",
+      "dashboard": "Dashboard",
+      "logout": "Sign out",
+      "open_menu": "Open menu",
+      "close_menu": "Close menu"
+    }
+  }
+}
