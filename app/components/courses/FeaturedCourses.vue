@@ -3,7 +3,6 @@ import { toCourse } from '~/types/course'
 import type { RawCourse } from '~/types/course'
 
 const http = useHttp()
-const localePath = useLocalePath()
 const { locale } = useI18n()
 
 const { data: courses, status } = await useAsyncData('featured-courses', async () => {
@@ -23,17 +22,11 @@ const isLoading = computed(() => status.value === 'pending')
     v-if="isLoading || courses?.length"
     class="py-12"
   >
-    <div class="mb-6 flex items-center justify-between">
-      <h2 class="text-2xl font-bold">
-        {{ $t('courses.featured_title') }}
-      </h2>
-      <NuxtLink
-        :to="localePath('/courses')"
-        class="text-sm font-medium text-primary hover:underline"
-      >
-        {{ $t('courses.view_all') }}
-      </NuxtLink>
-    </div>
+    <SharedLayoutAppSectionHeader
+      :title="$t('courses.featured_title')"
+      to="/courses"
+      :link-label="$t('courses.view_all')"
+    />
 
     <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
       <template v-if="isLoading">

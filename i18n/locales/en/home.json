@@ -14,6 +14,22 @@
       "logout": "Sign out",
       "open_menu": "Open menu",
       "close_menu": "Close menu"
+    },
+    "assessment": {
+      "badge": "New",
+      "title": "Start the test simulation",
+      "title_highlight": "National Center for Assessment",
+      "description": "Try a simulation under real exam conditions and get instant analysis of your performance with tips to improve",
+      "start_now": "Start now for free",
+      "feature_timing_title": "Real timing",
+      "feature_timing_text": "An accurate simulation of the exam clock",
+      "feature_questions_title": "Updated questions",
+      "feature_questions_text": "Questions similar to the real exam",
+      "feature_analysis_title": "Performance analysis",
+      "feature_analysis_text": "Detailed reports on your results",
+      "preview_label": "Practice test",
+      "preview_progress": "Question {current} of {total}",
+      "preview_question": "If x + y = 10 and x − y = 4, what is the value of x?"
     }
   }
 }

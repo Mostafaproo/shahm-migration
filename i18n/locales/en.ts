@@ -3,6 +3,7 @@ import common from './en/common.json'
 import courses from './en/courses.json'
 import home from './en/home.json'
 import packages from './en/packages.json'
+import user from './en/user.json'
 import validation from './en/validation.json'
 
 export default defineI18nLocale(() =>
@@ -13,6 +14,7 @@ export default defineI18nLocale(() =>
     courses,
     home,
     packages,
+    user,
     validation
   )
 )

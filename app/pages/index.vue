@@ -10,11 +10,12 @@ definePageMeta({ layout: 'landing' })
       </h1>
       <p class="text-muted">
         Navbar migrated from shaham-go-fe's pages/index.vue + components/home/Navbar.vue.
-        Next up (one section at a time): hero banner, assessment-center CTA,
-        learning pathways, course packages, and the app-download section.
+        Next up (one section at a time): hero banner, learning pathways,
+        and the app-download section.
       </p>
     </UContainer>
 
+    <HomeAssessmentCenter />
     <CoursesFeaturedCourses />
     <PackagesFeaturedPackages />
   </div>

@@ -1,0 +1,7 @@
+{
+  "user": {
+    "student": "Student",
+    "instructor": "Instructor",
+    "parent": "Parent"
+  }
+}

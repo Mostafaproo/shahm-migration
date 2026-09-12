@@ -4,7 +4,6 @@ import type { RawCoursePackage } from '~/types/package'
 
 const http = useHttp()
 const tenant = useTenant()
-const localePath = useLocalePath()
 const { locale } = useI18n()
 
 const isEnabled = computed(() => tenant.features.packages !== false)
@@ -25,17 +24,11 @@ const isLoading = computed(() => status.value === 'pending')
     v-if="isEnabled && (isLoading || packages?.length)"
     class="py-12"
   >
-    <div class="mb-6 flex items-center justify-between">
-      <h2 class="text-2xl font-bold">
-        {{ $t('packages.course_packages') }}
-      </h2>
-      <NuxtLink
-        :to="localePath('/packages')"
-        class="text-sm font-medium text-primary hover:underline"
-      >
-        {{ $t('packages.view_all') }}
-      </NuxtLink>
-    </div>
+    <SharedLayoutAppSectionHeader
+      :title="$t('packages.course_packages')"
+      to="/packages"
+      :link-label="$t('packages.view_all')"
+    />
 
     <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
       <template v-if="isLoading">

@@ -14,6 +14,22 @@
       "logout": "تسجيل الخروج",
       "open_menu": "فتح القائمة",
       "close_menu": "إغلاق القائمة"
+    },
+    "assessment": {
+      "badge": "جديد",
+      "title": "ابدأ محاكاة الاختبار",
+      "title_highlight": "المركز الوطني للقياس",
+      "description": "جرب محاكاة الاختبار بنفس الظروف الحقيقية وأحصل على تحليل فوري لأدائك مع نصائح للتحسين",
+      "start_now": "ابدأ الآن مجاناً",
+      "feature_timing_title": "توقيت حقيقي",
+      "feature_timing_text": "محاكاة دقيقة لوقت الاختبار",
+      "feature_questions_title": "أسئلة محدثة",
+      "feature_questions_text": "أسئلة مشابهة للاختبار الفعلي",
+      "feature_analysis_title": "تحليل الأداء",
+      "feature_analysis_text": "تقارير تفصيلية لنتائجك",
+      "preview_label": "اختبار تجريبي",
+      "preview_progress": "السؤال {current} من {total}",
+      "preview_question": "إذا كان س + ص = 10 و س - ص = 4، فما قيمة س؟"
     }
   }
 }
