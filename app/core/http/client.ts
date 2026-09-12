@@ -52,7 +52,6 @@ export interface HttpClientConfig {
   /** Invoked once whenever a response comes back 401 (e.g. clear the session). */
   onUnauthorized?: () => void
 
-
   headers?: Record<string, string> | (() => Record<string, string>)
 }
 
@@ -83,7 +82,6 @@ export interface HttpClient {
   ): Promise<T>
   download(url: string, options?: HttpRequestOptions): Promise<Blob>
 }
-
 
 export function createHttpClient(config: HttpClientConfig = {}): HttpClient {
   const resolveFetcher = (): Fetcher => {

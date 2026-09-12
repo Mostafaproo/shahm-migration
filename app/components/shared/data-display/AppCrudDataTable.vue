@@ -221,16 +221,13 @@ function runDefaultAction({ config, action }: { config: DefaultActionConfig, act
       </table>
     </div>
 
-    <div
-      v-if="props.store.totalPages > 1"
-      class="flex justify-end"
-    >
-      <UPagination
-        :page="props.store.page"
-        :total="props.store.total"
-        :items-per-page="props.store.perPage ?? 20"
-        @update:page="props.store.setPage"
-      />
-    </div>
+    <SharedDataDisplayAppPagination
+      align="end"
+      :page="props.store.page"
+      :total="props.store.total"
+      :per-page="props.store.perPage ?? 20"
+      :total-pages="props.store.totalPages"
+      @update:page="props.store.setPage"
+    />
   </div>
 </template>

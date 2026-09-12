@@ -228,7 +228,6 @@ const otpField = (t: Translator) => {
   return schema as unknown as z.ZodType<string>
 }
 
-
 const passportField = (required = true, t: Translator, field?: string) => {
   const schema = z
     .string({ message: t('validation.passportRequired', { field }) })
@@ -411,7 +410,6 @@ const dateField = (
   return schema as unknown as z.ZodType<Date | undefined>
 }
 
-
 const dateRange
   = (t: Translator, keys: { start?: string, end?: string } = {}) =>
     (data: Record<string, unknown>, ctx: z.RefinementCtx) => {
@@ -472,7 +470,6 @@ const enumField = <T extends [string, ...string[]]>(
 
   return schema as unknown as z.ZodType<T[number] | undefined>
 }
-
 
 const optionsEnum = <T extends readonly { label: string, value: string }[]>(
   options: T,

@@ -1,0 +1,22 @@
+{
+  "courses": {
+    "featured_title": "Top Courses",
+    "view_all": "View all courses",
+    "page_title": "Courses",
+    "by": "By",
+    "by_school": "By",
+    "remaining_places": "seats remaining",
+    "price_include_tax": "Price includes tax",
+    "view": "View",
+    "search_placeholder": "Search courses...",
+    "no_results": "No courses found",
+    "results_count": "{count} results",
+    "students_count": "students",
+    "what_learn": "What you'll learn",
+    "course_description": "Course description",
+    "course_content": "Course content",
+    "student_rate": "Student ratings",
+    "reviews": "Reviews",
+    "no_reviews": "No reviews yet"
+  }
+}

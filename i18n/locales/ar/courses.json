@@ -1,0 +1,22 @@
+{
+  "courses": {
+    "featured_title": "اهم الدورات",
+    "view_all": "شاهد كل الدورات",
+    "page_title": "الدورات",
+    "by": "بواسطة",
+    "by_school": "بواسطة",
+    "remaining_places": "المقاعد المتبقية",
+    "price_include_tax": "السعر شامل الضريبة",
+    "view": "عرض",
+    "search_placeholder": "ابحث فى الدورات...",
+    "no_results": "لا توجد دورات",
+    "results_count": "{count} نتائج",
+    "students_count": "طالب",
+    "what_learn": "ماذا سوف تتعلم",
+    "course_description": "وصف الدورة التدريبية",
+    "course_content": "محتوى الدورة",
+    "student_rate": "تقييم الطلاب",
+    "reviews": "التقييمات",
+    "no_reviews": "لا توجد تقييمات بعد"
+  }
+}

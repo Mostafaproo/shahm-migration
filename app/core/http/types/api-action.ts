@@ -1,4 +1,3 @@
-
 export type HttpMethod
   = | 'GET'
     | 'POST'
@@ -6,7 +5,6 @@ export type HttpMethod
     | 'PATCH'
     | 'DELETE'
     | 'HEAD'
-
 
 export interface BackendAction {
   endpoint_url: string
@@ -21,7 +19,6 @@ export interface BackendAction {
 
   bg_color?: string
 }
-
 
 export type ActionMap = Record<string, BackendAction>
 

@@ -39,7 +39,7 @@ const userMenuItems = computed(() => [[
 
 <template>
   <header class="sticky top-0 z-40 border-b border-default bg-default/95 backdrop-blur">
-    <div class="flex h-16 w-full items-center gap-4 px-4 sm:px-6 lg:px-8">
+    <div class="flex h-16 w-full items-center gap-8 px-4 sm:px-6 lg:px-8">
       <NuxtLink
         :to="localePath('/')"
         class="flex shrink-0 items-center gap-2"
@@ -63,7 +63,7 @@ const userMenuItems = computed(() => [[
         </template>
       </NuxtLink>
 
-      <nav class="hidden items-center gap-6 lg:flex">
+      <nav class="hidden items-center gap-8 lg:flex">
         <NuxtLink
           v-for="link in NAV_LINKS"
           :key="link.to"
@@ -86,7 +86,7 @@ const userMenuItems = computed(() => [[
         />
       </div>
 
-      <div class="ms-auto hidden items-center gap-2 lg:flex">
+      <div class="ms-auto hidden items-center gap-3 lg:flex">
         <UDropdownMenu
           v-if="auth.isAuthenticated"
           :items="userMenuItems"

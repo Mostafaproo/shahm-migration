@@ -1,5 +1,3 @@
-
-
 /** School branding: titles, logo, brand colors. NOT theme design tokens. */
 export interface TenantThemePayload {
   title?: string
@@ -59,7 +57,6 @@ export interface TenantSettings {
 }
 
 const TRUTHY_FLAGS = new Set(['1', 'true', 'yes', 'on', 'enabled'])
-
 
 export function parseSettingsFlag(value: unknown): boolean {
   if (typeof value === 'boolean') return value

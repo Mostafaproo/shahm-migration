@@ -4,10 +4,20 @@
 @import "tailwindcss";
 @import "@nuxt/ui";
 
-/* Default brand palette — overridden per-tenant at runtime via CSS custom
-   properties written by the settings-gate (see app/plugins/01.settings.ts). */
 @theme static {
   --font-sans: 'Public Sans', sans-serif;
+
+  --color-brand-50: #f2fbfa;
+  --color-brand-100: #e6f7f4;
+  --color-brand-200: #bfeae4;
+  --color-brand-300: #99ded3;
+  --color-brand-400: #4dc5b3;
+  --color-brand-500: #00ac92;
+  --color-brand-600: #00927c;
+  --color-brand-700: #007866;
+  --color-brand-800: #005f50;
+  --color-brand-900: #00453a;
+  --color-brand-950: #002b25;
 }
 
 @layer base {

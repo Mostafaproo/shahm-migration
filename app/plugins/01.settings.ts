@@ -1,4 +1,3 @@
-
 import {
   createSettingsGate,
   emptyTenantSettings,

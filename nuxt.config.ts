@@ -44,6 +44,10 @@ export default defineNuxtConfig({
     '/': { prerender: false }
   },
 
+  devServer: {
+    port: 5000
+  },
+
   compatibilityDate: '2026-06-30',
 
   eslint: {

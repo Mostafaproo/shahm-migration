@@ -1,4 +1,3 @@
-
 /** The subset of sarala's Formatter API we rely on. */
 // @ts-expect-error — no published type declarations for this dependency.
 import { Formatter as UntypedFormatter } from 'sarala-json-api-data-formatter'
