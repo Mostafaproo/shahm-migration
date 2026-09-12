@@ -1,0 +1,8 @@
+{
+  "notifications": {
+    "page_title": "Notifications",
+    "empty": "No notifications",
+    "mark_as_read": "Mark as read",
+    "load_more": "Load more"
+  }
+}

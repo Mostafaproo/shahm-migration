@@ -1,0 +1,15 @@
+{
+  "dashboard": {
+    "nav": {
+      "courses": "Courses",
+      "notifications": "Notifications"
+    },
+    "logout": "Sign out",
+    "open_sidebar": "Open sidebar",
+    "close_sidebar": "Close sidebar",
+    "coming_soon": "This section is still being migrated",
+    "currency": "SAR",
+    "switch_language": "Switch language",
+    "notifications": "Notifications"
+  }
+}

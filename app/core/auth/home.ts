@@ -2,9 +2,11 @@ import type { AuthUser } from './user'
 
 export type UserType = AuthUser['user_type']
 
+// Students and instructors land on notifications right after signing in;
+// parent has no dashboard yet.
 const HOME_PATHS: Record<UserType, string> = {
-  student: '/student',
-  instructor: '/instructor',
+  student: '/notifications',
+  instructor: '/notifications',
   parent: '/parent'
 }
 

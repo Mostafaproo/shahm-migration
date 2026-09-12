@@ -1,0 +1,15 @@
+{
+  "dashboard": {
+    "nav": {
+      "courses": "الدورات",
+      "notifications": "الإشعارات"
+    },
+    "logout": "تسجيل خروج",
+    "open_sidebar": "فتح القائمة الجانبية",
+    "close_sidebar": "إغلاق القائمة الجانبية",
+    "coming_soon": "هذا القسم قيد النقل من الموقع القديم",
+    "currency": "ريال",
+    "switch_language": "تغيير اللغة",
+    "notifications": "الإشعارات"
+  }
+}
