@@ -1,0 +1,16 @@
+{
+  "packages": {
+    "course_packages": "Course packages",
+    "view_all": "View all packages",
+    "page_title": "Course packages",
+    "sar": "SAR",
+    "tax_included": "tax included",
+    "views": "views",
+    "number_of_subscription": "subscribers",
+    "seats": "Available seats",
+    "view_details": "View details",
+    "about_package": "About this package",
+    "package_content": "Package content",
+    "no_packages": "No packages available right now"
+  }
+}

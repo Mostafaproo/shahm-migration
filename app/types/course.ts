@@ -24,6 +24,7 @@ export interface Course {
   /** Pre-formatted by the backend, e.g. "50 ريال" — null when absent/free. */
   price: string | null
   viewsCount: number
+  /** The backend sends -1 for "unlimited" — normalized to null here. */
   remainingPlaces: number | null
   ratingStars: number
   ratingTotalStars: number
@@ -46,6 +47,7 @@ export interface RawCourse {
 export function toCourse(raw: RawCourse): Course {
   const instructors = raw.instructors?.data ?? []
   const ratingTotal = raw.ratings?.data?.total ?? {}
+  const places = raw.remaining_places != null ? Number(raw.remaining_places) : null
 
   return {
     id: String(raw.id ?? ''),
@@ -53,7 +55,7 @@ export function toCourse(raw: RawCourse): Course {
     image: raw.medium_picture || raw.picture || '',
     price: raw.subscription_cost || null,
     viewsCount: raw.views_count ?? 0,
-    remainingPlaces: raw.remaining_places != null ? Number(raw.remaining_places) : null,
+    remainingPlaces: places != null && places >= 0 ? places : null,
     ratingStars: ratingTotal.stars ?? 0,
     ratingTotalStars: ratingTotal.totalStars ?? 5,
     instructors: instructors.map(i => ({

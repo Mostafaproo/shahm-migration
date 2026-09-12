@@ -16,5 +16,6 @@ definePageMeta({ layout: 'landing' })
     </UContainer>
 
     <CoursesFeaturedCourses />
+    <PackagesFeaturedPackages />
   </div>
 </template>

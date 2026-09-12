@@ -39,7 +39,7 @@ const userMenuItems = computed(() => [[
 
 <template>
   <header class="sticky top-0 z-40 border-b border-default bg-default/95 backdrop-blur">
-    <div class="flex h-16 w-full items-center gap-8 px-4 sm:px-6 lg:px-8">
+    <UContainer class="flex h-16 items-center gap-8">
       <NuxtLink
         :to="localePath('/')"
         class="flex shrink-0 items-center gap-2"
@@ -124,11 +124,11 @@ const userMenuItems = computed(() => [[
         :aria-label="mobileOpen ? $t('home.nav.close_menu') : $t('home.nav.open_menu')"
         @click="mobileOpen = !mobileOpen"
       />
-    </div>
+    </UContainer>
 
-    <div
+    <UContainer
       v-if="mobileOpen"
-      class="space-y-4 border-t border-default px-4 py-4 lg:hidden"
+      class="space-y-4 border-t border-default py-4 lg:hidden"
     >
       <UInput
         v-model="search"
@@ -184,6 +184,6 @@ const userMenuItems = computed(() => [[
           </UButton>
         </template>
       </div>
-    </div>
+    </UContainer>
   </header>
 </template>

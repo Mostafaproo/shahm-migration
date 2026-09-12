@@ -1,0 +1,56 @@
+import { toCourse } from './course'
+import type { Course, RawCourse } from './course'
+
+export interface CoursePackage {
+  id: string
+  name: string
+  image: string
+  price: string
+  description: string
+  viewsCount: number
+  subscriptionsCount: number
+  /** The backend sends -1 for "unlimited" — normalized to null here. */
+  availableSeats: number | null
+}
+
+export interface RawCoursePackage {
+  id?: string | number
+  name?: string
+  image?: string
+  price?: string | number
+  description?: string
+  views_count?: number
+  number_of_subscriptions?: number
+  /** Backend spelling — typo is theirs, kept only at the wire boundary. */
+  available_seets?: number | string
+}
+
+export interface CoursePackageDetail extends CoursePackage {
+  courses: Course[]
+}
+
+export interface RawCoursePackageDetail extends RawCoursePackage {
+  courses?: { data?: RawCourse[] }
+}
+
+export function toCoursePackage(raw: RawCoursePackage): CoursePackage {
+  const seats = raw.available_seets != null ? Number(raw.available_seets) : null
+
+  return {
+    id: String(raw.id ?? ''),
+    name: raw.name ?? '',
+    image: raw.image ?? '',
+    price: String(raw.price ?? ''),
+    description: raw.description ?? '',
+    viewsCount: raw.views_count ?? 0,
+    subscriptionsCount: raw.number_of_subscriptions ?? 0,
+    availableSeats: seats != null && seats >= 0 ? seats : null
+  }
+}
+
+export function toCoursePackageDetail(raw: RawCoursePackageDetail): CoursePackageDetail {
+  return {
+    ...toCoursePackage(raw),
+    courses: (raw.courses?.data ?? []).map(toCourse)
+  }
+}
