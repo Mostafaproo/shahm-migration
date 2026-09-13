@@ -294,6 +294,12 @@ onMounted(() => store.fetchCourse(String(route.params.id)))
       </div>
     </div>
 
+    <!-- غرفة المناقشة -->
+    <CoursesDiscussionRoom
+      v-else-if="tab === 'discussion'"
+      :course-id="String(route.params.id)"
+    />
+
     <!-- Remaining tabs land one at a time; see the legacy page for each. -->
     <p
       v-else

@@ -1,0 +1,13 @@
+{
+  "discussion": {
+    "is_there_question": "هل هناك سؤال تود أن تطرحة ؟",
+    "ask_question": "اطرح سؤال",
+    "comment": "تعليق",
+    "submit": "إرسال",
+    "cancel": "إلغاء",
+    "load_more": "عرض المزيد",
+    "course_ended": "انتهت الدورة",
+    "not_active": "انت غير نشط عن طريق مدرسك",
+    "no_discussions": "لا توجد مناقشات بعد"
+  }
+}

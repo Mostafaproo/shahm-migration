@@ -1,0 +1,13 @@
+{
+  "discussion": {
+    "is_there_question": "Is there a question to ask?",
+    "ask_question": "Ask a question",
+    "comment": "Comment",
+    "submit": "Submit",
+    "cancel": "Cancel",
+    "load_more": "Load more",
+    "course_ended": "The course has ended",
+    "not_active": "You are not active by your instructor",
+    "no_discussions": "No discussions yet"
+  }
+}
