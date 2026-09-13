@@ -1,9 +1,4 @@
 <script setup lang="ts">
-// Public "all courses" listing — ported from shaham-go-fe's
-// pages/home/courses/index.vue (route `/home/courses`, exposed here at
-// `/courses` to match this project's Navbar link). Same
-// `landing-page/courses` endpoint as the landing page's featured section,
-// just paginated + searchable instead of a flat top-8 slice.
 definePageMeta({ layout: 'landing' })
 
 const { t } = useI18n()

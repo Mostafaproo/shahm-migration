@@ -17,6 +17,31 @@
     "course_content": "محتوى الدورة",
     "student_rate": "تقييم الطلاب",
     "reviews": "التقييمات",
-    "no_reviews": "لا توجد تقييمات بعد"
+    "no_reviews": "لا توجد تقييمات بعد",
+    "lessons": "الدروس",
+    "resume": "استمرار",
+    "views_count": "المشاهدات",
+    "load_more": "عرض المزيد",
+    "tabs": {
+      "new": "الدورات الجديدة",
+      "enrolled": "الدورات المسجلة"
+    },
+    "stats": {
+      "enrolled": "الدورات المسجلة",
+      "completed": "الدورات المكتملة",
+      "hours": "ساعات التعلم",
+      "certificates": "الشهادات المكتسبة"
+    },
+    "filters": {
+      "toggle": "تصفية النتائج",
+      "educational_system": "النظام التعليمي",
+      "instructors": "المدربين",
+      "search_instructor": "البحث عن مدرب",
+      "price": "السعر",
+      "rate": "التقييم",
+      "search_here": "ابحث هنا",
+      "search": "بحث",
+      "reset": "إعادة تعيين"
+    }
   }
 }

@@ -17,6 +17,31 @@
     "course_content": "Course content",
     "student_rate": "Student ratings",
     "reviews": "Reviews",
-    "no_reviews": "No reviews yet"
+    "no_reviews": "No reviews yet",
+    "lessons": "lessons",
+    "resume": "Resume",
+    "views_count": "Views",
+    "load_more": "Load more",
+    "tabs": {
+      "new": "New courses",
+      "enrolled": "My courses"
+    },
+    "stats": {
+      "enrolled": "Enrolled courses",
+      "completed": "Completed courses",
+      "hours": "Learning hours",
+      "certificates": "Certificates earned"
+    },
+    "filters": {
+      "toggle": "Filter results",
+      "educational_system": "Educational system",
+      "instructors": "Instructors",
+      "search_instructor": "Search for an instructor",
+      "price": "Price",
+      "rate": "Rating",
+      "search_here": "Search here",
+      "search": "Search",
+      "reset": "Reset"
+    }
   }
 }
