@@ -22,6 +22,21 @@
     "resume": "Resume",
     "views_count": "Views",
     "load_more": "Load more",
+    "no_sessions": "Sorry, the content is not available at the moment",
+    "leave_rate": "Leave rating",
+    "recorded_sessions": "Recorded sessions",
+    "recordings": "Recordings",
+    "session_files": "Enrichment materials",
+    "no_recordings": "No recordings for this session",
+    "no_files": "No files for this session",
+    "download": "Download",
+    "detail_tabs": {
+      "overview": "Course overview",
+      "discussion": "Discuss room",
+      "homework": "Homeworks",
+      "assignments": "Assignments",
+      "files": "File manager"
+    },
     "tabs": {
       "new": "New courses",
       "enrolled": "My courses"

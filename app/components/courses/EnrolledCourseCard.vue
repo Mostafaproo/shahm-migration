@@ -49,7 +49,7 @@ const instructorNames = computed(() =>
       <UButton
         class="mt-3 self-start"
         size="sm"
-        :to="localePath(`/courses/${course.id}`)"
+        :to="localePath(`/student/courses/${course.id}`)"
       >
         {{ $t('courses.resume') }}
       </UButton>

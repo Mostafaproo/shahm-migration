@@ -22,6 +22,21 @@
     "resume": "استمرار",
     "views_count": "المشاهدات",
     "load_more": "عرض المزيد",
+    "no_sessions": "عذرا المحتوى غير متوفر فى الوقت الحالى",
+    "leave_rate": "اترك تقييم",
+    "recorded_sessions": "الحصص المسجلة",
+    "recordings": "التسجيلات",
+    "session_files": "المواد الاثرائية",
+    "no_recordings": "لا يوجد تسجيلات لهذه الحصة",
+    "no_files": "لا يوجد ملفات لهذه الحصة",
+    "download": "تحميل",
+    "detail_tabs": {
+      "overview": "نظرة عامة على الدورة",
+      "discussion": "غرفة المناقشة",
+      "homework": "الواجبات",
+      "assignments": "الاختبارات",
+      "files": "ادارة الملفات"
+    },
     "tabs": {
       "new": "الدورات الجديدة",
       "enrolled": "الدورات المسجلة"

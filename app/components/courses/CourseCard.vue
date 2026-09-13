@@ -1,9 +1,15 @@
 <script setup lang="ts">
 import type { Course } from '~/types/course'
 
-const props = defineProps<{ course: Course }>()
+const props = withDefaults(defineProps<{
+  course: Course
+
+  basePath?: string
+}>(), { basePath: '/courses' })
 
 const localePath = useLocalePath()
+
+const detailLink = computed(() => localePath(`${props.basePath}/${props.course.id}`))
 
 const instructorNames = computed(() =>
   props.course.instructors.map(i => i.name).filter(Boolean).join(' - ')
@@ -12,7 +18,7 @@ const instructorNames = computed(() =>
 
 <template>
   <NuxtLink
-    :to="localePath(`/courses/${course.id}`)"
+    :to="detailLink"
     class="group flex flex-col overflow-hidden rounded-xl border border-default bg-default shadow-sm transition hover:shadow-md"
   >
     <div class="relative">

@@ -98,6 +98,7 @@ function onSearch(filters: CourseFilters) {
           v-for="course in courses.items"
           :key="course.id"
           :course="course"
+          base-path="/student/courses"
         />
       </div>
 
