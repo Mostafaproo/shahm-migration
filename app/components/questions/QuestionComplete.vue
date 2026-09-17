@@ -7,6 +7,7 @@ import type { HomeworkQuestion } from '~/types/homeworkQuestion'
 const props = defineProps<{
   question: HomeworkQuestion
   disabled?: boolean
+  feedback?: boolean
 }>()
 
 const model = defineModel<string | null>({ required: true })
@@ -41,5 +42,10 @@ const parts = computed(() => splitCompletePrompt(props.question.question))
         v-html="parts[1]"
       />
     </div>
+
+    <QuestionsQuestionFeedbackNote
+      v-if="feedback"
+      :question="question"
+    />
   </div>
 </template>

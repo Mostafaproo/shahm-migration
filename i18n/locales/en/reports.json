@@ -1,0 +1,25 @@
+{
+  "reports": {
+    "page_title": "Assessment reports",
+    "title": "Assessment title",
+    "assessment_type": "Assessment type",
+    "start_date": "Start date",
+    "end_date": "End date",
+    "grade": "Grade",
+    "actions": "Actions",
+    "view_answers": "View answers",
+    "not_attended": "Not tested yet",
+    "filter_course": "Courses",
+    "all_courses": "All courses",
+    "show": "Show",
+    "entries": "Entries",
+    "no_reports": "No assessments found",
+    "no_answers": "No answers to show",
+    "back": "Back to reports",
+    "types": {
+      "homework": "Homework",
+      "quiz": "Quiz",
+      "final_exam": "Final exam"
+    }
+  }
+}

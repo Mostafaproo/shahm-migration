@@ -5,6 +5,8 @@ import type { HomeworkQuestion } from '~/types/homeworkQuestion'
 defineProps<{
   question: HomeworkQuestion
   disabled?: boolean
+  /** Review mode: read-only, with the verdict and explanation shown. */
+  feedback?: boolean
 }>()
 
 const model = defineModel<string | null>({ required: true })
@@ -21,6 +23,11 @@ const model = defineModel<string | null>({ required: true })
       :disabled="disabled"
       :placeholder="$t('questions.your_answer')"
       @update:model-value="value => model = String(value)"
+    />
+
+    <QuestionsQuestionFeedbackNote
+      v-if="feedback"
+      :question="question"
     />
   </div>
 </template>

@@ -3,7 +3,8 @@
     "nav": {
       "courses": "Courses",
       "notifications": "Notifications",
-      "packages": "Course packages"
+      "packages": "Course packages",
+      "reports": "Assessment reports"
     },
     "logout": "Sign out",
     "open_sidebar": "Open sidebar",

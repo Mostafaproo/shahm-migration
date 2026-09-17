@@ -3,7 +3,8 @@
     "nav": {
       "courses": "الدورات",
       "notifications": "الإشعارات",
-      "packages": "حزم الدورات"
+      "packages": "حزم الدورات",
+      "reports": "تقارير التقييمات"
     },
     "logout": "تسجيل خروج",
     "open_sidebar": "فتح القائمة الجانبية",

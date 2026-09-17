@@ -1,21 +1,10 @@
 <script setup lang="ts">
-// `drag_drop_text` and `drag_drop_image` — one component: the legacy's two
-// files were byte-identical apart from a wrapper div, and their Vuex modules
-// differed only in the `question_type` string they stamped on the payload.
-//
-// Interaction differs from the legacy on purpose. The legacy used
-// `vue-easy-dnd` (Vue 2 only). Rather than pull a replacement library in, this
-// uses native HTML5 drag & drop AND a tap-to-place fallback: tap an option to
-// arm it, then tap a blank to drop it there. Native DnD alone is dead on
-// touch devices, so the fallback is what makes this usable on a phone.
-//
-// The answer shape is unchanged: a list of `{ question_id, answer_id }`, one
-// per filled blank.
 import type { BlankAnswer, HomeworkQuestion, QuestionBlank } from '~/types/homeworkQuestion'
 
 const props = defineProps<{
   question: HomeworkQuestion
   disabled?: boolean
+  feedback?: boolean
 }>()
 
 const model = defineModel<BlankAnswer[]>({ required: true })
@@ -44,8 +33,19 @@ function blankHtml(blank: QuestionBlank): string {
   )
 }
 
+/** Review mode is read-only, same as `disabled`. */
+const locked = computed(() => Boolean(props.disabled || props.feedback))
+
+/** Legacy marks each blank green/red from its own `is_correct_answer`. */
+function blankClass(blank: QuestionBlank): string {
+  if (!props.feedback || blank.is_correct_answer == null) return 'border-default'
+  return blank.is_correct_answer
+    ? 'border-success bg-success/10'
+    : 'border-error bg-error/10'
+}
+
 function place(blankId: string, optionId: string) {
-  if (props.disabled || !optionId) return
+  if (locked.value || !optionId) return
   // One option per blank, and one blank per option.
   const next = model.value.filter(a => a.question_id !== blankId && a.answer_id !== optionId)
   next.push({ question_id: blankId, answer_id: optionId })
@@ -54,7 +54,7 @@ function place(blankId: string, optionId: string) {
 }
 
 function clearBlank(blankId: string) {
-  if (props.disabled) return
+  if (locked.value) return
   model.value = model.value.filter(a => a.question_id !== blankId)
 }
 
@@ -65,7 +65,7 @@ function reset() {
 
 // --- native drag & drop
 function onDragStart(event: DragEvent, optionId: string) {
-  if (props.disabled) return
+  if (locked.value) return
   event.dataTransfer?.setData('text/plain', optionId)
   armedOptionId.value = optionId
 }
@@ -77,7 +77,7 @@ function onDrop(event: DragEvent, blankId: string) {
 
 // --- tap fallback
 function onBlankClick(blank: QuestionBlank) {
-  if (props.disabled) return
+  if (locked.value) return
   if (armedOptionId.value) {
     place(blank.id, armedOptionId.value)
     return
@@ -102,12 +102,12 @@ function onBlankClick(blank: QuestionBlank) {
         v-for="option in availableOptions"
         :key="option.id"
         type="button"
-        :draggable="!disabled"
+        :draggable="!locked"
         class="cursor-grab rounded-lg border px-3 py-2 text-sm transition active:cursor-grabbing"
         :class="armedOptionId === option.id
           ? 'border-primary bg-primary/10 ring-2 ring-primary/30'
           : 'border-default bg-elevated hover:bg-accented'"
-        :disabled="disabled"
+        :disabled="locked"
         @dragstart="onDragStart($event, option.id)"
         @dragend="armedOptionId = null"
         @click="armedOptionId = armedOptionId === option.id ? null : option.id"
@@ -129,8 +129,8 @@ function onBlankClick(blank: QuestionBlank) {
       <div
         v-for="blank in question.questions ?? []"
         :key="blank.id"
-        class="rounded-lg border border-dashed border-default p-3 transition"
-        :class="armedOptionId && !disabled ? 'border-primary bg-primary/5' : ''"
+        class="rounded-lg border border-dashed p-3 transition"
+        :class="[blankClass(blank), armedOptionId && !locked ? 'border-primary bg-primary/5' : '']"
         @dragover.prevent
         @drop.prevent="onDrop($event, blank.id)"
         @click="onBlankClick(blank)"
@@ -150,7 +150,7 @@ function onBlankClick(blank: QuestionBlank) {
     </div>
 
     <UButton
-      v-if="model.length && !disabled"
+      v-if="model.length && !locked"
       color="neutral"
       variant="soft"
       size="sm"
@@ -158,5 +158,10 @@ function onBlankClick(blank: QuestionBlank) {
     >
       {{ $t('questions.reset') }}
     </UButton>
+
+    <QuestionsQuestionFeedbackNote
+      v-if="feedback"
+      :question="question"
+    />
   </div>
 </template>

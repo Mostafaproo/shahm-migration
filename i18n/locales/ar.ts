@@ -9,6 +9,7 @@ import notifications from './ar/notifications.json'
 import packages from './ar/packages.json'
 import questions from './ar/questions.json'
 import quizzes from './ar/quizzes.json'
+import reports from './ar/reports.json'
 import user from './ar/user.json'
 import validation from './ar/validation.json'
 
@@ -26,6 +27,7 @@ export default defineI18nLocale(() =>
     packages,
     questions,
     quizzes,
+    reports,
     user,
     validation
   )

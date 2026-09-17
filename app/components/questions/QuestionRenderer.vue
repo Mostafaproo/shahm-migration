@@ -1,7 +1,4 @@
 <script setup lang="ts">
-// Picks the renderer for the current question type — the Vue 3 equivalent of
-// the legacy `<component :is="courseHomework.type" />`, but explicit so an
-// unknown type surfaces instead of silently rendering nothing.
 import type {
   AnswerValue,
   BlankAnswer,
@@ -12,12 +9,11 @@ import type {
 defineProps<{
   question: HomeworkQuestion
   disabled?: boolean
+  feedback?: boolean
 }>()
 
 const model = defineModel<AnswerValue | TrueFalseWithCorrectAnswer>({ required: true })
 
-// Each renderer owns a narrower model type than the store's union, so these
-// proxies do the narrowing in one place instead of casting at every use.
 const choiceModel = computed({
   get: () => model.value as string | string[] | null,
   set: (v: string | string[] | null) => { model.value = v }
@@ -47,6 +43,7 @@ const blanksModel = computed({
     :question="question"
     :multiple="question.question_type === 'multiple_choice'"
     :disabled="disabled"
+    :feedback="feedback"
   />
 
   <QuestionsQuestionTrueFalse
@@ -54,6 +51,7 @@ const blanksModel = computed({
     v-model="boolModel"
     :question="question"
     :disabled="disabled"
+    :feedback="feedback"
   />
 
   <QuestionsQuestionTrueFalseWithCorrect
@@ -61,6 +59,7 @@ const blanksModel = computed({
     v-model="tfcModel"
     :question="question"
     :disabled="disabled"
+    :feedback="feedback"
   />
 
   <QuestionsQuestionEssay
@@ -68,6 +67,7 @@ const blanksModel = computed({
     v-model="textModel"
     :question="question"
     :disabled="disabled"
+    :feedback="feedback"
   />
 
   <QuestionsQuestionComplete
@@ -75,6 +75,7 @@ const blanksModel = computed({
     v-model="textModel"
     :question="question"
     :disabled="disabled"
+    :feedback="feedback"
   />
 
   <QuestionsQuestionDragDrop
@@ -82,6 +83,7 @@ const blanksModel = computed({
     v-model="blanksModel"
     :question="question"
     :disabled="disabled"
+    :feedback="feedback"
   />
 
   <UAlert

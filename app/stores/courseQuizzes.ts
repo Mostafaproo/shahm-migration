@@ -5,8 +5,6 @@ import type { CourseQuiz, QuizType, RawCourseQuiz } from '~/types/courseQuiz'
 const LIST_ENDPOINT = 'general-quizzes/course-homework/student/list-homeworks'
 const START_ENDPOINT = 'general-quizzes/course-homework/student/start-homework'
 
-export const PER_PAGE_OPTIONS = [5, 10, 15, 20]
-
 export const useCourseQuizzesStore = defineStore('courseQuizzes', () => {
   const http = useHttp()
   const nuxtApp = useNuxtApp()

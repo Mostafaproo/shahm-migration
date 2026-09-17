@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { isRetryAttempt, startAction } from '~/types/courseQuiz'
-import { PER_PAGE_OPTIONS, useCourseQuizzesStore } from '~/stores/courseQuizzes'
+import { useCourseQuizzesStore } from '~/stores/courseQuizzes'
+import { PER_PAGE_OPTIONS } from '~/utils/pagination'
 import type { CourseQuiz, QuizType } from '~/types/courseQuiz'
 
 const props = defineProps<{

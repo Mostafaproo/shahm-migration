@@ -1,12 +1,10 @@
 <script setup lang="ts">
-// `true_false_with_correct` — pick صح/خطأ, and when it's خطأ also pick which
-// option is the correction. Both go up in one answer (`answer_text` +
-// `answer_id`), exactly like the legacy module.
 import type { HomeworkQuestion, TrueFalseWithCorrectAnswer } from '~/types/homeworkQuestion'
 
 defineProps<{
   question: HomeworkQuestion
   disabled?: boolean
+  feedback?: boolean
 }>()
 
 const model = defineModel<TrueFalseWithCorrectAnswer>({ required: true })
@@ -82,5 +80,10 @@ function setOption(optionId: string) {
         />
       </label>
     </div>
+
+    <QuestionsQuestionFeedbackNote
+      v-if="feedback"
+      :question="question"
+    />
   </div>
 </template>

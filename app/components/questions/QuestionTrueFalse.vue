@@ -5,6 +5,7 @@ import type { HomeworkQuestion } from '~/types/homeworkQuestion'
 defineProps<{
   question: HomeworkQuestion
   disabled?: boolean
+  feedback?: boolean
 }>()
 
 const model = defineModel<boolean | null>({ required: true })
@@ -40,5 +41,10 @@ const CHOICES = [
         <span class="font-medium">{{ $t(choice.label) }}</span>
       </label>
     </div>
+
+    <QuestionsQuestionFeedbackNote
+      v-if="feedback"
+      :question="question"
+    />
   </div>
 </template>

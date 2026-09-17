@@ -1,0 +1,25 @@
+{
+  "reports": {
+    "page_title": "تقارير التقييمات",
+    "title": "عنوان التقييم",
+    "assessment_type": "نوع التقييم",
+    "start_date": "تاريخ البدء",
+    "end_date": "تاريخ الانتهاء",
+    "grade": "الدرجة",
+    "actions": "الاجراءات",
+    "view_answers": "مشاهدة الاجابات",
+    "not_attended": "لم يختبر بعد",
+    "filter_course": "الدورات",
+    "all_courses": "كل الدورات",
+    "show": "عرض",
+    "entries": "الأجمالى",
+    "no_reports": "لا يوجد تقييمات",
+    "no_answers": "لا توجد إجابات لعرضها",
+    "back": "رجوع للتقارير",
+    "types": {
+      "homework": "واجب",
+      "quiz": "اختبار",
+      "final_exam": "اختبار نهائي"
+    }
+  }
+}

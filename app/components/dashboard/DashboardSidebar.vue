@@ -12,7 +12,8 @@ const localePath = useLocalePath()
 const NAV_ITEMS = [
   { label: 'dashboard.nav.notifications', icon: 'i-lucide-bell', to: '/notifications' },
   { label: 'dashboard.nav.courses', icon: 'i-lucide-book-open', roleSegment: 'courses' },
-  { label: 'dashboard.nav.packages', icon: 'i-lucide-package', roleSegment: 'packages' }
+  { label: 'dashboard.nav.packages', icon: 'i-lucide-package', roleSegment: 'packages' },
+  { label: 'dashboard.nav.reports', icon: 'i-lucide-clipboard-list', roleSegment: 'homework-reports' }
 ]
 
 /** `/student/courses`, `/instructor/courses`, … depending on who's signed in. */
