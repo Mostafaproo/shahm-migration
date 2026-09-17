@@ -2,6 +2,26 @@
   "user": {
     "student": "Student",
     "instructor": "Instructor",
-    "parent": "Parent"
+    "parent": "Parent",
+    "profile": "Profile",
+    "user_info": "User information",
+    "first_name": "First name",
+    "last_name": "Last name",
+    "pls_first_name": "Please enter your first name",
+    "pls_last_name": "Please enter your last name",
+    "email": "Email",
+    "mobile": "Mobile number",
+    "wallet_amount": "Wallet balance",
+    "update_user_data": "Update user data",
+    "change_password": "Change password",
+    "old_password": "Current password",
+    "new_password": "New password",
+    "password_confirmation": "Confirm password",
+    "change": "Change",
+    "change_photo": "Change photo",
+    "photo_hint": "PNG or JPG, up to 10MB",
+    "photo_too_large": "{name} is larger than 10MB",
+    "photo_upload_failed": "Couldn't upload the photo, please try again",
+    "load_failed": "Couldn't load your details, please try again"
   }
 }

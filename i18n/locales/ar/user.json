@@ -2,6 +2,26 @@
   "user": {
     "student": "طالب",
     "instructor": "مدرس",
-    "parent": "ولي امر"
+    "parent": "ولي امر",
+    "profile": "الملف الشخصي",
+    "user_info": "بيانات المستخدم",
+    "first_name": "الاسم الاول",
+    "last_name": "الاسم الاخير",
+    "pls_first_name": "من فضلك ادخل الاسم الاول",
+    "pls_last_name": "من فضلك ادخل الاسم الاخير",
+    "email": "البريد الالكترونى",
+    "mobile": "رقم الجوال",
+    "wallet_amount": "رصيد المحفظة",
+    "update_user_data": "تعديل بيانات المستخدم",
+    "change_password": "تغيير كلمة المرور",
+    "old_password": "كلمة المرور القديمة",
+    "new_password": "كلمة المرور الجديدة",
+    "password_confirmation": "تأكيد كلمة المرور",
+    "change": "تغيير",
+    "change_photo": "تغيير الصورة",
+    "photo_hint": "PNG أو JPG، بحد أقصى 10 ميجابايت",
+    "photo_too_large": "حجم الملف {name} أكبر من 10 ميجابايت",
+    "photo_upload_failed": "تعذر رفع الصورة، حاول مرة أخرى",
+    "load_failed": "تعذر تحميل بياناتك، حاول مرة أخرى"
   }
 }

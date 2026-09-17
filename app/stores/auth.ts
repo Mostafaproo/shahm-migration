@@ -125,6 +125,26 @@ export const useAuthStore = defineStore('auth', {
       )
       return true
     },
+    async refreshUser(): Promise<void> {
+      const http = useHttp()
+      const nuxtApp = useNuxtApp()
+      const locale = (unref((nuxtApp.$i18n as { locale?: unknown } | undefined)?.locale) as string | undefined) ?? 'ar'
+
+      try {
+        const res = await http.get<{ data?: Partial<AuthUser> }>(`/${locale}/profile`, { preventToast: true })
+        if (!res?.data) return
+        const profile = toAuthUser(res.data)
+        this.user = profile
+
+        await nuxtApp.runWithContext(() => {
+          const userCookie = useCookie<AuthUser | null>('shaham_user', { path: '/', sameSite: 'lax' })
+          userCookie.value = profile
+          refreshCookie('shaham_user')
+        })
+      } catch {
+        // A stale navbar is better than dropping the session over a refresh.
+      }
+    },
 
     async logout() {
       this.clear()

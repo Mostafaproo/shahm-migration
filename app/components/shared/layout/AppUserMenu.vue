@@ -15,6 +15,11 @@ const items = computed(() => [[
     to: localePath(resolveAuthHomePath({ userType: auth.userType }))
   },
   {
+    label: t('user.profile'),
+    icon: 'i-lucide-user',
+    to: localePath('/profile')
+  },
+  {
     label: t('home.nav.logout'),
     icon: 'i-lucide-log-out',
     onSelect: () => auth.logout()

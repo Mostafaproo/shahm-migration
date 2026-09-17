@@ -8,7 +8,6 @@ const store = useCourseDiscussionsStore()
 const auth = useAuthStore()
 const { t } = useI18n()
 
-
 const rows = computed(() => store.discussions.map(discussion => ({
   discussion,
   canDelete: discussionActions.delete(discussion),
@@ -25,13 +24,11 @@ const question = ref('')
 const replyDrafts = ref<Record<string, string>>({})
 const editDrafts = ref<Record<string, string>>({})
 
-
 const openEditor = ref<string | null>(null)
 
 function isOpen(key: string): boolean {
   return openEditor.value === key
 }
-
 
 function openReply(discussion: Discussion) {
   const key = `reply:${discussion.id}`
