@@ -1,4 +1,5 @@
 import auth from './en/auth.json'
+import certificates from './en/certificates.json'
 import common from './en/common.json'
 import courses from './en/courses.json'
 import dashboard from './en/dashboard.json'
@@ -19,6 +20,7 @@ export default defineI18nLocale(() =>
   Object.assign(
     {},
     auth,
+    certificates,
     common,
     courses,
     dashboard,

@@ -6,7 +6,8 @@
       "packages": "Course packages",
       "reports": "Assessment reports",
       "invitations": "Parents",
-      "pathways": "Learning pathways"
+      "pathways": "Learning pathways",
+      "certificates": "Certificates"
     },
     "logout": "Sign out",
     "open_sidebar": "Open sidebar",

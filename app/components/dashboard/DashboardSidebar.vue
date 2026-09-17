@@ -25,6 +25,12 @@ const NAV_ITEMS: NavItem[] = [
   },
   { label: 'dashboard.nav.reports', icon: 'i-lucide-clipboard-list', roleSegment: 'homework-reports' },
   {
+    label: 'dashboard.nav.certificates',
+    icon: 'i-lucide-award',
+    roleSegment: 'certificates',
+    feature: 'certificates'
+  },
+  {
     label: 'dashboard.nav.invitations',
     icon: 'i-lucide-users',
     roleSegment: 'invitations',

@@ -1,0 +1,13 @@
+{
+  "certificates": {
+    "page_title": "Certificates",
+    "search_by": "Search by",
+    "all_types": "All certificates",
+    "all": "All",
+    "course": "Course",
+    "pathway": "Pathway",
+    "issued_on": "Issued on",
+    "download": "Download certificate",
+    "no_certificates": "No certificate was issued — the pass or attendance criteria weren't met"
+  }
+}
