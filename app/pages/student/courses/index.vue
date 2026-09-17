@@ -70,10 +70,13 @@ function onSearch(filters: CourseFilters) {
 
     <div
       v-if="courses.isLoading && !courses.items.length"
-      class="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-4"
+      class="grid grid-cols-1 gap-5"
+      :class="courses.tab === 'enrolled'
+        ? 'xl:grid-cols-2'
+        : 'sm:grid-cols-2 xl:grid-cols-4'"
     >
       <CoursesCourseCardSkeleton
-        v-for="n in 8"
+        v-for="n in courses.tab === 'enrolled' ? 4 : 8"
         :key="n"
       />
     </div>

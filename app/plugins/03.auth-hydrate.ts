@@ -10,12 +10,17 @@ export default defineNuxtPlugin({
     const user = useCookie<AuthUser | null>('shaham_user')
 
     if (session.value) auth.token = session.value
-    if (session.value && user.value) {
-      auth.user = user.value
+
+    const profile = user.value
+    const isUsable = typeof profile === 'object' && profile !== null
+      && Boolean(profile.id) && Boolean(profile.user_type)
+
+    if (session.value && isUsable) {
+      auth.user = profile
       auth.ctx = {
-        userId: user.value.id,
+        userId: profile.id,
         tenantId: tenant.tenantId,
-        userType: user.value.user_type,
+        userType: profile.user_type,
         capabilities: []
       }
     }

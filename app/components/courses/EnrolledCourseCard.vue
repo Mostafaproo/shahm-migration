@@ -8,6 +8,8 @@ const localePath = useLocalePath()
 const instructorNames = computed(() =>
   props.course.instructors.map(i => i.name).filter(Boolean).join(' - ')
 )
+
+const description = computed(() => stripHtml(props.course.description))
 </script>
 
 <template>
@@ -23,10 +25,10 @@ const instructorNames = computed(() =>
         {{ course.name }}
       </h3>
       <p
-        v-if="course.description"
+        v-if="description"
         class="truncate text-sm text-muted"
       >
-        {{ course.description }}
+        {{ description }}
       </p>
       <p class="text-xs text-muted">
         {{ $t('courses.views_count') }} {{ course.viewsCount }}

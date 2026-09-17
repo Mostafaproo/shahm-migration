@@ -113,6 +113,10 @@ export const useStudentCoursesStore = defineStore('studentCourses', () => {
     tab.value = next
     // Legacy resets the filters whenever the tab changes.
     filters.value = emptyCourseFilters()
+    items.value = []
+    currentPage.value = 1
+    totalPages.value = 1
+
     await fetchList()
   }
 
