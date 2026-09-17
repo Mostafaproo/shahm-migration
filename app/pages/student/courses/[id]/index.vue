@@ -307,13 +307,19 @@ onMounted(() => store.fetchCourse(String(route.params.id)))
       :empty-label="t('quizzes.no_homework')"
     />
 
-    <!-- Remaining tabs land one at a time; see the legacy page for each. -->
-    <p
-      v-else
-      class="rounded-xl border border-default bg-default py-16 text-center text-muted"
-    >
-      {{ t('common.coming_soon') }}
-    </p>
+    <CoursesCourseQuizTable
+      v-else-if="tab === 'assignments'"
+      :course-id="String(route.params.id)"
+      quiz-type="quiz,final_exam"
+      :redirect-tab="3"
+      :title-label="t('quizzes.exam_title')"
+      :empty-label="t('quizzes.no_exams')"
+    />
+
+    <CoursesCourseFileManager
+      v-else-if="tab === 'files'"
+      :course-id="String(route.params.id)"
+    />
 
     <CoursesRecordedSessionsModal
       v-model="recordingsOpen"

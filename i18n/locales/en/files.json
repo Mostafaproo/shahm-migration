@@ -1,0 +1,12 @@
+{
+  "files": {
+    "file_name": "File name",
+    "file_date": "File date",
+    "download": "Download",
+    "choose_file_type": "Choose file type",
+    "choose_type": "Choose file type",
+    "all_types": "All types",
+    "load_more": "Load more",
+    "no_files": "No files available"
+  }
+}

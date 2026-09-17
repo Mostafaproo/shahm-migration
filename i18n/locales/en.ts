@@ -3,6 +3,7 @@ import common from './en/common.json'
 import courses from './en/courses.json'
 import dashboard from './en/dashboard.json'
 import discussion from './en/discussion.json'
+import files from './en/files.json'
 import home from './en/home.json'
 import notifications from './en/notifications.json'
 import packages from './en/packages.json'
@@ -19,6 +20,7 @@ export default defineI18nLocale(() =>
     courses,
     dashboard,
     discussion,
+    files,
     home,
     notifications,
     packages,

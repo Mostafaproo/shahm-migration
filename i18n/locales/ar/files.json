@@ -1,0 +1,12 @@
+{
+  "files": {
+    "file_name": "اسم الملف",
+    "file_date": "تاريخ الملف",
+    "download": "تحميل",
+    "choose_file_type": "اختر نوع الملف",
+    "choose_type": "اختر نوع الملف",
+    "all_types": "كل الأنواع",
+    "load_more": "عرض المزيد",
+    "no_files": "لا يوجد ملفات"
+  }
+}
