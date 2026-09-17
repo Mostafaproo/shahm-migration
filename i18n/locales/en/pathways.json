@@ -1,0 +1,42 @@
+{
+  "pathways": {
+    "page_title": "Learning pathways",
+    "tabs": {
+      "new": "New pathways",
+      "registered": "Registered pathways"
+    },
+    "sar": "SAR",
+    "tax_included": "Tax included",
+    "view_details": "Pathway details",
+    "start": "Start pathway",
+    "continue": "Continue pathway",
+    "watch_intro": "Watch intro video",
+    "no_pathways": "No pathways available right now",
+    "no_registered": "You aren't registered in any pathway yet",
+    "browse_new": "Browse new pathways",
+    "path_courses": "Pathway courses",
+    "no_courses": "This pathway has no courses",
+    "open_course": "Open course",
+    "locked": "Not available yet",
+    "about": "About the pathway",
+    "objective": "Pathway objective",
+    "what_you_learn": "What you'll learn",
+    "final_project": "Final project",
+    "total_score": "Total score",
+    "certificate": "Certificate",
+    "instructors": "Pathway instructors",
+    "months": "{count} months",
+    "stats": {
+      "type": "Pathway type",
+      "courses": "Courses",
+      "duration": "Duration",
+      "views": "Views",
+      "subscribers": "Subscribers"
+    },
+    "status": {
+      "completed": "Completed",
+      "in_progress": "In progress",
+      "not_started": "Not started"
+    }
+  }
+}

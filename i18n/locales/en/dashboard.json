@@ -5,7 +5,8 @@
       "notifications": "Notifications",
       "packages": "Course packages",
       "reports": "Assessment reports",
-      "invitations": "Parents"
+      "invitations": "Parents",
+      "pathways": "Learning pathways"
     },
     "logout": "Sign out",
     "open_sidebar": "Open sidebar",

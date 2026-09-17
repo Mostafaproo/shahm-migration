@@ -8,6 +8,7 @@ import home from './ar/home.json'
 import invitations from './ar/invitations.json'
 import notifications from './ar/notifications.json'
 import packages from './ar/packages.json'
+import pathways from './ar/pathways.json'
 import questions from './ar/questions.json'
 import quizzes from './ar/quizzes.json'
 import reports from './ar/reports.json'
@@ -27,6 +28,7 @@ export default defineI18nLocale(() =>
     invitations,
     notifications,
     packages,
+    pathways,
     questions,
     quizzes,
     reports,

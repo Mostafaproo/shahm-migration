@@ -17,6 +17,12 @@ const NAV_ITEMS: NavItem[] = [
   { label: 'dashboard.nav.notifications', icon: 'i-lucide-bell', to: '/notifications' },
   { label: 'dashboard.nav.courses', icon: 'i-lucide-book-open', roleSegment: 'courses' },
   { label: 'dashboard.nav.packages', icon: 'i-lucide-package', roleSegment: 'packages' },
+  {
+    label: 'dashboard.nav.pathways',
+    icon: 'i-lucide-route',
+    roleSegment: 'pathways',
+    feature: 'learning_path'
+  },
   { label: 'dashboard.nav.reports', icon: 'i-lucide-clipboard-list', roleSegment: 'homework-reports' },
   {
     label: 'dashboard.nav.invitations',

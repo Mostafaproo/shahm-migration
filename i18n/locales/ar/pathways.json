@@ -1,0 +1,42 @@
+{
+  "pathways": {
+    "page_title": "المسارات التعليمية",
+    "tabs": {
+      "new": "مسارات جديدة",
+      "registered": "مسارات مسجل بها"
+    },
+    "sar": "ريال",
+    "tax_included": "شامل الضريبة",
+    "view_details": "تفاصيل المسار",
+    "start": "ابدأ المسار",
+    "continue": "استكمال المسار",
+    "watch_intro": "شاهد الفيديو التعريفي",
+    "no_pathways": "لا توجد مسارات متاحة حالياً",
+    "no_registered": "عفوا لا يوجد مسارات مسجلة الان",
+    "browse_new": "المسارات الجديدة",
+    "path_courses": "دورات المسار",
+    "no_courses": "لا توجد دورات في هذا المسار",
+    "open_course": "افتح الدورة",
+    "locked": "غير متاح بعد",
+    "about": "عن المسار",
+    "objective": "هدف المسار",
+    "what_you_learn": "ماذا سوف تتعلم",
+    "final_project": "مشروع التخرج",
+    "total_score": "الدرجة الكلية",
+    "certificate": "الشهادة",
+    "instructors": "مدربون المسار",
+    "months": "{count} شهر",
+    "stats": {
+      "type": "نوع المسار",
+      "courses": "عدد الدورات",
+      "duration": "المدة",
+      "views": "المشاهدات",
+      "subscribers": "عدد المشتركين"
+    },
+    "status": {
+      "completed": "مكتملة",
+      "in_progress": "جارية",
+      "not_started": "لم تبدأ"
+    }
+  }
+}
