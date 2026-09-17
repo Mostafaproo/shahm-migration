@@ -2,7 +2,8 @@
   "dashboard": {
     "nav": {
       "courses": "الدورات",
-      "notifications": "الإشعارات"
+      "notifications": "الإشعارات",
+      "packages": "حزم الدورات"
     },
     "logout": "تسجيل خروج",
     "open_sidebar": "فتح القائمة الجانبية",

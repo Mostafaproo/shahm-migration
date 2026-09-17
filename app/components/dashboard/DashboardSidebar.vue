@@ -9,11 +9,10 @@ const tenant = useTenant()
 const auth = useAuthStore()
 const localePath = useLocalePath()
 
-// `to` is an app-wide path; `roleSegment` is appended under the signed-in
-// role's own section (/student/…, /instructor/…).
 const NAV_ITEMS = [
   { label: 'dashboard.nav.notifications', icon: 'i-lucide-bell', to: '/notifications' },
-  { label: 'dashboard.nav.courses', icon: 'i-lucide-book-open', roleSegment: 'courses' }
+  { label: 'dashboard.nav.courses', icon: 'i-lucide-book-open', roleSegment: 'courses' },
+  { label: 'dashboard.nav.packages', icon: 'i-lucide-package', roleSegment: 'packages' }
 ]
 
 /** `/student/courses`, `/instructor/courses`, … depending on who's signed in. */

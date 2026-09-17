@@ -11,6 +11,11 @@
     "view_details": "View details",
     "about_package": "About this package",
     "package_content": "Package content",
-    "no_packages": "No packages available right now"
+    "no_packages": "No packages available right now",
+    "new_packages": "New packages",
+    "registered_packages": "Registered packages",
+    "subscribed": "Subscribed",
+    "load_more": "Load more",
+    "no_courses": "This package has no courses"
   }
 }

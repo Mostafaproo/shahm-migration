@@ -54,3 +54,63 @@ export function toCoursePackageDetail(raw: RawCoursePackageDetail): CoursePackag
     courses: (raw.courses?.data ?? []).map(toCourse)
   }
 }
+
+// --- Signed-in package view — `GET student/packages` / `student/packages/{id}`.
+//
+// ⚠️ UNVERIFIED CONTRACT — auth-only endpoints, so these extra fields come from
+// the legacy `pages/course-packages/_id.vue` and `components/PackageCard.vue`.
+export interface PackageAction {
+  key: string
+  label: string
+  endpointUrl: string
+}
+
+export interface StudentCoursePackage extends CoursePackage {
+  isSubscribed: boolean
+  /** Backend-driven permissions, e.g. `view_package`, `subscribe_package`. */
+  actions: PackageAction[]
+}
+
+export interface StudentCoursePackageDetail extends StudentCoursePackage {
+  courses: Course[]
+}
+
+interface RawPackageAction {
+  key?: string
+  label?: string
+  endpoint_url?: string
+}
+
+export interface RawStudentCoursePackage extends RawCoursePackage {
+  is_subscribe?: boolean
+  actions?: { data?: RawPackageAction[] }
+}
+
+export interface RawStudentCoursePackageDetail extends RawStudentCoursePackage {
+  courses?: { data?: RawCourse[] }
+}
+
+function toPackageActions(raw?: { data?: RawPackageAction[] }): PackageAction[] {
+  return (raw?.data ?? []).map(a => ({
+    key: a.key ?? '',
+    label: a.label ?? '',
+    endpointUrl: a.endpoint_url ?? ''
+  }))
+}
+
+export function toStudentCoursePackage(raw: RawStudentCoursePackage): StudentCoursePackage {
+  return {
+    ...toCoursePackage(raw),
+    isSubscribed: Boolean(raw.is_subscribe),
+    actions: toPackageActions(raw.actions)
+  }
+}
+
+export function toStudentCoursePackageDetail(
+  raw: RawStudentCoursePackageDetail
+): StudentCoursePackageDetail {
+  return {
+    ...toStudentCoursePackage(raw),
+    courses: (raw.courses?.data ?? []).map(toCourse)
+  }
+}

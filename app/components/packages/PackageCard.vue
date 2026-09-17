@@ -1,14 +1,19 @@
 <script setup lang="ts">
 import type { CoursePackage } from '~/types/package'
 
-defineProps<{ package: CoursePackage }>()
+const props = withDefaults(defineProps<{
+  package: CoursePackage
+  basePath?: string
+}>(), { basePath: '/packages' })
 
 const localePath = useLocalePath()
+
+const detailLink = computed(() => localePath(`${props.basePath}/${props.package.id}`))
 </script>
 
 <template>
   <NuxtLink
-    :to="localePath(`/packages/${package.id}`)"
+    :to="detailLink"
     class="group flex flex-col overflow-hidden rounded-xl border border-default bg-default shadow-sm transition hover:shadow-md"
   >
     <img

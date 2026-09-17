@@ -2,7 +2,8 @@
   "dashboard": {
     "nav": {
       "courses": "Courses",
-      "notifications": "Notifications"
+      "notifications": "Notifications",
+      "packages": "Course packages"
     },
     "logout": "Sign out",
     "open_sidebar": "Open sidebar",

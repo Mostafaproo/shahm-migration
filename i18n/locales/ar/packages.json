@@ -11,6 +11,11 @@
     "view_details": "عرض التفاصيل",
     "about_package": "عن الحزمة",
     "package_content": "محتوى الحزمة",
-    "no_packages": "لا توجد حزم متاحة حالياً"
+    "no_packages": "لا توجد حزم متاحة حالياً",
+    "new_packages": "حزم جديدة",
+    "registered_packages": "حزم مسجل بها",
+    "subscribed": "مشترك",
+    "load_more": "عرض المزيد",
+    "no_courses": "لا توجد دورات في هذه الحزمة"
   }
 }
