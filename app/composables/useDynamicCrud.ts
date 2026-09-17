@@ -296,6 +296,7 @@ export function useDynamicCrud<T extends { id: string | number }>() {
     pagination, defaultActions, rawMeta,
     page, perPage, sortBy, sortOrder, search, filters,
     total, totalPages, hasRows,
+    listAction, listOptions,
     fetchList, refresh, setPage, setPerPage, setSort, setSearch, setFilters,
     initFromUrlQuery,
     fetchOne, executeMutation, syncLocalItem

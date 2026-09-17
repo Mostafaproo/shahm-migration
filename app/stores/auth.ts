@@ -146,6 +146,81 @@ export const useAuthStore = defineStore('auth', {
       }
     },
 
+    // --- Password reset (3 steps, ported from the legacy `store/auth_`):
+
+    /** Step 1 — also reused as the OTP screen's "resend" action. */
+    async sendResetCode(identifier: string): Promise<string | null> {
+      const http = useHttp()
+      const nuxtApp = useNuxtApp()
+      const locale = (unref((nuxtApp.$i18n as { locale?: unknown } | undefined)?.locale) as string | undefined) ?? 'ar'
+
+      const res = await http.post<{ meta?: { message?: string } }>(
+        `/${locale}/auth/reset-password/send/code`,
+        { type: 'user', id: 'null', payload: { identifier } },
+        { query: { abilities_user: true } }
+      )
+      return res?.meta?.message ?? null
+    },
+
+    /**
+     * Step 2 — returns the reset token that step 3 needs.
+     * The backend names the identifier field `mobile` even when it holds an
+     * email; the legacy passes it through unchanged, so this does too.
+     */
+    async confirmResetOtp(payload: { otp: string, identifier: string }): Promise<{
+      token: string | null
+      message: string | null
+    }> {
+      const http = useHttp()
+      const nuxtApp = useNuxtApp()
+      const locale = (unref((nuxtApp.$i18n as { locale?: unknown } | undefined)?.locale) as string | undefined) ?? 'ar'
+
+      const res = await http.post<{
+        data?: unknown
+        meta?: { message?: string, token?: string }
+      }>(
+        `/${locale}/auth/reset-password/confirm/code`,
+        { type: 'user', id: 'null', payload: { otp: payload.otp, mobile: payload.identifier } },
+        { query: { abilities_user: true } }
+      )
+
+      // Legacy reads the token from three different places because the shape
+      // has moved around; keep the same tolerance.
+      const doc = res?.data as { data?: unknown, token?: string } | undefined
+      const rows = Array.isArray(doc) ? doc : doc?.data
+      const first = (Array.isArray(rows) ? rows[0] : undefined) as { token?: string } | undefined
+
+      return {
+        token: first?.token ?? doc?.token ?? res?.meta?.token ?? null,
+        message: res?.meta?.message ?? null
+      }
+    },
+
+    /** Step 3 — the token comes from `confirmResetOtp`. */
+    async resetPassword(payload: {
+      token: string
+      password: string
+      password_confirmation: string
+    }): Promise<string | null> {
+      const http = useHttp()
+      const nuxtApp = useNuxtApp()
+      const locale = (unref((nuxtApp.$i18n as { locale?: unknown } | undefined)?.locale) as string | undefined) ?? 'ar'
+
+      const res = await http.post<{ meta?: { message?: string } }>(
+        `/${locale}/auth/reset-password/${payload.token}`,
+        {
+          type: 'user',
+          id: 'null',
+          payload: {
+            password: payload.password,
+            password_confirmation: payload.password_confirmation
+          }
+        },
+        { query: { abilities_user: true } }
+      )
+      return res?.meta?.message ?? null
+    },
+
     async logout() {
       this.clear()
       const localePath = useLocalePath()

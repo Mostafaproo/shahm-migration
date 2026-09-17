@@ -72,7 +72,6 @@ const placeholder = computed(() =>
   store.isEnded ? t('discussion.course_ended') : t('discussion.is_there_question')
 )
 
-
 const blockedReason = computed(() => {
   if (store.isEnded) return t('discussion.course_ended')
   if (!store.isUserActive) return t('discussion.not_active')
