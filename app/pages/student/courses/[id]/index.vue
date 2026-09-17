@@ -39,6 +39,8 @@ const instructorNames = computed(() =>
   course.value?.instructors.map(i => i.name).filter(Boolean).join(' - ') ?? ''
 )
 
+const rateOpen = ref(false)
+
 // --- Recordings modal
 const recordingsOpen = ref(false)
 const activeSession = ref<CourseSessionItem | null>(null)
@@ -93,6 +95,7 @@ onMounted(() => store.fetchCourse(String(route.params.id)))
         color="primary"
         variant="soft"
         icon="i-lucide-star"
+        @click="rateOpen = true"
       >
         {{ t('courses.leave_rate') }}
       </UButton>
@@ -324,6 +327,11 @@ onMounted(() => store.fetchCourse(String(route.params.id)))
     <CoursesRecordedSessionsModal
       v-model="recordingsOpen"
       :session="activeSession"
+    />
+
+    <CoursesCourseRateModal
+      v-model="rateOpen"
+      :course-id="String(route.params.id)"
     />
   </div>
 </template>

@@ -16,6 +16,7 @@ export const useStudentCourseDetailStore = defineStore('studentCourseDetail', ()
 
   const sessionFiles = ref<SessionFile[]>([])
   const isLoadingFiles = ref(false)
+  const isRating = ref(false)
 
   function locale(): string {
     return (unref((nuxtApp.$i18n as { locale?: unknown } | undefined)?.locale) as string | undefined) ?? 'ar'
@@ -65,13 +66,39 @@ export const useStudentCourseDetailStore = defineStore('studentCourseDetail', ()
     }
   }
 
+  /**
+   * Legacy `rateCourse` — `POST student/courses/rate/{courseId}`.
+   * On success it re-reads the course, which is enough here: unlike the legacy
+   * (which also called `getCourseRatings`), this endpoint already embeds the
+   * rating summary and the review list, so one refetch refreshes both.
+   */
+  async function rateCourse(courseId: string, payload: { rating: number, comment: string }): Promise<boolean> {
+    isRating.value = true
+    try {
+      const res = await http.post<{ meta?: { message?: string } }>(
+        `${locale()}/student/courses/rate/${courseId}`,
+        { type: 'user', id: 'null', payload: { rating: payload.rating, comment: payload.comment || null } }
+      )
+      if (res?.meta?.message) nuxtApp.$appToast.success(res.meta.message)
+      await fetchCourse(courseId)
+      return true
+    } catch {
+      // The http client already surfaced the backend's message.
+      return false
+    } finally {
+      isRating.value = false
+    }
+  }
+
   return {
     course,
     isLoading,
+    isRating,
     sessionFiles,
     isLoadingFiles,
     fetchCourse,
     fetchSessionFiles,
-    saveProgress
+    saveProgress,
+    rateCourse
   }
 })

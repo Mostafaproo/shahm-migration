@@ -121,12 +121,19 @@ export function toStudentCourseDetail(raw: RawStudentCourseDetail): StudentCours
   }
 }
 
-
+/**
+ * Ported from the legacy `canShowRecordedButton`: non-live sessions always
+ * expose recordings, live ones only once they've finished.
+ */
 export function canShowRecordings(session: CourseSessionItem): boolean {
   if (session.sessionType !== 'live_session') return true
   if (!session.date || !session.endTime) return false
   return new Date(`${session.date} ${session.endTime}`).getTime() < Date.now()
 }
 
+// --- Session files — `GET student/courses/list-session-media/{sessionId}`.
+// Same resource as the course file manager, so the shape lives in one place
+// (`types/media.ts`); these aliases keep the recordings modal reading in its
+// own vocabulary.
 export type { MediaFile as SessionFile, RawMediaFile as RawSessionFile } from './media'
 export { toMediaFile as toSessionFile } from './media'
