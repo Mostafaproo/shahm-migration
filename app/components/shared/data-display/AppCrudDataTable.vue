@@ -122,14 +122,14 @@ function runDefaultAction({ config, action }: { config: DefaultActionConfig, act
       </div>
     </div>
 
-    <div class="overflow-x-auto rounded-lg border border-default">
+    <div class="overflow-x-auto rounded-xl border border-default bg-default">
       <table class="w-full text-sm">
         <thead>
-          <tr class="border-b border-default bg-elevated/50">
+          <tr class="border-b border-default bg-elevated">
             <th
               v-for="col in props.columns"
               :key="col.key"
-              class="px-3 py-2 text-start font-medium"
+              class="p-4 text-start font-semibold text-default"
               :class="[col.class, col.sortable && 'cursor-pointer select-none']"
               @click="col.sortable && toggleSort(col.key)"
             >
@@ -142,7 +142,7 @@ function runDefaultAction({ config, action }: { config: DefaultActionConfig, act
                 />
               </span>
             </th>
-            <th class="px-3 py-2 text-end font-medium">
+            <th class="p-4 text-end font-semibold text-default">
               {{ ' ' }}
             </th>
           </tr>

@@ -78,67 +78,44 @@ watch(
         <span>{{ t('quizzes.entries') }}</span>
       </div>
 
-      <div class="overflow-x-auto rounded-xl border border-default bg-default">
-        <table class="w-full text-sm">
-          <thead class="border-b border-default text-muted">
-            <tr>
-              <th class="p-4 text-start font-medium">
-                {{ titleLabel }}
-              </th>
-              <th class="p-4 text-start font-medium">
-                {{ t('quizzes.start_date') }}
-              </th>
-              <th class="p-4 text-start font-medium">
-                {{ t('quizzes.end_date') }}
-              </th>
-              <th class="p-4 text-start font-medium">
-                {{ t('quizzes.status') }}
-              </th>
-              <th class="p-4 text-start font-medium">
-                {{ t('quizzes.actions') }}
-              </th>
-            </tr>
-          </thead>
-          <tbody class="divide-y divide-default">
-            <tr
-              v-for="{ quiz, action } in rows"
-              :key="quiz.id"
+      <SharedDataDisplayAppTable :headings="[titleLabel, t('quizzes.start_date'), t('quizzes.end_date'), t('quizzes.status'), t('quizzes.actions')]">
+        <tr
+          v-for="{ quiz, action } in rows"
+          :key="quiz.id"
+        >
+          <td class="p-4 font-medium">
+            {{ quiz.title }}
+          </td>
+          <td class="p-4 text-muted">
+            {{ quiz.startAt || '—' }}
+          </td>
+          <td class="p-4 text-muted">
+            {{ quiz.endAt || '—' }}
+          </td>
+          <td class="p-4">
+            <SharedDataDisplayAppStatusBadge
+              v-if="quiz.status"
+              :status="quiz.status"
+            />
+            <span v-else>—</span>
+          </td>
+          <td class="p-4">
+            <UButton
+              v-if="action"
+              size="xs"
+              variant="soft"
+              :loading="store.startingId === quiz.id"
+              @click="onStart(quiz)"
             >
-              <td class="p-4 font-medium">
-                {{ quiz.title }}
-              </td>
-              <td class="p-4 text-muted">
-                {{ quiz.startAt || '—' }}
-              </td>
-              <td class="p-4 text-muted">
-                {{ quiz.endAt || '—' }}
-              </td>
-              <td class="p-4">
-                <SharedDataDisplayAppStatusBadge
-                  v-if="quiz.status"
-                  :status="quiz.status"
-                />
-                <span v-else>—</span>
-              </td>
-              <td class="p-4">
-                <UButton
-                  v-if="action"
-                  size="xs"
-                  variant="soft"
-                  :loading="store.startingId === quiz.id"
-                  @click="onStart(quiz)"
-                >
-                  {{ action.label }}
-                </UButton>
-                <span
-                  v-else
-                  class="text-muted"
-                >—</span>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+              {{ action.label }}
+            </UButton>
+            <span
+              v-else
+              class="text-muted"
+            >—</span>
+          </td>
+        </tr>
+      </SharedDataDisplayAppTable>
 
       <SharedDataDisplayAppPagination
         :page="store.page"

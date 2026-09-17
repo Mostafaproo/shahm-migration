@@ -5,6 +5,7 @@ import dashboard from './en/dashboard.json'
 import discussion from './en/discussion.json'
 import files from './en/files.json'
 import home from './en/home.json'
+import invitations from './en/invitations.json'
 import notifications from './en/notifications.json'
 import packages from './en/packages.json'
 import questions from './en/questions.json'
@@ -23,6 +24,7 @@ export default defineI18nLocale(() =>
     discussion,
     files,
     home,
+    invitations,
     notifications,
     packages,
     questions,

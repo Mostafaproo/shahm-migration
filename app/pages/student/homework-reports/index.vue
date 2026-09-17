@@ -62,71 +62,54 @@ onMounted(() => store.fetchList(1))
     </div>
 
     <template v-else-if="store.items.length">
-      <div class="overflow-x-auto rounded-xl border border-default bg-default">
-        <table class="w-full text-sm">
-          <thead class="border-b border-default text-muted">
-            <tr>
-              <th class="p-4 text-start font-medium">
-                {{ t('reports.title') }}
-              </th>
-              <th class="p-4 text-start font-medium">
-                {{ t('reports.assessment_type') }}
-              </th>
-              <th class="p-4 text-start font-medium">
-                {{ t('reports.start_date') }}
-              </th>
-              <th class="p-4 text-start font-medium">
-                {{ t('reports.end_date') }}
-              </th>
-              <th class="p-4 text-start font-medium">
-                {{ t('reports.grade') }}
-              </th>
-              <th class="p-4 text-start font-medium">
-                {{ t('reports.actions') }}
-              </th>
-            </tr>
-          </thead>
-          <tbody class="divide-y divide-default">
-            <tr
-              v-for="row in store.items"
-              :key="row.id"
+      <SharedDataDisplayAppTable
+        :headings="[
+          t('reports.title'),
+          t('reports.assessment_type'),
+          t('reports.start_date'),
+          t('reports.end_date'),
+          t('reports.grade'),
+          t('reports.actions')
+        ]"
+      >
+        <tr
+          v-for="row in store.items"
+          :key="row.id"
+        >
+          <td class="p-4 font-medium">
+            {{ row.title }}
+          </td>
+          <td class="p-4 text-muted">
+            {{ typeLabel(row.assessmentType) || '—' }}
+          </td>
+          <td class="p-4 text-muted">
+            {{ row.startAt || '—' }}
+          </td>
+          <td class="p-4 text-muted">
+            {{ row.endAt || '—' }}
+          </td>
+          <td class="p-4">
+            {{ row.score || '—' }}
+          </td>
+          <td class="p-4">
+            <UButton
+              v-if="row.hasAnswers"
+              size="xs"
+              variant="soft"
+              :to="localePath({
+                path: `/student/homework-reports/${row.id}`,
+                query: { homework_name: row.title }
+              })"
             >
-              <td class="p-4 font-medium">
-                {{ row.title }}
-              </td>
-              <td class="p-4 text-muted">
-                {{ typeLabel(row.assessmentType) || '—' }}
-              </td>
-              <td class="p-4 text-muted">
-                {{ row.startAt || '—' }}
-              </td>
-              <td class="p-4 text-muted">
-                {{ row.endAt || '—' }}
-              </td>
-              <td class="p-4">
-                {{ row.score || '—' }}
-              </td>
-              <td class="p-4">
-                <UButton
-                  v-if="row.hasAnswers"
-                  size="xs"
-                  variant="soft"
-                  :to="localePath({
-                    path: `/student/homework-reports/${row.id}`,
-                    query: { homework_name: row.title }
-                  })"
-                >
-                  {{ t('reports.view_answers') }}
-                </UButton>
-                <span
-                  v-else
-                  class="text-muted"
-                >{{ t('reports.not_attended') }}</span>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+              {{ t('reports.view_answers') }}
+            </UButton>
+            <span
+              v-else
+              class="text-muted"
+            >{{ t('reports.not_attended') }}</span>
+          </td>
+        </tr>
+      </SharedDataDisplayAppTable>
 
       <SharedDataDisplayAppPagination
         :page="store.page"

@@ -50,58 +50,43 @@ watch(
     </div>
 
     <template v-else-if="store.items.length">
-      <div class="overflow-x-auto rounded-xl border border-default bg-default">
-        <table class="w-full text-sm">
-          <thead class="border-b border-default text-muted">
-            <tr>
-              <th class="p-4 text-start font-medium">
-                {{ t('files.file_name') }}
-              </th>
-              <th class="p-4 text-start font-medium">
-                {{ t('files.file_date') }}
-              </th>
-              <th class="p-4 text-start font-medium" />
-            </tr>
-          </thead>
-          <tbody class="divide-y divide-default">
-            <tr
-              v-for="file in store.items"
-              :key="file.id"
+      <SharedDataDisplayAppTable :headings="[t('files.file_name'), t('files.file_date'), '']">
+        <tr
+          v-for="file in store.items"
+          :key="file.id"
+        >
+          <td class="p-4">
+            <div class="flex items-center gap-2">
+              <span
+                v-if="file.extension"
+                class="shrink-0 rounded bg-elevated px-2 py-1 text-xs font-semibold text-muted"
+              >
+                {{ file.extension }}
+              </span>
+              <span
+                class="truncate"
+                :title="file.fileName"
+              >{{ file.fileName }}</span>
+            </div>
+          </td>
+          <td class="p-4 text-muted">
+            {{ file.createdAt || '—' }}
+          </td>
+          <td class="p-4 text-end">
+            <UButton
+              v-if="file.url"
+              :to="file.url"
+              target="_blank"
+              external
+              size="xs"
+              variant="ghost"
+              icon="i-lucide-download"
             >
-              <td class="p-4">
-                <div class="flex items-center gap-2">
-                  <span
-                    v-if="file.extension"
-                    class="shrink-0 rounded bg-elevated px-2 py-1 text-xs font-semibold text-muted"
-                  >
-                    {{ file.extension }}
-                  </span>
-                  <span
-                    class="truncate"
-                    :title="file.fileName"
-                  >{{ file.fileName }}</span>
-                </div>
-              </td>
-              <td class="p-4 text-muted">
-                {{ file.createdAt || '—' }}
-              </td>
-              <td class="p-4 text-end">
-                <UButton
-                  v-if="file.url"
-                  :to="file.url"
-                  target="_blank"
-                  external
-                  size="xs"
-                  variant="ghost"
-                  icon="i-lucide-download"
-                >
-                  {{ t('files.download') }}
-                </UButton>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+              {{ t('files.download') }}
+            </UButton>
+          </td>
+        </tr>
+      </SharedDataDisplayAppTable>
 
       <div
         v-if="store.hasMore"

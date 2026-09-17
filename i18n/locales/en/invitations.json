@@ -1,0 +1,27 @@
+{
+  "invitations": {
+    "page_title": "Parents",
+    "tabs": {
+      "parents": "Parents",
+      "sent": "Sent invitations",
+      "received": "Received invitations",
+      "add": "Add parent"
+    },
+    "no_parents": "No parents yet",
+    "no_sent": "No sent invitations",
+    "no_received": "No received invitations",
+    "remove": "Remove",
+    "resend": "Resend",
+    "cancel": "Delete",
+    "accept": "Accept",
+    "refuse": "Refuse",
+    "send": "Send",
+    "click_to_add": "Click here to add a parent",
+    "parent_email": "Parent email",
+    "confirm_title": "Confirm",
+    "confirm": "Confirm",
+    "confirm_remove_parent": "Are you sure you want to remove this parent?",
+    "confirm_cancel": "Are you sure you want to delete this invitation?",
+    "confirm_refuse": "Are you sure you want to refuse this invitation?"
+  }
+}

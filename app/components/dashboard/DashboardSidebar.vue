@@ -1,22 +1,35 @@
 <script setup lang="ts">
-// Dashboard sidebar — tenant logo, role-aware nav, logout pinned to the
-// bottom. NAV_ITEMS carries one entry for now (courses); each `to` is a
-// role-relative path so the same sidebar serves students and instructors
-// without branching per item.
 import { resolveRolePath } from '~/core/auth'
 
 const tenant = useTenant()
 const auth = useAuthStore()
 const localePath = useLocalePath()
 
-const NAV_ITEMS = [
+interface NavItem {
+  label: string
+  icon: string
+  to?: string
+  roleSegment?: string
+  feature?: string
+}
+
+const NAV_ITEMS: NavItem[] = [
   { label: 'dashboard.nav.notifications', icon: 'i-lucide-bell', to: '/notifications' },
   { label: 'dashboard.nav.courses', icon: 'i-lucide-book-open', roleSegment: 'courses' },
   { label: 'dashboard.nav.packages', icon: 'i-lucide-package', roleSegment: 'packages' },
-  { label: 'dashboard.nav.reports', icon: 'i-lucide-clipboard-list', roleSegment: 'homework-reports' }
+  { label: 'dashboard.nav.reports', icon: 'i-lucide-clipboard-list', roleSegment: 'homework-reports' },
+  {
+    label: 'dashboard.nav.invitations',
+    icon: 'i-lucide-users',
+    roleSegment: 'invitations',
+    feature: 'invitations'
+  }
 ]
 
-/** `/student/courses`, `/instructor/courses`, … depending on who's signed in. */
+const visibleItems = computed(() =>
+  NAV_ITEMS.filter(item => !item.feature || tenant.features[item.feature])
+)
+
 function roleLink(segment: string): string {
   const base = resolveRolePath(auth.userType, {
     student: '/student',
@@ -59,7 +72,7 @@ function itemLink(item: { to?: string, roleSegment?: string }): string {
 
     <nav class="flex-1 space-y-1 overflow-y-auto px-3 py-4">
       <NuxtLink
-        v-for="item in NAV_ITEMS"
+        v-for="item in visibleItems"
         :key="item.label"
         :to="itemLink(item)"
         class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-muted transition hover:bg-elevated hover:text-default"
