@@ -98,7 +98,6 @@ onMounted(() => store.fetchCourse(String(route.params.id)))
       </UButton>
     </div>
 
-    <!-- نظرة عامة على الدورة -->
     <div
       v-if="tab === 'overview'"
       class="grid grid-cols-1 gap-8 lg:grid-cols-3"
@@ -294,10 +293,18 @@ onMounted(() => store.fetchCourse(String(route.params.id)))
       </div>
     </div>
 
-    <!-- غرفة المناقشة -->
     <CoursesDiscussionRoom
       v-else-if="tab === 'discussion'"
       :course-id="String(route.params.id)"
+    />
+
+    <CoursesCourseQuizTable
+      v-else-if="tab === 'homework'"
+      :course-id="String(route.params.id)"
+      quiz-type="homework"
+      :redirect-tab="2"
+      :title-label="t('quizzes.homework_title')"
+      :empty-label="t('quizzes.no_homework')"
     />
 
     <!-- Remaining tabs land one at a time; see the legacy page for each. -->

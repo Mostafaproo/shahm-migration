@@ -41,8 +41,7 @@ export const useNotificationsStore = defineStore('notifications', () => {
 
   async function load(page: number): Promise<AppNotification[]> {
     const body = await http.get<RawNotificationsBody>(`${locale()}/notifications`, {
-      query: { page },
-      deserialize: false
+      query: { page }
     })
     const pagination = body?.meta?.[0]?.pagination
     currentPage.value = pagination?.current_page ?? page
@@ -77,9 +76,7 @@ export const useNotificationsStore = defineStore('notifications', () => {
 
   async function fetchUnreadCount() {
     try {
-      const body = await http.get<RawUnreadCountBody>(`${locale()}/notifications/unread-count`, {
-        deserialize: false
-      })
+      const body = await http.get<RawUnreadCountBody>(`${locale()}/notifications/unread-count`)
       unreadCount.value = body?.data?.unread_count ?? 0
     } catch {
       unreadCount.value = 0
@@ -89,6 +86,8 @@ export const useNotificationsStore = defineStore('notifications', () => {
   /** Legacy only calls the endpoint for rows that aren't read yet. */
   async function markAsRead(notification: AppNotification) {
     if (notification.isRead || !notification.id) return
+    // Response is ignored, so skip deserializing it — nothing to stitch, and
+    // this way an unexpected body can't throw on the way out.
     await http.get(`${locale()}/notifications/mark-read/${notification.id}`, { deserialize: false })
 
     const row = items.value.find(n => n.id === notification.id)

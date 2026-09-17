@@ -6,6 +6,8 @@ import discussion from './ar/discussion.json'
 import home from './ar/home.json'
 import notifications from './ar/notifications.json'
 import packages from './ar/packages.json'
+import questions from './ar/questions.json'
+import quizzes from './ar/quizzes.json'
 import user from './ar/user.json'
 import validation from './ar/validation.json'
 
@@ -20,6 +22,8 @@ export default defineI18nLocale(() =>
     home,
     notifications,
     packages,
+    questions,
+    quizzes,
     user,
     validation
   )

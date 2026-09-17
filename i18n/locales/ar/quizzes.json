@@ -1,0 +1,14 @@
+{
+  "quizzes": {
+    "homework_title": "عنوان التقييم",
+    "exam_title": "عنوان الاختبار",
+    "start_date": "تاريخ البدء",
+    "end_date": "تاريخ الانتهاء",
+    "status": "الحالة",
+    "actions": "الاجراءات",
+    "show": "عرض",
+    "entries": "الأجمالى",
+    "no_homework": "لا يوجد واجبات",
+    "no_exams": "لا يوجد اختبارات"
+  }
+}

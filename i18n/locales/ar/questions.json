@@ -1,0 +1,23 @@
+{
+  "questions": {
+    "page_title": "حل الواجب",
+    "back_to_course": "رجوع للدورة",
+    "counter": "السؤال {current} من {total}",
+    "previous": "السؤال السابق",
+    "next": "السؤال التالي",
+    "record_answer": "تسجيل الاجابه",
+    "finish": "انهاء",
+    "end_test_title": "إنهاء الاختبار",
+    "sure_finish": "هل أنت متأكد من إنهاء الاختبار؟ لن تتمكن من التعديل بعد ذلك.",
+    "yes": "نعم",
+    "no": "لا",
+    "load_failed": "تعذر تحميل السؤال، حاول مرة أخرى",
+    "true": "صح",
+    "false": "خطأ",
+    "pick_correction": "اختر التصحيح",
+    "your_answer": "اكتب إجابتك",
+    "reset": "إعادة تعيين",
+    "all_placed": "تم استخدام كل الخيارات",
+    "unsupported_type": "نوع سؤال غير مدعوم حاليًا ({type})"
+  }
+}

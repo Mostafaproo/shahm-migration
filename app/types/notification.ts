@@ -1,14 +1,5 @@
 // app/types/notification.ts
 //
-// ⚠️ UNVERIFIED CONTRACT — `GET notifications` is auth-only (403 without a
-// bearer token) and there are no test credentials yet, so this shape is
-// transcribed from the legacy reader in
-// `shaham-go-fe/components/globals/navs/Header.vue`:
-//   body.data.notificationsData.data  → the rows
-//   body.meta[0].pagination           → { current_page, total_pages, … }
-//   body.data.unread_count            → GET notifications/unread-count
-// Note this endpoint is NOT JSON:API shaped, so the http client is called
-// with `deserialize: false` and the raw body is read directly.
 export interface AppNotification {
   id: string
   title: string
@@ -40,7 +31,7 @@ export interface NotificationsPagination {
   total_pages?: number
 }
 
-/** Raw body of `GET notifications?page=N` — read with `deserialize: false`. */
+/** `GET notifications?page=N`, as it looks AFTER JSON:API deserialization. */
 export interface RawNotificationsBody {
   data?: { notificationsData?: { data?: RawNotification[] } }
   meta?: { pagination?: NotificationsPagination }[]

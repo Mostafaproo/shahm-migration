@@ -1,0 +1,23 @@
+{
+  "questions": {
+    "page_title": "Answer homework",
+    "back_to_course": "Back to course",
+    "counter": "Question {current} of {total}",
+    "previous": "Previous question",
+    "next": "Next question",
+    "record_answer": "Record answer",
+    "finish": "Finish",
+    "end_test_title": "Finish the test",
+    "sure_finish": "Are you sure you want to finish? You won't be able to change your answers afterwards.",
+    "yes": "Yes",
+    "no": "No",
+    "load_failed": "Couldn't load the question, please try again",
+    "true": "True",
+    "false": "False",
+    "pick_correction": "Pick the correction",
+    "your_answer": "Write your answer",
+    "reset": "Reset",
+    "all_placed": "All options have been placed",
+    "unsupported_type": "This question type isn't supported yet ({type})"
+  }
+}

@@ -93,7 +93,7 @@ function closePlayer() {
         v-else
         class="space-y-4"
       >
-        <div class="flex w-fit gap-1 rounded-full bg-elevated p-1">
+        <div class="mx-auto flex w-fit gap-1 rounded-full bg-elevated p-1">
           <button
             v-for="item in TABS"
             :key="item.value"

@@ -1,0 +1,14 @@
+{
+  "quizzes": {
+    "homework_title": "Assessment title",
+    "exam_title": "Assignment title",
+    "start_date": "Start date",
+    "end_date": "End date",
+    "status": "Status",
+    "actions": "Actions",
+    "show": "Show",
+    "entries": "Entries",
+    "no_homework": "No homework available",
+    "no_exams": "No assignments available"
+  }
+}
