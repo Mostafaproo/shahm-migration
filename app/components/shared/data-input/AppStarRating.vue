@@ -21,7 +21,6 @@ const stars = computed(() => Array.from({ length: props.max }, (_, i) => i + 1))
   <div
     class="flex items-center gap-1"
     role="radiogroup"
-    dir="ltr"
     @mouseleave="hovered = 0"
   >
     <label
