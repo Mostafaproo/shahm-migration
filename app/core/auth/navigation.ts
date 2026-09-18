@@ -46,7 +46,9 @@ const STUDENT: DashboardNavItem[] = [
 
 // Mirrors the legacy instructor sidebar. Entries are added as each module is
 // migrated — an unmigrated one would only be a dead link.
-const INSTRUCTOR: DashboardNavItem[] = []
+const INSTRUCTOR: DashboardNavItem[] = [
+  { label: 'dashboard.nav.courses', icon: 'i-lucide-book-open', to: '/instructor/courses' }
+]
 
 // Likewise for the parent domain, which has not been migrated yet.
 const PARENT: DashboardNavItem[] = []

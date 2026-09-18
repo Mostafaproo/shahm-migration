@@ -1,0 +1,19 @@
+{
+  "instructorCourses": {
+    "page_title": "Courses",
+    "my_courses": "My courses",
+    "pick_a_course": "Pick a course to see its content",
+    "course_sessions": "Course sessions",
+    "no_courses": "No courses yet",
+    "no_sessions": "No sessions yet",
+    "sessions": "sessions",
+    "load_more": "Load more",
+    "manage_students": "Deactivate a student",
+    "no_students": "No students in this course",
+    "tabs": {
+      "overview": "Overview",
+      "discussion": "Discuss room",
+      "files": "File manager"
+    }
+  }
+}

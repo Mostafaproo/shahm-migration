@@ -1,0 +1,19 @@
+{
+  "instructorCourses": {
+    "page_title": "الدورات",
+    "my_courses": "دوراتي",
+    "pick_a_course": "اختر دورة لعرض محتواها",
+    "course_sessions": "حصص الدورة",
+    "no_courses": "لا توجد دورات",
+    "no_sessions": "لا توجد حصص",
+    "sessions": "حصة",
+    "load_more": "عرض المزيد",
+    "manage_students": "تعطيل طالب",
+    "no_students": "لا يوجد طلاب في هذه الدورة",
+    "tabs": {
+      "overview": "نظرة عامة",
+      "discussion": "غرفة المناقشة",
+      "files": "ادارة الملفات"
+    }
+  }
+}

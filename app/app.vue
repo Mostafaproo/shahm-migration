@@ -18,6 +18,11 @@ useHead(() => ({
     :locale="uiLocale"
     :toaster="{ position: 'bottom-center' }"
   >
+    <NuxtLoadingIndicator
+      color="var(--ui-primary)"
+      :height="3"
+    />
+
     <NuxtLayout>
       <NuxtPage />
     </NuxtLayout>

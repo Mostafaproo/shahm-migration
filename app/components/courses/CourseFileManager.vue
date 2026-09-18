@@ -1,10 +1,21 @@
 <script setup lang="ts">
 import { useCourseFilesStore } from '~/stores/courseFiles'
+import { detachAction } from '~/types/media'
+import type { FileManagerVariant } from '~/stores/courseFiles'
 
-const props = defineProps<{ courseId: string }>()
+const props = withDefaults(
+  defineProps<{ courseId: string, variant?: FileManagerVariant }>(),
+  { variant: 'student' }
+)
 
 const store = useCourseFilesStore()
 const { t } = useI18n()
+
+const isStudent = computed(() => props.variant === 'student')
+
+const headings = computed(() => isStudent.value
+  ? [t('files.file_name'), t('files.file_date'), '']
+  : [t('files.file_name'), t('files.file_date'), t('files.status'), ''])
 
 /** `null` is the "all types" entry the legacy gets from the select's clear button. */
 const filterItems = computed(() => [
@@ -13,10 +24,10 @@ const filterItems = computed(() => [
 ])
 
 watch(
-  () => props.courseId,
-  (id) => {
+  () => [props.courseId, props.variant] as const,
+  ([id, side]) => {
     store.reset()
-    store.fetchList(id)
+    store.fetchList(id, side)
   },
   { immediate: true }
 )
@@ -25,7 +36,7 @@ watch(
 <template>
   <div class="space-y-4">
     <div
-      v-if="store.filterOptions.length"
+      v-if="isStudent && store.filterOptions.length"
       class="flex justify-end"
     >
       <USelectMenu
@@ -50,7 +61,7 @@ watch(
     </div>
 
     <template v-else-if="store.items.length">
-      <SharedDataDisplayAppTable :headings="[t('files.file_name'), t('files.file_date'), '']">
+      <SharedDataDisplayAppTable :headings="headings">
         <tr
           v-for="file in store.items"
           :key="file.id"
@@ -72,9 +83,26 @@ watch(
           <td class="p-4 text-muted">
             {{ file.createdAt || '—' }}
           </td>
+          <!-- Instructor: toggle whether students can see the file -->
+          <td
+            v-if="!isStudent"
+            class="p-4"
+          >
+            <UButton
+              size="xs"
+              variant="ghost"
+              :color="file.active ? 'success' : 'neutral'"
+              :icon="file.active ? 'i-lucide-globe' : 'i-lucide-ban'"
+              :loading="store.isBusy(`status:${file.id}`)"
+              @click="store.toggleActive(file)"
+            >
+              {{ file.active ? t('files.activated') : t('files.deactivated') }}
+            </UButton>
+          </td>
+
           <td class="p-4 text-end">
             <UButton
-              v-if="file.url"
+              v-if="isStudent && file.url"
               :to="file.url"
               target="_blank"
               external
@@ -83,6 +111,20 @@ watch(
               icon="i-lucide-download"
             >
               {{ t('files.download') }}
+            </UButton>
+
+            <!-- Gated on the row carrying a `detach-media` action, exactly as
+                 the legacy's `hasPermission(row, 'detach-media')` does. -->
+            <UButton
+              v-if="detachAction(file)"
+              size="xs"
+              variant="ghost"
+              color="error"
+              icon="i-lucide-trash-2"
+              :loading="store.isBusy(`detach:${file.id}`)"
+              @click="store.detach(file)"
+            >
+              {{ t('files.delete') }}
             </UButton>
           </td>
         </tr>

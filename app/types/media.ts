@@ -1,3 +1,9 @@
+export interface MediaAction {
+  key: string
+  method: string
+  endpointUrl: string
+}
+
 export interface MediaFile {
   id: string
   fileName: string
@@ -5,6 +11,9 @@ export interface MediaFile {
   url: string
   /** Short label for the file-type chip, e.g. `PDF`. */
   extension: string
+  /** Instructor view only: whether students can see the file. */
+  active: boolean
+  actions: MediaAction[]
 }
 
 export interface RawMediaFile {
@@ -14,6 +23,8 @@ export interface RawMediaFile {
   url?: string
   extension?: string
   icon?: string
+  active?: boolean
+  actions?: { data?: { key?: string, method?: string, endpoint_url?: string }[] }
 }
 
 /** Mirrors the legacy `getFileTypeText`: prefer the icon hint, else the suffix. */
@@ -37,14 +48,22 @@ export function toMediaFile(raw: RawMediaFile): MediaFile {
     fileName,
     createdAt: raw.created_at ?? '',
     url: raw.url ?? '',
-    extension: (extension ?? '').toUpperCase()
+    extension: (extension ?? '').toUpperCase(),
+    active: Boolean(raw.active),
+    actions: (raw.actions?.data ?? []).map(a => ({
+      key: a.key ?? '',
+      method: (a.method ?? 'GET').toUpperCase(),
+      endpointUrl: a.endpoint_url ?? ''
+    }))
   }
 }
 
-/**
- * One entry of the file-type dropdown. The legacy digs these out of the list
- * response's `meta.filters`, picking the entry whose `name == 'extension'`.
- */
+
+export function detachAction(file: MediaFile): MediaAction | undefined {
+  return file.actions.find(a => a.key === 'detach-media')
+}
+
+
 export interface MediaFilterOption {
   key: string
   value: string

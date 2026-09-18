@@ -8,6 +8,7 @@ import dashboard from './ar/dashboard.json'
 import discussion from './ar/discussion.json'
 import files from './ar/files.json'
 import home from './ar/home.json'
+import instructorCourses from './ar/instructorCourses.json'
 import invitations from './ar/invitations.json'
 import notifications from './ar/notifications.json'
 import packages from './ar/packages.json'
@@ -32,6 +33,7 @@ export default defineI18nLocale(() =>
     discussion,
     files,
     home,
+    instructorCourses,
     invitations,
     notifications,
     packages,
