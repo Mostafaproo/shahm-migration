@@ -11,6 +11,7 @@
     "choose_type": "اختر نوع الملف",
     "all_types": "كل الأنواع",
     "load_more": "عرض المزيد",
-    "no_files": "لا يوجد ملفات"
+    "no_files": "لا يوجد ملفات",
+    "deleted_successfully": "تم الحذف بنجاح"
   }
 }

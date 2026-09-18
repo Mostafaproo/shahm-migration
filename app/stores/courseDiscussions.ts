@@ -207,16 +207,21 @@ export const useCourseDiscussionsStore = defineStore('courseDiscussions', () => 
     return done ?? false
   }
 
+  /** Legacy: `data.meta.message && this.$toast(...)` before dropping the row. */
   async function removeDiscussion(id: string, endpointUrl: string) {
     await withRowBusy(`discussion:${id}`, async () => {
-      await http.delete(endpointUrl)
+      const res = await http.delete(endpointUrl)
+      const message = serverMessage(res)
+      if (message) nuxtApp.$appToast.success(message)
       discussions.value = discussions.value.filter(d => d.id !== id)
     })
   }
 
   async function removeReply(discussionId: string, replyId: string, endpointUrl: string) {
     await withRowBusy(`reply:${replyId}`, async () => {
-      await http.delete(endpointUrl)
+      const res = await http.delete(endpointUrl)
+      const message = serverMessage(res)
+      if (message) nuxtApp.$appToast.success(message)
       const row = discussions.value.find(d => d.id === discussionId)
       if (row) row.replies = row.replies.filter(r => r.id !== replyId)
     })

@@ -65,6 +65,8 @@
     "your_answer_correct": "إجابتك صحيحة",
     "your_answer_wrong": "إجابتك خاطئة",
     "correct_option": "الإجابة الصحيحة",
-    "answer_explanation": "شرح الاجابة"
+    "answer_explanation": "شرح الاجابة",
+    "question_marked": "تم تمييز السؤال بنجاح",
+    "question_unmarked": "تم إلغاء تمييز السؤال"
   }
 }

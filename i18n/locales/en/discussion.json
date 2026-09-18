@@ -8,6 +8,8 @@
     "load_more": "Load more",
     "course_ended": "The course has ended",
     "not_active": "You are not active by your instructor",
-    "no_discussions": "No discussions yet"
+    "no_discussions": "No discussions yet",
+    "success_discuss": "Discussion Added.",
+    "success_comment": "Comment Added"
   }
 }

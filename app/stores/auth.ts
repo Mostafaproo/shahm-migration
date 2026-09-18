@@ -108,7 +108,7 @@ export const useAuthStore = defineStore('auth', {
       // See the comment in login() — useI18n() (Vue inject-based) throws
       // when called from here; read the locale off $i18n directly instead.
       const locale = (unref((nuxtApp.$i18n as { locale?: unknown } | undefined)?.locale) as string | undefined) ?? 'ar'
-      await http.post(
+      const res = await http.post(
         `/${locale}/auth/register`,
         {
           type: 'user',
@@ -123,6 +123,10 @@ export const useAuthStore = defineStore('auth', {
         },
         { query: { abilities_user: true } }
       )
+      // Legacy `this.$toast(res, ...)` — the sign-up confirmation the server
+      // sends, shown before the redirect to the OTP screen.
+      const message = serverMessage(res)
+      if (message) nuxtApp.$appToast.success(message)
       return true
     },
     async refreshUser(): Promise<void> {

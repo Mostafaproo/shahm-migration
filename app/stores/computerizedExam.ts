@@ -230,11 +230,15 @@ export const useComputerizedExamStore = defineStore('computerizedExam', () => {
     if (!examId.value || !examType.value) return false
     isBusy.value = true
     try {
-      await http.post(`${locale()}/${BASE}/end/${examId.value}`, {
+      // Legacy: `response?.meta?.messages && this.$toast(...)` — note the
+      // plural, which is why `serverMessage` reads that spelling too.
+      const res = await http.post(`${locale()}/${BASE}/end/${examId.value}`, {
         type: 'computerized_exam',
         id: 'null',
         payload: { exam_type: examType.value }
       })
+      const message = serverMessage(res)
+      if (message) nuxtApp.$appToast.success(message)
       clearStored()
       return true
     } catch {

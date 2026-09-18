@@ -58,9 +58,11 @@ async function finish() {
   if (await store.end()) {
     const id = store.examId
     store.resetAttempt()
+    // The result page reads `?id=`, not `?examId=` — sending the wrong key
+    // landed the student on an empty result after finishing.
     await navigateTo(localePath({
       path: '/student/computerized-test/result',
-      query: { examId: id }
+      query: { id }
     }))
   }
 }

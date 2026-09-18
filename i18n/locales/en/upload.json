@@ -18,6 +18,7 @@
     "enter_google_drive_link": "Enter Google Drive link",
     "enter_valid_link": "Please enter a valid link",
     "save": "Save",
-    "course_ended": "Course date is ended"
+    "course_ended": "Course date is ended",
+    "file_deleted": "Deleted successfully"
   }
 }

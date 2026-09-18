@@ -11,6 +11,7 @@
     "choose_type": "Choose file type",
     "all_types": "All types",
     "load_more": "Load more",
-    "no_files": "No files available"
+    "no_files": "No files available",
+    "deleted_successfully": "Deleted successfully"
   }
 }

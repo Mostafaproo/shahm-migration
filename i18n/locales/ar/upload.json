@@ -18,6 +18,7 @@
     "enter_google_drive_link": "ادخل رابط جوجل درايف",
     "enter_valid_link": "برجاء ادخال رابط صحيح",
     "save": "حفظ",
-    "course_ended": "أنتهي الوقت الخاص بهذه الدورة"
+    "course_ended": "أنتهي الوقت الخاص بهذه الدورة",
+    "file_deleted": "تم الحذف بنجاح"
   }
 }

@@ -18,6 +18,7 @@
     "your_answer": "Write your answer",
     "reset": "Reset",
     "all_placed": "All options have been placed",
-    "unsupported_type": "This question type isn't supported yet ({type})"
+    "unsupported_type": "This question type isn't supported yet ({type})",
+    "success_finish": "Exam finished Successfully"
   }
 }

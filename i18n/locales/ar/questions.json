@@ -18,6 +18,7 @@
     "your_answer": "اكتب إجابتك",
     "reset": "إعادة تعيين",
     "all_placed": "تم استخدام كل الخيارات",
-    "unsupported_type": "نوع سؤال غير مدعوم حاليًا ({type})"
+    "unsupported_type": "نوع سؤال غير مدعوم حاليًا ({type})",
+    "success_finish": "تم انهاء الاختبار بنجاح"
   }
 }

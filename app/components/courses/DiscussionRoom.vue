@@ -7,6 +7,7 @@ const props = defineProps<{ courseId: string }>()
 const store = useCourseDiscussionsStore()
 const auth = useAuthStore()
 const { t } = useI18n()
+const { $appToast: toast } = useNuxtApp()
 
 const rows = computed(() => store.discussions.map(discussion => ({
   discussion,
@@ -46,16 +47,20 @@ function closeEditor() {
   openEditor.value = null
 }
 
+// These two confirmations are i18n strings in the legacy, not server messages,
+// so they are toasted here where `t` lives rather than inside the store.
 async function submitQuestion() {
-  if (await store.ask(question.value)) question.value = ''
+  if (!await store.ask(question.value)) return
+  question.value = ''
+  toast.success(t('discussion.success_discuss'))
 }
 
 async function submitReply(discussion: Discussion) {
   const draft = replyDrafts.value[discussion.id] ?? ''
-  if (await store.reply(discussion.id, draft)) {
-    replyDrafts.value[discussion.id] = ''
-    closeEditor()
-  }
+  if (!await store.reply(discussion.id, draft)) return
+  replyDrafts.value[discussion.id] = ''
+  closeEditor()
+  toast.success(t('discussion.success_comment'))
 }
 
 async function submitDiscussionEdit(discussion: Discussion) {

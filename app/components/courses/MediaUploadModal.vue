@@ -24,7 +24,12 @@ async function attach(mediaId: string): Promise<boolean> {
   return true
 }
 
-const detach = (mediaId: string) => store.detachMedia(props.courseId, mediaId, props.sessionId)
+/** Legacy toasts `message.deleted_successfully` after removing an upload. */
+async function detach(mediaId: string): Promise<boolean> {
+  const ok = await store.detachMedia(props.courseId, mediaId, props.sessionId)
+  if (ok) toast.success(t('upload.file_deleted'))
+  return ok
+}
 
 /** The list behind the modal is stale the moment anything attaches. */
 function onUploaded() {

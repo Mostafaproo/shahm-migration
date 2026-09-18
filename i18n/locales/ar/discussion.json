@@ -8,6 +8,8 @@
     "load_more": "عرض المزيد",
     "course_ended": "انتهت الدورة",
     "not_active": "انت غير نشط عن طريق مدرسك",
-    "no_discussions": "لا توجد مناقشات بعد"
+    "no_discussions": "لا توجد مناقشات بعد",
+    "success_discuss": "تم اضافة المناقشة",
+    "success_comment": "تم اضافة كومنت"
   }
 }

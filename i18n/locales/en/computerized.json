@@ -65,6 +65,8 @@
     "your_answer_correct": "your answer is correct",
     "your_answer_wrong": "your answer is wrong",
     "correct_option": "correct answer",
-    "answer_explanation": "Answer explanation"
+    "answer_explanation": "Answer explanation",
+    "question_marked": "Question marked successfully",
+    "question_unmarked": "Question unmarked successfully"
   }
 }

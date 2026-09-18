@@ -112,13 +112,19 @@ export const useCourseFilesStore = defineStore('courseFiles', () => {
     })
   }
 
-  async function detach(file: MediaFile) {
+  /**
+   * Returns the server's confirmation (`''` when it sends none) so the caller
+   * can toast it, or null when the delete failed — the legacy shows a message
+   * here and the HTTP client only auto-toasts errors.
+   */
+  async function detach(file: MediaFile): Promise<string | null> {
     const action = detachAction(file)
-    if (!action) return
+    if (!action) return null
     const url = action.endpointUrl
       || `${locale()}/instructor/courses/detach-media/${currentCourseId.value}`
+    let message: string | null = null
     await withBusy(`detach:${file.id}`, async () => {
-      await http.request(url, {
+      const res = await http.request(url, {
         method: (action.method || 'DELETE') as 'DELETE',
         // `serializeReq` builds the JSON:API envelope from a flat
         // `{ type, id, payload }`, and it has no way to express the
@@ -138,8 +144,10 @@ export const useCourseFilesStore = defineStore('courseFiles', () => {
           }
         }
       })
+      message = serverMessage(res) ?? ''
       items.value = items.value.filter(f => f.id !== file.id)
     })
+    return message
   }
 
   async function attachMedia(

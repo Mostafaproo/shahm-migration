@@ -11,6 +11,7 @@ const route = useRoute()
 const store = useHomeworkAttemptStore()
 const localePath = useLocalePath()
 const { t } = useI18n()
+const { $appToast: toast } = useNuxtApp()
 
 const courseId = computed(() => String(route.params.id))
 const homeworkId = computed(() => String(route.params.homeworkID))
@@ -31,10 +32,12 @@ async function onSubmitAnswer() {
 }
 
 async function onFinish() {
-  if (await store.finish(homeworkId.value)) {
-    confirmFinish.value = false
-    await navigateTo(backLink.value)
-  }
+  if (!await store.finish(homeworkId.value)) return
+  confirmFinish.value = false
+  // Legacy `$toast($tc('student.success_finish'))` — an i18n string, not a
+  // server message, so it belongs here rather than in the store.
+  toast.success(t('questions.success_finish'))
+  await navigateTo(backLink.value)
 }
 
 onMounted(() => {

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useCourseFilesStore } from '~/stores/courseFiles'
 import { detachAction } from '~/types/media'
+import type { MediaFile } from '~/types/media'
 import type { FileManagerVariant } from '~/stores/courseFiles'
 
 const props = withDefaults(
@@ -10,6 +11,7 @@ const props = withDefaults(
 
 const store = useCourseFilesStore()
 const { t } = useI18n()
+const { $appToast: toast } = useNuxtApp()
 
 const isStudent = computed(() => props.variant === 'student')
 
@@ -24,6 +26,13 @@ const filterItems = computed(() => [
 ])
 
 const uploadOpen = ref(false)
+
+/** Legacy toasts `message.deleted_successfully` after a detach; prefer the
+ *  server's own wording when it sends one. */
+async function removeFile(file: MediaFile) {
+  const message = await store.detach(file)
+  if (message !== null) toast.success(message || t('files.deleted_successfully'))
+}
 
 watch(
   () => [props.courseId, props.variant] as const,
@@ -136,7 +145,7 @@ watch(
               color="error"
               icon="i-lucide-trash-2"
               :loading="store.isBusy(`detach:${file.id}`)"
-              @click="store.detach(file)"
+              @click="removeFile(file)"
             >
               {{ t('files.delete') }}
             </UButton>

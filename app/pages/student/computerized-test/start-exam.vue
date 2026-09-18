@@ -14,6 +14,7 @@ const store = useComputerizedExamStore()
 const localePath = useLocalePath()
 const auth = useAuthStore()
 const { t } = useI18n()
+const { $appToast: toast } = useNuxtApp()
 
 type Phase = 'intro' | 'pick-type' | 'questions'
 const phase = ref<Phase>('intro')
@@ -78,6 +79,17 @@ async function beginExam() {
 
 async function commitPick() {
   if (picked.value != null) await store.submitAnswer(picked.value)
+}
+
+/**
+ * The legacy confirms every mark/unmark — via its own in-page banner, but the
+ * intent is the same feedback. The wording depends on the state AFTER the
+ * toggle, and the store flips optimistically, so it is read once beforehand.
+ */
+async function toggleMark() {
+  const marking = !store.currentQuestion?.isMarked
+  await store.toggleMark()
+  toast.success(t(marking ? 'computerized.question_marked' : 'computerized.question_unmarked'))
 }
 
 async function next() {
@@ -456,7 +468,7 @@ onBeforeUnmount(stopTimer)
             :color="store.currentQuestion.isMarked ? 'warning' : 'neutral'"
             variant="soft"
             icon="i-lucide-flag"
-            @click="store.toggleMark()"
+            @click="toggleMark()"
           >
             {{ store.currentQuestion.isMarked ? t('computerized.unmark') : t('computerized.mark') }}
           </UButton>
