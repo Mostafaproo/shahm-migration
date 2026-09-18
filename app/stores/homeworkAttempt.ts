@@ -160,7 +160,8 @@ export const useHomeworkAttemptStore = defineStore('homeworkAttempt', () => {
         body,
         { serialize: false }
       )
-      if (res?.meta?.message) nuxtApp.$appToast.success(res.meta.message)
+      const message = serverMessage(res)
+      if (message) nuxtApp.$appToast.success(message)
 
       if (question.value?.id) rememberAnswered(homeworkId, question.value.id)
       return true

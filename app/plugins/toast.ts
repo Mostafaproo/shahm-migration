@@ -33,6 +33,16 @@ export default defineNuxtPlugin(() => {
         color: 'info',
         icon: 'i-lucide-info'
       })
+    },
+    /** Used for input the user can correct — the legacy's `variant: 'warning'`. */
+    warning(title: string, description?: string) {
+      toast.add({
+        ...globalConfig,
+        title,
+        description,
+        color: 'warning',
+        icon: 'i-lucide-alert-triangle'
+      })
     }
   }
 

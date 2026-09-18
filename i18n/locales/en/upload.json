@@ -1,0 +1,23 @@
+{
+  "upload": {
+    "upload_to_course": "Upload files to course",
+    "session_upload": "Upload files to session",
+    "drag_or_click": "Drag or click to upload",
+    "select_file": "Drag a file here or choose a file from your device",
+    "allowed_types": "It must be a file of type",
+    "max_size": "and the maximum size is {size} MB",
+    "file_too_large": "File size is too large ({name}), max size is {size} MB",
+    "only_one_file": "Only one file is allowed",
+    "uploading": "Uploading",
+    "uploaded": "Uploaded",
+    "canceled": "Canceled",
+    "cancel": "Cancel",
+    "remove": "Remove",
+    "file_uploaded": "The file has been uploaded successfully ( {name} )",
+    "google_drive_link": "Google Drive link",
+    "enter_google_drive_link": "Enter Google Drive link",
+    "enter_valid_link": "Please enter a valid link",
+    "save": "Save",
+    "course_ended": "Course date is ended"
+  }
+}

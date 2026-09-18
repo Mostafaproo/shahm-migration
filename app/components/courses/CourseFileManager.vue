@@ -23,6 +23,8 @@ const filterItems = computed(() => [
   ...store.filterOptions.map(o => ({ label: o.value, value: o.key as string | null }))
 ])
 
+const uploadOpen = ref(false)
+
 watch(
   () => [props.courseId, props.variant] as const,
   ([id, side]) => {
@@ -35,6 +37,18 @@ watch(
 
 <template>
   <div class="space-y-4">
+    <div
+      v-if="!isStudent"
+      class="flex justify-end"
+    >
+      <UButton
+        icon="i-lucide-upload"
+        @click="uploadOpen = true"
+      >
+        {{ t('upload.upload_to_course') }}
+      </UButton>
+    </div>
+
     <div
       v-if="isStudent && store.filterOptions.length"
       class="flex justify-end"
@@ -150,5 +164,12 @@ watch(
     >
       {{ t('files.no_files') }}
     </p>
+
+    <CoursesMediaUploadModal
+      v-if="!isStudent"
+      v-model="uploadOpen"
+      :course-id="courseId"
+      @uploaded="store.fetchList(courseId, variant)"
+    />
   </div>
 </template>

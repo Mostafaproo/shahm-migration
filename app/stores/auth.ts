@@ -159,7 +159,7 @@ export const useAuthStore = defineStore('auth', {
         { type: 'user', id: 'null', payload: { identifier } },
         { query: { abilities_user: true } }
       )
-      return res?.meta?.message ?? null
+      return serverMessage(res)
     },
 
     /**
@@ -192,7 +192,7 @@ export const useAuthStore = defineStore('auth', {
 
       return {
         token: first?.token ?? doc?.token ?? res?.meta?.token ?? null,
-        message: res?.meta?.message ?? null
+        message: serverMessage(res)
       }
     },
 
@@ -218,7 +218,7 @@ export const useAuthStore = defineStore('auth', {
         },
         { query: { abilities_user: true } }
       )
-      return res?.meta?.message ?? null
+      return serverMessage(res)
     },
 
     async logout() {

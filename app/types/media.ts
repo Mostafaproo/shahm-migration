@@ -58,11 +58,9 @@ export function toMediaFile(raw: RawMediaFile): MediaFile {
   }
 }
 
-
 export function detachAction(file: MediaFile): MediaAction | undefined {
   return file.actions.find(a => a.key === 'detach-media')
 }
-
 
 export interface MediaFilterOption {
   key: string

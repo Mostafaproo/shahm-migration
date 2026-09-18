@@ -50,7 +50,7 @@ export const useContactStore = defineStore('contact', () => {
         { type: 'contact', id: 'null', payload: values }
       )
       // Legacy swaps the whole form out for the backend's message.
-      successMessage.value = res?.meta?.message || ' '
+      successMessage.value = serverMessage(res) || ' '
       return true
     } catch {
       // The http client already surfaced the error toast.

@@ -80,14 +80,11 @@ export const useInvitationsStore = defineStore('invitations', () => {
     }
   }
 
-  function toastMessage(res: { meta?: { message?: string } } | undefined) {
-    if (res?.meta?.message) nuxtApp.$appToast.success(res.meta.message)
+  function toastMessage(res: unknown) {
+    const message = serverMessage(res)
+    if (message) nuxtApp.$appToast.success(message)
   }
 
-  /**
-   * Legacy calls this with a GET — `profile/{id}/remove-relation` — even though
-   * it deletes. Kept as-is because that is what the backend accepts.
-   */
   async function removeParent(parentId: string): Promise<boolean> {
     const done = await withRowBusy(`remove:${parentId}`, async () => {
       const res = await http.get<{ meta?: { message?: string } }>(

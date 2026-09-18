@@ -142,6 +142,84 @@ export const useCourseFilesStore = defineStore('courseFiles', () => {
     })
   }
 
+  async function attachMedia(
+    courseId: string,
+    mediaId: string,
+    sessionId?: string | null
+  ): Promise<string | null> {
+    try {
+      const res = await http.post<{ data?: unknown, meta?: { message?: string } }>(
+        `${locale()}/instructor/courses/attache-media/${courseId}`,
+        {
+          data: {
+            type: 'course_media',
+            id: sessionId ?? null,
+            attributes: sessionId ? { session_id: sessionId } : {},
+            relationships: {
+              medias: { data: [{ type: 'medias', id: mediaId }] }
+            }
+          }
+        },
+        { serialize: false }
+      )
+
+      // A one-item collection, same unwrapping as the avatar upload.
+      const payload = (res?.data as { data?: unknown } | undefined)?.data ?? res?.data
+      const first = (Array.isArray(payload) ? payload[0] : payload) as { file_name?: string } | undefined
+      return first?.file_name ?? ''
+    } catch {
+      return null
+    }
+  }
+
+  /** The detach half of the same pair, used by the uploader's remove button. */
+  async function detachMedia(
+    courseId: string,
+    mediaId: string,
+    sessionId?: string | null
+  ): Promise<boolean> {
+    try {
+      await http.request(`${locale()}/instructor/courses/detach-media/${courseId}`, {
+        method: 'DELETE',
+        serialize: false,
+        body: {
+          data: {
+            type: 'course_media',
+            id: sessionId ?? null,
+            attributes: sessionId ? { session_id: sessionId } : {},
+            relationships: {
+              medias: { data: [{ type: 'medias', id: mediaId }] }
+            }
+          }
+        }
+      })
+      return true
+    } catch {
+      return false
+    }
+  }
+
+  async function attachLink(vcrSessionId: string, link: string): Promise<boolean> {
+    try {
+      const res = await http.post(
+        `${locale()}/instructor/courses/attach-link/${vcrSessionId}`,
+        {
+          data: {
+            type: 'course_media',
+            id: 'null',
+            attributes: { videos: link }
+          }
+        },
+        { serialize: false }
+      )
+      const message = serverMessage(res)
+      if (message) nuxtApp.$appToast.success(message)
+      return true
+    } catch {
+      return false
+    }
+  }
+
   function reset() {
     items.value = []
     filterOptions.value = []
@@ -167,6 +245,9 @@ export const useCourseFilesStore = defineStore('courseFiles', () => {
     setExtension,
     toggleActive,
     detach,
+    attachMedia,
+    detachMedia,
+    attachLink,
     reset
   }
 })

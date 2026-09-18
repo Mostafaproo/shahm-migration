@@ -43,7 +43,7 @@ export const useCertificatesStore = defineStore('certificates', () => {
       const doc = res?.data
       const rows = Array.isArray(doc) ? doc : (doc?.data ?? [])
       items.value = rows.map(toCertificate)
-      if (!items.value.length) emptyMessage.value = res?.meta?.message ?? ''
+      if (!items.value.length) emptyMessage.value = serverMessage(res) ?? ''
     } catch {
       // The http client already surfaced the error toast.
       items.value = []

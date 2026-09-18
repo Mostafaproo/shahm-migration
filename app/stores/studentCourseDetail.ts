@@ -79,7 +79,8 @@ export const useStudentCourseDetailStore = defineStore('studentCourseDetail', ()
         `${locale()}/student/courses/rate/${courseId}`,
         { type: 'user', id: 'null', payload: { rating: payload.rating, comment: payload.comment || null } }
       )
-      if (res?.meta?.message) nuxtApp.$appToast.success(res.meta.message)
+      const message = serverMessage(res)
+      if (message) nuxtApp.$appToast.success(message)
       await fetchCourse(courseId)
       return true
     } catch {

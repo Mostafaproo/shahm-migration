@@ -125,7 +125,8 @@ export const useProfileStore = defineStore('profile', () => {
       // Keep the navbar avatar/name in step with what was just saved.
       await auth.refreshUser()
 
-      if (res?.meta?.message) nuxtApp.$appToast.success(res.meta.message)
+      const message = serverMessage(res)
+      if (message) nuxtApp.$appToast.success(message)
       return true
     } catch {
       // The http client already surfaced the backend's own error toast.
@@ -146,7 +147,8 @@ export const useProfileStore = defineStore('profile', () => {
         `${locale()}/profile/update-password`,
         { type: 'user', id: profile.value?.id ?? 'null', payload: values }
       )
-      if (res?.meta?.message) nuxtApp.$appToast.success(res.meta.message)
+      const message = serverMessage(res)
+      if (message) nuxtApp.$appToast.success(message)
       return true
     } catch {
       return false

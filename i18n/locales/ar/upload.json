@@ -1,0 +1,23 @@
+{
+  "upload": {
+    "upload_to_course": "رفع ملفات للدورة",
+    "session_upload": "رفع ملفات للحصة",
+    "drag_or_click": "اسحب او اضغط للرفع",
+    "select_file": "اسحب ملف الى هنا او قم باختيار ملف من جهازك",
+    "allowed_types": "يجب أن يكون ملفًا من نوع",
+    "max_size": "والحد الأقصى للحجم هو {size} ميغا بايت",
+    "file_too_large": "حجم الملف كبير جدًا ({name}) ، والحد الأقصى للحجم هو {size} ميغا بايت",
+    "only_one_file": "مسموح بملف واحد فقط",
+    "uploading": "جاري الرفع",
+    "uploaded": "تم الرفع",
+    "canceled": "تم الالغاء",
+    "cancel": "إلغاء",
+    "remove": "حذف",
+    "file_uploaded": "تم رفع الملف بنجاح ( {name} )",
+    "google_drive_link": "رابط جوجل درايف",
+    "enter_google_drive_link": "ادخل رابط جوجل درايف",
+    "enter_valid_link": "برجاء ادخال رابط صحيح",
+    "save": "حفظ",
+    "course_ended": "أنتهي الوقت الخاص بهذه الدورة"
+  }
+}

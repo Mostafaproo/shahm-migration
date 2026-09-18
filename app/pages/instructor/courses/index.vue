@@ -58,6 +58,15 @@ function openRecordings(session: InstructorSession) {
   recordingsOpen.value = true
 }
 
+// --- per-session upload (a Google Drive link, as in the legacy)
+const uploadOpen = ref(false)
+const uploadSession = ref<InstructorSession | null>(null)
+
+function openUpload(session: InstructorSession) {
+  uploadSession.value = session
+  uploadOpen.value = true
+}
+
 // --- students roster
 const studentsOpen = ref(false)
 
@@ -251,6 +260,15 @@ watch(courseId, (id) => {
                   :aria-label="t('courses.recorded_sessions')"
                   @click="openRecordings(session)"
                 />
+
+                <UButton
+                  color="neutral"
+                  variant="soft"
+                  size="xs"
+                  icon="i-lucide-upload"
+                  :aria-label="t('upload.session_upload')"
+                  @click="openUpload(session)"
+                />
               </div>
             </div>
 
@@ -308,6 +326,15 @@ watch(courseId, (id) => {
     <CoursesRecordedSessionsModal
       v-model="recordingsOpen"
       :session="activeSession"
+    />
+
+    <CoursesMediaUploadModal
+      v-model="uploadOpen"
+      :course-id="courseId"
+      :session-id="uploadSession?.id"
+      :vcr-session-id="uploadSession?.vcrSessionId"
+      :course-ended="uploadSession?.courseEnded"
+      @uploaded="store.fetchSessions(courseId, 1)"
     />
 
     <!-- Roster: mute or unmute a student for this course's discussion room -->

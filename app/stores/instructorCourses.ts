@@ -127,14 +127,16 @@ export const useInstructorCoursesStore = defineStore('instructorCourses', () => 
     }
   }
 
-
   async function toggleStudent(student: DiscussionStudent): Promise<void> {
     if (!student.toggleUrl) return
     togglingStudentId.value = student.id
     const next = !student.isActive
     student.isActive = next
     try {
-      await http.get(student.toggleUrl)
+      const res = await http.get(student.toggleUrl)
+      const message = serverMessage(res)
+      if (message) nuxtApp.$appToast.success(message)
+
       const room = useCourseDiscussionsStore()
       if (room.discussions.length) await room.fetchList(studentsCourseId.value)
     } catch {

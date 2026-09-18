@@ -222,11 +222,11 @@ export const useCourseDiscussionsStore = defineStore('courseDiscussions', () => 
     })
   }
 
-  /** Instructor-only mute toggle; legacy reloads the room afterwards so every
-   *  row's action label flips together. */
   async function toggleStudentActive(endpointUrl: string) {
     await withRowBusy(`toggle:${endpointUrl}`, async () => {
-      await http.get(endpointUrl)
+      const res = await http.get(endpointUrl)
+      const message = serverMessage(res)
+      if (message) nuxtApp.$appToast.success(message)
       discussions.value = await load(1)
     })
   }

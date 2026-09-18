@@ -7,6 +7,7 @@ import courses from './ar/courses.json'
 import dashboard from './ar/dashboard.json'
 import discussion from './ar/discussion.json'
 import files from './ar/files.json'
+import upload from './ar/upload.json'
 import home from './ar/home.json'
 import instructorCourses from './ar/instructorCourses.json'
 import invitations from './ar/invitations.json'
@@ -32,6 +33,7 @@ export default defineI18nLocale(() =>
     dashboard,
     discussion,
     files,
+    upload,
     home,
     instructorCourses,
     invitations,
