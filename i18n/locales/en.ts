@@ -1,6 +1,7 @@
 import auth from './en/auth.json'
 import certificates from './en/certificates.json'
 import common from './en/common.json'
+import computerized from './en/computerized.json'
 import courses from './en/courses.json'
 import dashboard from './en/dashboard.json'
 import discussion from './en/discussion.json'
@@ -22,6 +23,7 @@ export default defineI18nLocale(() =>
     auth,
     certificates,
     common,
+    computerized,
     courses,
     dashboard,
     discussion,
