@@ -37,6 +37,7 @@
       "completed": "Completed",
       "in_progress": "In progress",
       "not_started": "Not started"
-    }
+    },
+    "open_in_dashboard": "Open in your dashboard"
   }
 }

@@ -1,14 +1,18 @@
 <script setup lang="ts">
 import type { Pathway } from '~/types/pathway'
 
-const props = defineProps<{
+const props = withDefaults(defineProps<{
   pathway: Pathway
-  registered: boolean
-}>()
+  registered?: boolean
+  basePath?: string
+}>(), {
+  registered: false,
+  basePath: '/student/pathways'
+})
 
 const localePath = useLocalePath()
 
-const detailLink = computed(() => localePath(`/student/pathways/${props.pathway.id}`))
+const detailLink = computed(() => localePath(`${props.basePath}/${props.pathway.id}`))
 const started = computed(() => props.registered && props.pathway.progress > 0)
 </script>
 

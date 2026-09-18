@@ -5,6 +5,7 @@ const PUBLIC_PREFIXES = [
   '/courses',
   '/instructors',
   '/packages',
+  '/pathways',
   '/contact-us',
   '/about-us',
   '/privacy-policy'

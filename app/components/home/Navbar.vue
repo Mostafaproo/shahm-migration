@@ -8,6 +8,7 @@ const localePath = useLocalePath()
 const NAV_LINKS = [
   { label: 'home.nav.home', to: '/' },
   { label: 'home.nav.courses', to: '/courses' },
+  { label: 'home.nav.pathways', to: '/pathways' },
   { label: 'home.nav.packages', to: '/packages' },
   { label: 'home.nav.contact_us', to: '/contact-us' }
 ]

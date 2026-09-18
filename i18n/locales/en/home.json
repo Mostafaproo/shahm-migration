@@ -13,7 +13,8 @@
       "dashboard": "Dashboard",
       "logout": "Sign out",
       "open_menu": "Open menu",
-      "close_menu": "Close menu"
+      "close_menu": "Close menu",
+      "pathways": "Pathways"
     },
     "assessment": {
       "badge": "New",

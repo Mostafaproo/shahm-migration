@@ -37,6 +37,7 @@
       "completed": "مكتملة",
       "in_progress": "جارية",
       "not_started": "لم تبدأ"
-    }
+    },
+    "open_in_dashboard": "افتح من لوحتك"
   }
 }
