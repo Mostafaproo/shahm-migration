@@ -1,7 +1,11 @@
 <script setup lang="ts">
 import { useHomeworkReportsStore } from '~/stores/homeworkReports'
 
-definePageMeta({ layout: 'dashboard', title: 'reports.page_title' })
+definePageMeta({
+  layout: 'dashboard', title: 'reports.page_title',
+  middleware: 'role-guard',
+  roles: ['student']
+})
 
 const route = useRoute()
 const store = useHomeworkReportsStore()

@@ -5,8 +5,9 @@ import type { PathwayCourseStatus } from '~/types/pathway'
 definePageMeta({
   layout: 'dashboard',
   title: 'pathways.page_title',
-  middleware: 'feature-guard',
-  feature: 'learning_path'
+  feature: 'learning_path',
+  middleware: ['feature-guard', 'role-guard'],
+  roles: ['student']
 })
 
 const route = useRoute()

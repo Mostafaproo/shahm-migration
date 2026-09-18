@@ -3,7 +3,11 @@ import { assessmentTypeKey } from '~/types/homeworkReport'
 import { PER_PAGE_OPTIONS } from '~/utils/pagination'
 import { useHomeworkReportsStore } from '~/stores/homeworkReports'
 
-definePageMeta({ layout: 'dashboard', title: 'reports.page_title' })
+definePageMeta({
+  layout: 'dashboard', title: 'reports.page_title',
+  middleware: 'role-guard',
+  roles: ['student']
+})
 
 const store = useHomeworkReportsStore()
 const localePath = useLocalePath()

@@ -4,8 +4,9 @@ import { canStartExam } from '~/types/computerizedExam'
 definePageMeta({
   layout: 'dashboard',
   title: 'computerized.page_title',
-  middleware: 'feature-guard',
-  feature: 'computerized_exam'
+  feature: 'computerized_exam',
+  middleware: ['feature-guard', 'role-guard'],
+  roles: ['student']
 })
 
 const store = useComputerizedExamStore()

@@ -2,7 +2,11 @@
 import type { CourseFilters } from '~/types/studentCourse'
 import type { CoursesTab } from '~/stores/studentCourses'
 
-definePageMeta({ layout: 'dashboard', title: 'dashboard.nav.courses' })
+definePageMeta({
+  layout: 'dashboard', title: 'dashboard.nav.courses',
+  middleware: 'role-guard',
+  roles: ['student']
+})
 
 const courses = useStudentCoursesStore()
 const { t } = useI18n()

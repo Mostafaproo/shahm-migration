@@ -4,8 +4,9 @@ import type { CertificateType } from '~/types/certificate'
 definePageMeta({
   layout: 'dashboard',
   title: 'certificates.page_title',
-  middleware: 'feature-guard',
-  feature: 'certificates'
+  feature: 'certificates',
+  middleware: ['feature-guard', 'role-guard'],
+  roles: ['student']
 })
 
 const store = useCertificatesStore()

@@ -1,5 +1,9 @@
 <script setup lang="ts">
-definePageMeta({ layout: 'dashboard', title: 'packages.course_packages' })
+definePageMeta({
+  layout: 'dashboard', title: 'packages.course_packages',
+  middleware: 'role-guard',
+  roles: ['student']
+})
 
 const route = useRoute()
 const store = useStudentPackagesStore()

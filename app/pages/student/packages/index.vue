@@ -1,7 +1,11 @@
 <script setup lang="ts">
 import type { PackagesTab } from '~/stores/studentPackages'
 
-definePageMeta({ layout: 'dashboard', title: 'packages.course_packages' })
+definePageMeta({
+  layout: 'dashboard', title: 'packages.course_packages',
+  middleware: 'role-guard',
+  roles: ['student']
+})
 
 const store = useStudentPackagesStore()
 const route = useRoute()

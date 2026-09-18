@@ -13,8 +13,9 @@ definePageMeta({
   layout: 'dashboard',
   title: 'invitations.page_title',
   // Sold per tenant — see middleware/feature-guard.ts.
-  middleware: 'feature-guard',
-  feature: 'invitations'
+  feature: 'invitations',
+  middleware: ['feature-guard', 'role-guard'],
+  roles: ['student']
 })
 
 type Tab = 'parents' | 'sent' | 'received' | 'add'

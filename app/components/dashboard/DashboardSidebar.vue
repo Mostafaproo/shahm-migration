@@ -1,65 +1,11 @@
 <script setup lang="ts">
-import { resolveRolePath } from '~/core/auth'
+import { dashboardNav } from '~/core/auth'
 
 const tenant = useTenant()
 const auth = useAuthStore()
 const localePath = useLocalePath()
 
-interface NavItem {
-  label: string
-  icon: string
-  to?: string
-  roleSegment?: string
-  feature?: string
-}
-
-const NAV_ITEMS: NavItem[] = [
-  { label: 'dashboard.nav.notifications', icon: 'i-lucide-bell', to: '/notifications' },
-  { label: 'dashboard.nav.courses', icon: 'i-lucide-book-open', roleSegment: 'courses' },
-  { label: 'dashboard.nav.packages', icon: 'i-lucide-package', roleSegment: 'packages' },
-  {
-    label: 'dashboard.nav.pathways',
-    icon: 'i-lucide-route',
-    roleSegment: 'pathways',
-    feature: 'learning_path'
-  },
-  { label: 'dashboard.nav.reports', icon: 'i-lucide-clipboard-list', roleSegment: 'homework-reports' },
-  {
-    label: 'dashboard.nav.computerized',
-    icon: 'i-lucide-monitor-check',
-    roleSegment: 'computerized-test',
-    feature: 'computerized_exam'
-  },
-  {
-    label: 'dashboard.nav.certificates',
-    icon: 'i-lucide-award',
-    roleSegment: 'certificates',
-    feature: 'certificates'
-  },
-  {
-    label: 'dashboard.nav.invitations',
-    icon: 'i-lucide-users',
-    roleSegment: 'invitations',
-    feature: 'invitations'
-  }
-]
-
-const visibleItems = computed(() =>
-  NAV_ITEMS.filter(item => !item.feature || tenant.features[item.feature])
-)
-
-function roleLink(segment: string): string {
-  const base = resolveRolePath(auth.userType, {
-    student: '/student',
-    instructor: '/instructor',
-    parent: '/parent'
-  })
-  return localePath(`${base ?? '/student'}/${segment}`)
-}
-
-function itemLink(item: { to?: string, roleSegment?: string }): string {
-  return item.to ? localePath(item.to) : roleLink(item.roleSegment ?? '')
-}
+const visibleItems = computed(() => dashboardNav(auth.userType, tenant.features))
 </script>
 
 <template>
@@ -92,7 +38,7 @@ function itemLink(item: { to?: string, roleSegment?: string }): string {
       <NuxtLink
         v-for="item in visibleItems"
         :key="item.label"
-        :to="itemLink(item)"
+        :to="localePath(item.to)"
         class="flex items-center gap-3 rounded-lg px-3 py-3 text-base font-bold text-muted transition hover:bg-elevated hover:text-default"
         active-class="!bg-primary !text-inverted"
       >

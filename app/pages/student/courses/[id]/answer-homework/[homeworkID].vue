@@ -1,7 +1,11 @@
 <script setup lang="ts">
 import { hasAnswer } from '~/types/homeworkQuestion'
 
-definePageMeta({ layout: 'dashboard', title: 'questions.page_title' })
+definePageMeta({
+  layout: 'dashboard', title: 'questions.page_title',
+  middleware: 'role-guard',
+  roles: ['student']
+})
 
 const route = useRoute()
 const store = useHomeworkAttemptStore()

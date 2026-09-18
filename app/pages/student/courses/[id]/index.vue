@@ -2,7 +2,11 @@
 import { hasCourseAction } from '~/types/studentCourseDetail'
 import type { CourseSessionItem } from '~/types/studentCourseDetail'
 
-definePageMeta({ layout: 'dashboard', title: 'dashboard.nav.courses' })
+definePageMeta({
+  layout: 'dashboard', title: 'dashboard.nav.courses',
+  middleware: 'role-guard',
+  roles: ['student']
+})
 
 const route = useRoute()
 const store = useStudentCourseDetailStore()
