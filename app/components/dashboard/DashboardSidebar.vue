@@ -88,17 +88,17 @@ function itemLink(item: { to?: string, roleSegment?: string }): string {
       </template>
     </NuxtLink>
 
-    <nav class="flex-1 space-y-1 overflow-y-auto px-3 py-4">
+    <nav class="flex-1 space-y-2 overflow-y-auto px-3 py-4">
       <NuxtLink
         v-for="item in visibleItems"
         :key="item.label"
         :to="itemLink(item)"
-        class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-muted transition hover:bg-elevated hover:text-default"
+        class="flex items-center gap-3 rounded-lg px-3 py-3 text-base font-bold text-muted transition hover:bg-elevated hover:text-default"
         active-class="!bg-primary !text-inverted"
       >
         <UIcon
           :name="item.icon"
-          class="h-5 w-5 shrink-0"
+          class="h-6 w-6 shrink-0"
         />
         {{ $t(item.label) }}
       </NuxtLink>

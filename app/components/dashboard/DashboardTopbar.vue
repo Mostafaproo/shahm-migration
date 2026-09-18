@@ -69,10 +69,13 @@ defineProps<{ onToggleSidebar?: () => void }>()
         :aria-label="$t('dashboard.switch_language')"
       />
 
+      <!-- `size` only grows the dot; the count needs the badge itself sized,
+           hence the explicit min-w/h and text size on the chip's base slot. -->
       <UChip
         :text="notifications.unreadCount"
         :show="notifications.unreadCount > 0"
         size="3xl"
+        :ui="{ base: 'min-w-6 h-6 px-1.5 text-xs font-bold rounded-full' }"
       >
         <UButton
           color="neutral"

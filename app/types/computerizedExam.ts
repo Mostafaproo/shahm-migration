@@ -68,7 +68,6 @@ function toQuestion(raw: RawExamQuestion, section: ExamQuestion['section']): Exa
   }
 }
 
-
 export function toReviewQuestions(raw: {
   type?: string
   answers?: { data?: RawExamQuestion[] }
