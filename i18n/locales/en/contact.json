@@ -1,0 +1,10 @@
+{
+  "contact": {
+    "intro": "We would be delighted to receive your inquiries",
+    "sub_intro": "If you have any questions about one or more of our services, don't hesitate to contact us — we'd love to answer them all.",
+    "message": "Message",
+    "message_placeholder": "Your message",
+    "submit": "Submit",
+    "success": "Your message has been sent"
+  }
+}

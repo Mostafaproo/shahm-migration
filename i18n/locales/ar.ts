@@ -2,6 +2,7 @@ import auth from './ar/auth.json'
 import certificates from './ar/certificates.json'
 import common from './ar/common.json'
 import computerized from './ar/computerized.json'
+import contact from './ar/contact.json'
 import courses from './ar/courses.json'
 import dashboard from './ar/dashboard.json'
 import discussion from './ar/discussion.json'
@@ -11,6 +12,7 @@ import invitations from './ar/invitations.json'
 import notifications from './ar/notifications.json'
 import packages from './ar/packages.json'
 import pathways from './ar/pathways.json'
+import privacy from './ar/privacy.json'
 import questions from './ar/questions.json'
 import quizzes from './ar/quizzes.json'
 import reports from './ar/reports.json'
@@ -24,6 +26,7 @@ export default defineI18nLocale(() =>
     certificates,
     common,
     computerized,
+    contact,
     courses,
     dashboard,
     discussion,
@@ -33,6 +36,7 @@ export default defineI18nLocale(() =>
     notifications,
     packages,
     pathways,
+    privacy,
     questions,
     quizzes,
     reports,

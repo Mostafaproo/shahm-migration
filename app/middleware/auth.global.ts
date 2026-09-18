@@ -1,6 +1,14 @@
 import { useAuthStore } from '../stores/auth'
 
-const PUBLIC_PREFIXES = ['/auth', '/courses', '/instructors', '/packages', '/contact-us', '/about-us']
+const PUBLIC_PREFIXES = [
+  '/auth',
+  '/courses',
+  '/instructors',
+  '/packages',
+  '/contact-us',
+  '/about-us',
+  '/privacy-policy'
+]
 
 export default defineNuxtRouteMiddleware((to) => {
   const auth = useAuthStore()
