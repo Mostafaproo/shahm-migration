@@ -89,6 +89,12 @@ const INSTRUCTOR: DashboardNavItem[] = [
     ]
   },
   {
+    label: 'dashboard.nav.computerized',
+    icon: 'i-lucide-monitor-check',
+    to: '/instructor/computerized-test',
+    feature: 'computerized_exam'
+  },
+  {
     label: 'dashboard.nav.projects',
     icon: 'i-lucide-folder-kanban',
     to: '/instructor/projects',

@@ -67,7 +67,6 @@ export const useInstructorProjectsStore = defineStore('instructorProjects', () =
     return (unref((nuxtApp.$i18n as { locale?: unknown } | undefined)?.locale) as string | undefined) ?? 'ar'
   }
 
- 
   function readPagination(res: unknown): Record<string, number> | undefined {
     const r = res as {
       data?: { meta?: { pagination?: Record<string, number> } }
@@ -138,7 +137,6 @@ export const useInstructorProjectsStore = defineStore('instructorProjects', () =
       isLoadingProject.value = false
     }
   }
-
 
   async function saveProject(pathId: string, payload: FinalProjectPayload): Promise<boolean> {
     isSubmitting.value = true
@@ -220,7 +218,6 @@ export const useInstructorProjectsStore = defineStore('instructorProjects', () =
     await fetchStudents(pathId, 1)
   }
 
-
   async function fetchSubmission(url: string, method: string) {
     if (!url) return
     isLoadingSubmission.value = true
@@ -233,7 +230,6 @@ export const useInstructorProjectsStore = defineStore('instructorProjects', () =
       isLoadingSubmission.value = false
     }
   }
-
 
   async function saveGrade(grade: string): Promise<boolean> {
     const action = submissionAction(submission.value, 'submit_final_project')
@@ -261,7 +257,6 @@ export const useInstructorProjectsStore = defineStore('instructorProjects', () =
       isSavingGrade.value = false
     }
   }
-
 
   async function reviewAndOpen(studentId: string): Promise<string> {
     const action = submissionAction(submission.value, 'review_final_project')

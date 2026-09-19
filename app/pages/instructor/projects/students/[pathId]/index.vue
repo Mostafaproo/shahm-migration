@@ -1,5 +1,4 @@
 <script setup lang="ts">
-
 import { PER_PAGE_OPTIONS } from '~/utils/pagination'
 
 definePageMeta({

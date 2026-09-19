@@ -8,5 +8,9 @@
     "search": "بحث",
     "noResults": "لا توجد نتائج",
     "coming_soon": "قريبًا"
+  },
+  "editor": {
+    "limit_exceeded": "تجاوزت الحد الأقصى للنص",
+    "load_failed": "تعذر تحميل المحرر"
   }
 }

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-
 import { z } from 'zod'
 
 definePageMeta({
@@ -29,12 +28,6 @@ const maxGrade = computed(() => Number(store.submission?.finalGrade ?? 0) || 0)
 
 const state = reactive({ grade: '' })
 
-/**
- * Legacy: `required|numeric|min_value:0` plus `max_value:<final_grade>` when
- * the project declares one. vee-validate's `numeric` is digits only — it
- * rejects decimals — so whole marks it is, and that also makes `min_value:0`
- * redundant there.
- */
 const schema = computed(() => z.object({
   grade: z.string()
     .min(1, t('instructorProjects.degree_required'))

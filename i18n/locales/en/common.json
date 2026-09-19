@@ -8,5 +8,9 @@
     "search": "Search",
     "noResults": "No results found",
     "coming_soon": "Coming soon"
+  },
+  "editor": {
+    "limit_exceeded": "You have exceeded the text limit",
+    "load_failed": "The editor could not be loaded"
   }
 }

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-
 import { z } from 'zod'
 import type { UploadedFile } from '~/components/shared/data-input/AppFileUploader.vue'
 
