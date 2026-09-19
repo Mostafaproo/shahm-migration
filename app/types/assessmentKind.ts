@@ -1,4 +1,3 @@
-
 export type AssessmentKind = 'exam' | 'assignment'
 
 export interface AssessmentKindConfig {
@@ -25,8 +24,6 @@ export const ASSESSMENT_KINDS: Record<AssessmentKind, AssessmentKindConfig> = {
   assignment: {
     kind: 'assignment',
     quizTypes: 'homework',
-    // The legacy offers a single option here, so the picker is a formality —
-    // it still renders, to keep the two forms identical.
     typeOptions: ['homework'],
     defaultType: 'homework',
     authoringPath: '/instructor/assignments',
@@ -37,7 +34,6 @@ export const ASSESSMENT_KINDS: Record<AssessmentKind, AssessmentKindConfig> = {
 export function assessmentConfig(kind: AssessmentKind): AssessmentKindConfig {
   return ASSESSMENT_KINDS[kind]
 }
-
 
 export function kindKey(kind: AssessmentKind, key: string): string {
   return `instructorAssessments.${kind}.${key}`

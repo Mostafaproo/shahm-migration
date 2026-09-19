@@ -88,6 +88,12 @@ const INSTRUCTOR: DashboardNavItem[] = [
       }
     ]
   },
+  {
+    label: 'dashboard.nav.projects',
+    icon: 'i-lucide-folder-kanban',
+    to: '/instructor/projects',
+    feature: 'learning_path'
+  },
   { label: 'dashboard.nav.media_library', icon: 'i-lucide-folder-open', to: '/instructor/media-library' }
 ]
 

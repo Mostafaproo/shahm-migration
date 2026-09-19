@@ -13,7 +13,8 @@
       "exam_reports": "تقارير الاختبارات",
       "exams": "الاختبارات",
       "assignments": "الواجبات",
-      "assignment_reports": "تقارير الواجبات"
+      "assignment_reports": "تقارير الواجبات",
+      "projects": "مشاريع المسارات"
     },
     "logout": "تسجيل خروج",
     "open_sidebar": "فتح القائمة الجانبية",

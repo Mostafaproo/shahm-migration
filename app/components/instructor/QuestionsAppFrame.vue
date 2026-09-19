@@ -1,5 +1,4 @@
 <script setup lang="ts">
-
 export type QuestionsAppOperation = 'add' | 'edit' | 'view_as_student'
 
 const props = defineProps<{

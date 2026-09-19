@@ -84,7 +84,6 @@ export function toAssessmentQuestionRow(raw: RawAssessmentQuestionRow): Assessme
   }
 }
 
-
 export const BUILDER_QUESTION_TYPES = [
   'true_false',
   'true_false_with_correct',

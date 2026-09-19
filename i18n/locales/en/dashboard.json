@@ -13,7 +13,8 @@
       "exam_reports": "Exam reports",
       "exams": "Exams",
       "assignments": "Homeworks",
-      "assignment_reports": "Homework reports"
+      "assignment_reports": "Homework reports",
+      "projects": "Path projects"
     },
     "logout": "Sign out",
     "open_sidebar": "Open sidebar",

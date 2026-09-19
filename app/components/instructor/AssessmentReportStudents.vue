@@ -7,7 +7,6 @@ const props = defineProps<{ kind: AssessmentKind }>()
 
 const config = computed(() => assessmentConfig(props.kind))
 
-
 const exportName = (what: string) =>
   `Course-${props.kind === 'exam' ? 'Exam' : 'Homework'}-Students-${what}-Report.xls`
 

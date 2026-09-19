@@ -10,6 +10,7 @@ import files from './ar/files.json'
 import upload from './ar/upload.json'
 import home from './ar/home.json'
 import instructorCourses from './ar/instructorCourses.json'
+import instructorProjects from './ar/instructorProjects.json'
 import instructorAssessments from './ar/instructorAssessments.json'
 import invitations from './ar/invitations.json'
 import notifications from './ar/notifications.json'
@@ -37,6 +38,7 @@ export default defineI18nLocale(() =>
     upload,
     home,
     instructorCourses,
+    instructorProjects,
     instructorAssessments,
     invitations,
     notifications,
