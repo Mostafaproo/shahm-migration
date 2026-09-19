@@ -1,43 +1,42 @@
 <script setup lang="ts">
+import { assessmentConfig, kindKey } from '~/types/assessmentKind'
+import type { AssessmentKind } from '~/types/assessmentKind'
 
-import { BUILDER_QUESTION_TYPES, hasAction } from '~/types/instructorHomework'
-import type { HomeworkQuestionRow } from '~/types/instructorHomework'
+import { BUILDER_QUESTION_TYPES, hasAction } from '~/types/instructorAssessment'
+import type { AssessmentQuestionRow } from '~/types/instructorAssessment'
 
-definePageMeta({
-  layout: 'dashboard',
-  title: 'instructorHomeworks.page_title',
-  middleware: 'role-guard',
-  roles: ['instructor']
-})
+const props = defineProps<{ kind: AssessmentKind }>()
 
-const store = useInstructorHomeworksStore()
+const config = computed(() => assessmentConfig(props.kind))
+
+const store = useInstructorAssessmentsStore()
 const route = useRoute()
 const localePath = useLocalePath()
 const { t } = useI18n()
 const { $appToast: toast } = useNuxtApp()
 
 const courseId = computed(() => String(route.params.id ?? ''))
-const homeworkId = computed(() => String(route.params.homeworkId ?? ''))
+const assessmentId = computed(() => String(route.params.assessmentId ?? ''))
 const backToForm = computed(() =>
-  localePath(`/instructor/homeworks/${courseId.value}/${homeworkId.value}`))
+  localePath(`${config.value.authoringPath}/${courseId.value}/${assessmentId.value}`))
 
 /** Only one editor is on screen at a time, as in the legacy. */
 type Editor
   = | { mode: 'add', questionType: string }
-    | { mode: 'edit', row: HomeworkQuestionRow }
+    | { mode: 'edit', row: AssessmentQuestionRow }
     | { mode: 'preview' }
     | null
 
 const editor = ref<Editor>(null)
 
 const typeItems = computed(() => BUILDER_QUESTION_TYPES.map(type => ({
-  label: t(`instructorHomeworks.question_types.${type}`),
+  label: t(`instructorAssessments.question_types.${type}`),
   onSelect: () => openAdd(type)
 })))
 
 function guard(action: string): boolean {
   if (hasAction(store.current, action)) return true
-  toast.warning(t('instructorHomeworks.action_not_allowed'))
+  toast.warning(t('instructorAssessments.action_not_allowed'))
   return false
 }
 
@@ -46,15 +45,15 @@ function openAdd(questionType: string) {
   editor.value = { mode: 'add', questionType }
 }
 
-function openEdit(row: HomeworkQuestionRow) {
+function openEdit(row: AssessmentQuestionRow) {
   if (!guard('edit_homework')) return
   editor.value = { mode: 'edit', row }
 }
 
 // --- delete confirmation
-const pendingDelete = ref<HomeworkQuestionRow | null>(null)
+const pendingDelete = ref<AssessmentQuestionRow | null>(null)
 
-function askDelete(row: HomeworkQuestionRow) {
+function askDelete(row: AssessmentQuestionRow) {
   if (!guard('delete_homework')) return
   pendingDelete.value = row
 }
@@ -62,7 +61,7 @@ function askDelete(row: HomeworkQuestionRow) {
 async function confirmDelete() {
   const row = pendingDelete.value
   pendingDelete.value = null
-  if (row) await store.removeQuestion(homeworkId.value, row.id)
+  if (row) await store.removeQuestion(assessmentId.value, row.id)
 }
 
 // --- publish
@@ -70,19 +69,19 @@ const askPublish = ref(false)
 
 async function confirmPublish() {
   askPublish.value = false
-  if (!await store.publish(homeworkId.value)) return
+  if (!await store.publish(assessmentId.value)) return
   await navigateTo(localePath({
-    path: '/instructor/homeworks',
+    path: config.value.authoringPath,
     query: { course_id: courseId.value }
   }))
 }
 
 function onSaved(kind: 'created' | 'edited') {
   toast.success(t(kind === 'created'
-    ? 'instructorHomeworks.question_created'
-    : 'instructorHomeworks.question_edited'))
+    ? 'instructorAssessments.question_created'
+    : 'instructorAssessments.question_edited'))
   editor.value = null
-  store.fetchQuestions(homeworkId.value)
+  store.fetchQuestions(assessmentId.value)
 }
 
 function onFailed(details: string[]) {
@@ -90,9 +89,11 @@ function onFailed(details: string[]) {
 }
 
 onMounted(async () => {
+  // The stores are singletons; each screen declares which kind it drives.
+  store.kind = props.kind
   store.resetOne()
-  await store.fetchOne(homeworkId.value)
-  await store.fetchQuestions(homeworkId.value)
+  await store.fetchOne(assessmentId.value)
+  await store.fetchQuestions(assessmentId.value)
 })
 </script>
 
@@ -106,7 +107,7 @@ onMounted(async () => {
         icon="i-lucide-arrow-right"
         class="ltr:[&_span:first-child]:rotate-180"
       >
-        {{ t('instructorHomeworks.back_to_form') }}
+        {{ t('instructorAssessments.back_to_form') }}
       </UButton>
 
       <div
@@ -119,18 +120,18 @@ onMounted(async () => {
           icon="i-lucide-eye"
           @click="editor = { mode: 'preview' }"
         >
-          {{ t('instructorHomeworks.view_as_student') }}
+          {{ t('instructorAssessments.view_as_student') }}
         </UButton>
 
         <UButton
           :color="store.current.isPublished ? 'warning' : 'primary'"
           :icon="store.current.isPublished ? 'i-lucide-undo-2' : 'i-lucide-send'"
-          :loading="store.isBusy(`publish:${homeworkId}`)"
+          :loading="store.isBusy(`publish:${assessmentId}`)"
           @click="askPublish = true"
         >
           {{ store.current.isPublished
-            ? t('instructorHomeworks.unpublish')
-            : t('instructorHomeworks.publish') }}
+            ? t('instructorAssessments.unpublish')
+            : t('instructorAssessments.publish') }}
         </UButton>
       </div>
     </div>
@@ -153,7 +154,7 @@ onMounted(async () => {
           {{ store.current.title }}
         </h1>
         <p class="text-sm text-muted">
-          {{ t('instructorHomeworks.questions_info') }}
+          {{ t('instructorAssessments.questions_info') }}
         </p>
       </div>
       <UButton
@@ -162,7 +163,7 @@ onMounted(async () => {
         variant="ghost"
         size="xs"
         icon="i-lucide-pencil"
-        :aria-label="t('instructorHomeworks.edit')"
+        :aria-label="t(kindKey(kind, 'edit'))"
       />
     </div>
 
@@ -180,12 +181,12 @@ onMounted(async () => {
           icon="i-lucide-x"
           @click="editor = null"
         >
-          {{ t('instructorHomeworks.close_preview') }}
+          {{ t('instructorAssessments.close_preview') }}
         </UButton>
       </div>
       <InstructorQuestionsAppFrame
         operation="view_as_student"
-        :homework-id="homeworkId"
+        :assessment-id="assessmentId"
         @saved="onSaved"
         @failed="onFailed"
       />
@@ -223,7 +224,7 @@ onMounted(async () => {
               size="xs"
               variant="ghost"
               icon="i-lucide-pencil"
-              :aria-label="t('instructorHomeworks.edit_question')"
+              :aria-label="t('instructorAssessments.edit_question')"
               @click="openEdit(row)"
             />
             <UButton
@@ -232,7 +233,7 @@ onMounted(async () => {
               color="error"
               icon="i-lucide-trash-2"
               :loading="store.isBusy(`question:${row.id}`)"
-              :aria-label="t('instructorHomeworks.remove_question')"
+              :aria-label="t('instructorAssessments.remove_question')"
               @click="askDelete(row)"
             />
           </div>
@@ -241,7 +242,7 @@ onMounted(async () => {
         <InstructorQuestionsAppFrame
           v-if="editor?.mode === 'edit' && editor.row.id === row.id"
           operation="edit"
-          :homework-id="homeworkId"
+          :assessment-id="assessmentId"
           :question="editor.row"
           @saved="onSaved"
           @failed="onFailed"
@@ -253,14 +254,14 @@ onMounted(async () => {
       v-else
       class="rounded-xl border border-default bg-default py-12 text-center text-muted"
     >
-      {{ t('instructorHomeworks.no_questions') }}
+      {{ t('instructorAssessments.no_questions') }}
     </p>
 
     <!-- Add -->
     <InstructorQuestionsAppFrame
       v-if="editor?.mode === 'add'"
       operation="add"
-      :homework-id="homeworkId"
+      :assessment-id="assessmentId"
       :question-type="editor.questionType"
       @saved="onSaved"
       @failed="onFailed"
@@ -275,7 +276,7 @@ onMounted(async () => {
           icon="i-lucide-plus"
           size="lg"
         >
-          {{ t('instructorHomeworks.add_question') }}
+          {{ t('instructorAssessments.add_question') }}
         </UButton>
       </UDropdownMenu>
     </div>
@@ -283,7 +284,7 @@ onMounted(async () => {
     <!-- Confirmations -->
     <UModal
       :open="Boolean(pendingDelete)"
-      :title="t('instructorHomeworks.confirm.delete_question')"
+      :title="t('instructorAssessments.confirm_delete_question')"
       @update:open="value => { if (!value) pendingDelete = null }"
     >
       <template #footer>
@@ -293,13 +294,13 @@ onMounted(async () => {
             variant="ghost"
             @click="pendingDelete = null"
           >
-            {{ t('instructorHomeworks.no') }}
+            {{ t('instructorAssessments.no') }}
           </UButton>
           <UButton
             color="error"
             @click="confirmDelete"
           >
-            {{ t('instructorHomeworks.yes') }}
+            {{ t('instructorAssessments.yes') }}
           </UButton>
         </div>
       </template>
@@ -308,8 +309,8 @@ onMounted(async () => {
     <UModal
       v-model:open="askPublish"
       :title="store.current?.isPublished
-        ? t('instructorHomeworks.confirm.unpublish')
-        : t('instructorHomeworks.confirm.publish')"
+        ? t(kindKey(kind, 'confirm_unpublish'))
+        : t(kindKey(kind, 'confirm_publish'))"
     >
       <template #footer>
         <div class="flex w-full justify-end gap-2">
@@ -318,10 +319,10 @@ onMounted(async () => {
             variant="ghost"
             @click="askPublish = false"
           >
-            {{ t('instructorHomeworks.no') }}
+            {{ t('instructorAssessments.no') }}
           </UButton>
           <UButton @click="confirmPublish">
-            {{ t('instructorHomeworks.yes') }}
+            {{ t('instructorAssessments.yes') }}
           </UButton>
         </div>
       </template>

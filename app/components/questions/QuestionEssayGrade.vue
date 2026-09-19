@@ -31,9 +31,9 @@ const score = ref<number | null>(null)
 
 const error = computed(() => {
   if (score.value == null) return null
-  if (score.value < 0) return t('instructorReports.grade_min')
+  if (score.value < 0) return t('instructorAssessments.grade_min')
   if (maxScore.value && score.value > maxScore.value) {
-    return t('instructorReports.grade_max', { max: maxScore.value })
+    return t('instructorAssessments.grade_max', { max: maxScore.value })
   }
   return null
 })
@@ -59,7 +59,7 @@ watch(() => props.question, () => {
       class="h-4 w-4 shrink-0"
     />
     <span>
-      {{ t('instructorReports.already_graded') }}
+      {{ t('instructorAssessments.already_graded') }}
       <template v-if="answer?.score != null">— {{ answer.score }}</template>
     </span>
   </div>
@@ -70,13 +70,13 @@ watch(() => props.question, () => {
     @submit.prevent="submit"
   >
     <p class="text-sm font-semibold">
-      {{ t('instructorReports.grade_answer') }}
+      {{ t('instructorAssessments.grade_answer') }}
     </p>
 
     <div class="flex flex-wrap items-start gap-3">
       <UFormField
         :error="error ?? undefined"
-        :hint="maxScore ? t('instructorReports.out_of', { max: maxScore }) : undefined"
+        :hint="maxScore ? t('instructorAssessments.out_of', { max: maxScore }) : undefined"
         class="w-40"
       >
         <UInput
@@ -86,7 +86,7 @@ watch(() => props.question, () => {
           step="0.01"
           :max="maxScore || undefined"
           class="w-full"
-          :placeholder="t('instructorReports.score')"
+          :placeholder="t('instructorAssessments.score')"
         />
       </UFormField>
 
@@ -95,7 +95,7 @@ watch(() => props.question, () => {
         :loading="saving"
         :disabled="score == null || Boolean(error)"
       >
-        {{ t('instructorReports.save_grade') }}
+        {{ t('instructorAssessments.save_grade') }}
       </UButton>
     </div>
   </form>

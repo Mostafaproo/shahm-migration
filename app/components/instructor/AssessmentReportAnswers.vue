@@ -1,22 +1,22 @@
 <script setup lang="ts">
-definePageMeta({
-  layout: 'dashboard',
-  title: 'instructorReports.page_title',
-  middleware: 'role-guard',
-  roles: ['instructor']
-})
+import { assessmentConfig } from '~/types/assessmentKind'
+import type { AssessmentKind } from '~/types/assessmentKind'
 
-const store = useInstructorHomeworkReportsStore()
+const props = defineProps<{ kind: AssessmentKind }>()
+
+const config = computed(() => assessmentConfig(props.kind))
+
+const store = useInstructorAssessmentReportsStore()
 const route = useRoute()
 const localePath = useLocalePath()
 const { t } = useI18n()
 const { $appToast: toast } = useNuxtApp()
 
-const examId = computed(() => String(route.params.id ?? ''))
+const assessmentId = computed(() => String(route.params.id ?? ''))
 const studentId = computed(() => String(route.params.studentId ?? ''))
 const studentName = computed(() => String(route.query.student_name ?? ''))
 
-const backLink = computed(() => localePath(`/instructor/homework-reports/${examId.value}`))
+const backLink = computed(() => localePath(`${config.value.reportsPath}/${assessmentId.value}`))
 const isLast = computed(() => store.activeIndex >= store.totalQuestions - 1)
 
 // The renderer is read-only here but still needs a model, so this is a sink.
@@ -28,14 +28,16 @@ function go(index: number) {
 }
 
 async function grade(payload: { answerId: string, score: number }) {
-  const message = await store.gradeEssay(examId.value, payload.answerId, payload.score)
+  const message = await store.gradeEssay(assessmentId.value, payload.answerId, payload.score)
   if (message === null) return
-  toast.success(message || t('instructorReports.grade_saved'))
+  toast.success(message || t('instructorAssessments.grade_saved'))
 }
 
 onMounted(() => {
+  // The stores are singletons; each screen declares which kind it drives.
+  store.kind = props.kind
   store.resetFeedback()
-  store.fetchFeedback(examId.value, studentId.value)
+  store.fetchFeedback(assessmentId.value, studentId.value)
 })
 
 onBeforeUnmount(() => store.resetFeedback())
@@ -52,7 +54,7 @@ onBeforeUnmount(() => store.resetFeedback())
         icon="i-lucide-arrow-right"
         class="ltr:[&_span:first-child]:rotate-180"
       >
-        {{ t('instructorReports.back_to_students') }}
+        {{ t('instructorAssessments.back_to_students') }}
       </UButton>
 
       <p
@@ -80,7 +82,7 @@ onBeforeUnmount(() => store.resetFeedback())
         v-else-if="!store.question"
         class="py-16 text-center text-muted"
       >
-        {{ t('instructorReports.no_answers') }}
+        {{ t('instructorAssessments.no_answers') }}
       </p>
 
       <div

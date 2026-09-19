@@ -1,14 +1,13 @@
 <script setup lang="ts">
+import { assessmentConfig, kindKey } from '~/types/assessmentKind'
+import type { AssessmentKind } from '~/types/assessmentKind'
 import { PER_PAGE_OPTIONS } from '~/utils/pagination'
 
-definePageMeta({
-  layout: 'dashboard',
-  title: 'instructorReports.page_title',
-  middleware: 'role-guard',
-  roles: ['instructor']
-})
+const props = defineProps<{ kind: AssessmentKind }>()
 
-const store = useInstructorHomeworkReportsStore()
+const config = computed(() => assessmentConfig(props.kind))
+
+const store = useInstructorAssessmentReportsStore()
 const coursesStore = useInstructorCoursesStore()
 const localePath = useLocalePath()
 const { t } = useI18n()
@@ -16,21 +15,23 @@ const { t } = useI18n()
 const perPageItems = PER_PAGE_OPTIONS.map(n => ({ label: String(n), value: n }))
 
 const courseItems = computed(() => [
-  { label: t('instructorReports.all_courses'), value: null as string | null },
+  { label: t('instructorAssessments.all_courses'), value: null as string | null },
   ...coursesStore.courses.map(c => ({ label: c.name, value: c.id as string | null }))
 ])
 
 const headings = computed(() => [
-  t('instructorReports.exam_title'),
-  t('instructorReports.published_at'),
-  t('instructorReports.start_date'),
-  t('instructorReports.end_date'),
-  t('instructorReports.average'),
-  t('instructorReports.total_grade'),
-  t('instructorReports.actions')
+  t(kindKey(props.kind, 'title_label')),
+  t('instructorAssessments.published_at'),
+  t('instructorAssessments.start_date'),
+  t('instructorAssessments.end_date'),
+  t('instructorAssessments.average'),
+  t('instructorAssessments.total_grade'),
+  t('instructorAssessments.actions')
 ])
 
 onMounted(() => {
+  // The stores are singletons; each screen declares which kind it drives.
+  store.kind = props.kind
   store.fetchExams(1)
   // Only page one, like the legacy — an instructor with more courses than one
   // page cannot filter by the rest. Skipped when the courses page already
@@ -47,12 +48,12 @@ onMounted(() => {
         :items="courseItems"
         value-key="value"
         class="w-full sm:w-72"
-        :placeholder="t('instructorReports.filter_course')"
+        :placeholder="t('instructorAssessments.filter_course')"
         @update:model-value="value => store.setCourse((value as string | null) ?? null)"
       />
 
       <div class="flex items-center gap-2 text-sm text-muted">
-        <span>{{ t('instructorReports.show') }}</span>
+        <span>{{ t('instructorAssessments.show') }}</span>
         <USelectMenu
           :model-value="store.perPage"
           :items="perPageItems"
@@ -60,7 +61,7 @@ onMounted(() => {
           class="w-24"
           @update:model-value="value => store.setPerPage(Number(value))"
         />
-        <span>{{ t('instructorReports.entries') }}</span>
+        <span>{{ t('instructorAssessments.entries') }}</span>
       </div>
     </div>
 
@@ -93,12 +94,12 @@ onMounted(() => {
           </td>
           <td class="p-4 text-end">
             <UButton
-              :to="localePath(`/instructor/homework-reports/${exam.id}`)"
+              :to="localePath(`${config.reportsPath}/${exam.id}`)"
               size="xs"
               variant="soft"
               icon="i-lucide-users"
             >
-              {{ t('instructorReports.view_students') }}
+              {{ t('instructorAssessments.view_students') }}
             </UButton>
           </td>
         </tr>
@@ -117,7 +118,7 @@ onMounted(() => {
       v-else
       class="rounded-xl border border-default bg-default py-16 text-center text-muted"
     >
-      {{ t('instructorReports.no_exams') }}
+      {{ t(kindKey(kind, 'no_reports')) }}
     </p>
   </div>
 </template>

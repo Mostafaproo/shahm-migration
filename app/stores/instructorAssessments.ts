@@ -1,21 +1,20 @@
 import { defineStore } from 'pinia'
+import { assessmentConfig } from '~/types/assessmentKind'
+import type { AssessmentKind } from '~/types/assessmentKind'
 import {
-  toHomeworkQuestionRow,
-  toInstructorHomework
-} from '~/types/instructorHomework'
+  toAssessmentQuestionRow,
+  toInstructorAssessment
+} from '~/types/instructorAssessment'
 import type {
-  HomeworkQuestionRow,
-  InstructorHomework,
-  RawHomeworkQuestionRow,
-  RawInstructorHomework
-} from '~/types/instructorHomework'
+  AssessmentQuestionRow,
+  InstructorAssessment,
+  RawAssessmentQuestionRow,
+  RawInstructorAssessment
+} from '~/types/instructorAssessment'
 
 const BASE = 'general-quizzes/course-homework/instructor'
 
-/** The same hard filter the reports list uses — assignments are a separate module. */
-const QUIZ_TYPES = 'quiz,final_exam'
-
-export interface HomeworkFormPayload {
+export interface AssessmentFormPayload {
   title: string
   start_at: string
   end_at: string
@@ -23,11 +22,17 @@ export interface HomeworkFormPayload {
   random_question: boolean
 }
 
-export const useInstructorHomeworksStore = defineStore('instructorHomeworks', () => {
+export const useInstructorAssessmentsStore = defineStore('instructorHomeworks', () => {
   const http = useHttp()
   const nuxtApp = useNuxtApp()
 
-  const items = ref<InstructorHomework[]>([])
+  /**
+   * Exams and homework are the same screens over the same endpoints; only the
+   *  filter and the wording differ. The page sets this on mount.
+   */
+  const kind = ref<AssessmentKind>('exam')
+
+  const items = ref<InstructorAssessment[]>([])
   const courseId = ref<string | null>(null)
   const page = ref(1)
   const perPage = ref(10)
@@ -36,11 +41,11 @@ export const useInstructorHomeworksStore = defineStore('instructorHomeworks', ()
   const isLoading = ref(false)
 
   /** The one being created or edited. */
-  const current = ref<InstructorHomework | null>(null)
+  const current = ref<InstructorAssessment | null>(null)
   const isLoadingOne = ref(false)
   const isSubmitting = ref(false)
 
-  const questions = ref<HomeworkQuestionRow[]>([])
+  const questions = ref<AssessmentQuestionRow[]>([])
   const isLoadingQuestions = ref(false)
   /** Keyed `delete:<id>` / `publish` so each control spins on its own. */
   const busy = ref<Set<string>>(new Set())
@@ -74,8 +79,8 @@ export const useInstructorHomeworksStore = defineStore('instructorHomeworks', ()
     isLoading.value = true
     try {
       const res = await http.get<{
-        data?: RawInstructorHomework[] | {
-          data?: RawInstructorHomework[]
+        data?: RawInstructorAssessment[] | {
+          data?: RawInstructorAssessment[]
           meta?: { pagination?: Record<string, number> }
         }
         meta?: { pagination?: Record<string, number> }
@@ -83,14 +88,14 @@ export const useInstructorHomeworksStore = defineStore('instructorHomeworks', ()
         query: {
           page: targetPage,
           per_page: perPage.value,
-          quiz_type: QUIZ_TYPES,
+          quiz_type: assessmentConfig(kind.value).quizTypes,
           ...(courseId.value ? { course_id: courseId.value } : {})
         }
       })
 
       const doc = res?.data
       const rows = Array.isArray(doc) ? doc : (doc?.data ?? [])
-      items.value = rows.map(toInstructorHomework)
+      items.value = rows.map(toInstructorAssessment)
 
       const pagination = (Array.isArray(doc) ? undefined : doc?.meta?.pagination)
         ?? res?.meta?.pagination
@@ -124,10 +129,10 @@ export const useInstructorHomeworksStore = defineStore('instructorHomeworks', ()
     if (!id) return
     isLoadingOne.value = true
     try {
-      const res = await http.get<{ data?: RawInstructorHomework }>(
+      const res = await http.get<{ data?: RawInstructorAssessment }>(
         `${locale()}/${BASE}/view/${id}`
       )
-      current.value = res?.data ? toInstructorHomework(res.data) : null
+      current.value = res?.data ? toInstructorAssessment(res.data) : null
     } catch {
       current.value = null
     } finally {
@@ -140,7 +145,7 @@ export const useInstructorHomeworksStore = defineStore('instructorHomeworks', ()
    * to travel inside it on edit, so the default flat serializer will not do.
    * Create returns the new homework's id — the form redirects to its builder.
    */
-  function body(payload: HomeworkFormPayload, id?: string) {
+  function body(payload: AssessmentFormPayload, id?: string) {
     return {
       data: {
         id: id ?? null,
@@ -150,7 +155,7 @@ export const useInstructorHomeworksStore = defineStore('instructorHomeworks', ()
     }
   }
 
-  async function create(course: string, payload: HomeworkFormPayload): Promise<string | null> {
+  async function create(course: string, payload: AssessmentFormPayload): Promise<string | null> {
     isSubmitting.value = true
     try {
       const res = await http.post<{ data?: { id?: string | number } }>(
@@ -172,7 +177,7 @@ export const useInstructorHomeworksStore = defineStore('instructorHomeworks', ()
   async function update(
     course: string,
     homeworkId: string,
-    payload: HomeworkFormPayload
+    payload: AssessmentFormPayload
   ): Promise<boolean> {
     isSubmitting.value = true
     try {
@@ -220,12 +225,12 @@ export const useInstructorHomeworksStore = defineStore('instructorHomeworks', ()
     isLoadingQuestions.value = true
     try {
       const res = await http.get<{
-        data?: RawHomeworkQuestionRow[] | { data?: RawHomeworkQuestionRow[] }
+        data?: RawAssessmentQuestionRow[] | { data?: RawAssessmentQuestionRow[] }
       }>(`${locale()}/${BASE}/${homeworkId}/questions/list`)
 
       const doc = res?.data
       const rows = Array.isArray(doc) ? doc : (doc?.data ?? [])
-      questions.value = rows.map(toHomeworkQuestionRow)
+      questions.value = rows.map(toAssessmentQuestionRow)
     } catch {
       questions.value = []
     } finally {
@@ -252,6 +257,7 @@ export const useInstructorHomeworksStore = defineStore('instructorHomeworks', ()
   }
 
   return {
+    kind,
     items,
     courseId,
     page,

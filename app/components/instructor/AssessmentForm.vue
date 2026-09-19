@@ -1,39 +1,43 @@
 <script setup lang="ts">
-
-import { useHomeworkFormSchema } from '~/schemas/instructor/homework-form-schema'
-import type { HomeworkFormInput } from '~/schemas/instructor/homework-form-schema'
+import { assessmentConfig, kindKey } from '~/types/assessmentKind'
+import type { AssessmentKind } from '~/types/assessmentKind'
+import { useAssessmentFormSchema } from '~/schemas/instructor/assessment-form-schema'
+import type { AssessmentFormInput } from '~/schemas/instructor/assessment-form-schema'
 
 const props = defineProps<{
+  kind: AssessmentKind
   /** Absent when creating. */
-  homeworkId?: string
+  assessmentId?: string
 }>()
 
-const store = useInstructorHomeworksStore()
+const config = computed(() => assessmentConfig(props.kind))
+
+const store = useInstructorAssessmentsStore()
 const coursesStore = useInstructorCoursesStore()
 const tenant = useTenant()
 const localePath = useLocalePath()
 const { t } = useI18n()
 
-const isEdit = computed(() => Boolean(props.homeworkId))
-const schema = computed(() => useHomeworkFormSchema(t))
+const isEdit = computed(() => Boolean(props.assessmentId))
+const schema = computed(() => useAssessmentFormSchema(t, props.kind))
 
-const state = reactive<HomeworkFormInput>({
+const state = reactive<AssessmentFormInput>({
   title: '',
   course_id: '',
   start_at: '',
   end_at: '',
-  quiz_type: 'quiz',
+  quiz_type: assessmentConfig(props.kind).defaultType,
   random_question: false
 })
 
 const courseItems = computed(() =>
   coursesStore.courses.map(c => ({ label: c.name, value: c.id })))
 
-/** The legacy offers these two on the exam route; `homework` is a separate module. */
-const typeItems = computed(() => [
-  { label: t('instructorHomeworks.types.quiz'), value: 'quiz' },
-  { label: t('instructorHomeworks.types.final_exam'), value: 'final_exam' }
-])
+/** Exams offer quiz + final exam; the assignment side has only the one. */
+const typeItems = computed(() => config.value.typeOptions.map(value => ({
+  label: t(`instructorAssessments.types.${value}`),
+  value
+})))
 
 /** Legacy gates the type picker behind the `certificates` feature. */
 const showTypePicker = computed(() => Boolean(tenant.features.certificates))
@@ -53,18 +57,18 @@ async function onSubmit() {
   }
 
   const id = isEdit.value
-    ? (await store.update(state.course_id, props.homeworkId!, payload) ? props.homeworkId! : null)
+    ? (await store.update(state.course_id, props.assessmentId!, payload) ? props.assessmentId! : null)
     : await store.create(state.course_id, payload)
 
   if (!id) return
-  await navigateTo(localePath(`/instructor/homeworks/${state.course_id}/${id}/questions`))
+  await navigateTo(localePath(`${config.value.authoringPath}/${state.course_id}/${id}/questions`))
 }
 
 onMounted(async () => {
   if (!coursesStore.courses.length) await coursesStore.fetchCourses()
-  if (!props.homeworkId) return
+  if (!props.assessmentId) return
 
-  await store.fetchOne(props.homeworkId)
+  await store.fetchOne(props.assessmentId)
   const row = store.current
   if (!row) return
   Object.assign(state, {
@@ -72,7 +76,7 @@ onMounted(async () => {
     course_id: row.courseId,
     start_at: toDateTimeInput(row.startAt),
     end_at: toDateTimeInput(row.endAt),
-    quiz_type: row.quizType || 'quiz',
+    quiz_type: row.quizType || config.value.defaultType,
     random_question: row.randomQuestion
   })
 })
@@ -82,10 +86,10 @@ onMounted(async () => {
   <div class="mx-auto max-w-3xl space-y-5">
     <div class="space-y-1">
       <h1 class="text-xl font-bold">
-        {{ isEdit ? t('instructorHomeworks.edit_title') : t('instructorHomeworks.create_title') }}
+        {{ isEdit ? t(kindKey(kind, 'edit_title')) : t(kindKey(kind, 'create_title')) }}
       </h1>
       <p class="text-sm text-muted">
-        {{ t('instructorHomeworks.create_info') }}
+        {{ t(kindKey(kind, 'create_info')) }}
       </p>
     </div>
 
@@ -108,19 +112,19 @@ onMounted(async () => {
       @submit="onSubmit"
     >
       <UFormField
-        :label="t('instructorHomeworks.title_label')"
+        :label="t(kindKey(kind, 'title_label'))"
         name="title"
         required
       >
         <UInput
           v-model="state.title"
           class="w-full"
-          :placeholder="t('instructorHomeworks.title_label')"
+          :placeholder="t(kindKey(kind, 'title_label'))"
         />
       </UFormField>
 
       <UFormField
-        :label="t('instructorHomeworks.course')"
+        :label="t('instructorAssessments.course')"
         name="course_id"
         required
       >
@@ -129,16 +133,16 @@ onMounted(async () => {
           :items="courseItems"
           value-key="value"
           class="w-full"
-          :placeholder="t('instructorHomeworks.course')"
+          :placeholder="t('instructorAssessments.course')"
         />
       </UFormField>
 
       <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <UFormField
-          :label="t('instructorHomeworks.start_date')"
+          :label="t('instructorAssessments.start_date')"
           name="start_at"
           required
-          :hint="lockStart ? t('instructorHomeworks.start_locked') : undefined"
+          :hint="lockStart ? t('instructorAssessments.start_locked') : undefined"
         >
           <UInput
             v-model="state.start_at"
@@ -149,7 +153,7 @@ onMounted(async () => {
         </UFormField>
 
         <UFormField
-          :label="t('instructorHomeworks.end_date')"
+          :label="t('instructorAssessments.end_date')"
           name="end_at"
           required
         >
@@ -164,10 +168,10 @@ onMounted(async () => {
 
       <UFormField
         v-if="showTypePicker"
-        :label="t('instructorHomeworks.test_type')"
+        :label="t(kindKey(kind, 'test_type'))"
         name="quiz_type"
         required
-        :hint="isEdit ? t('instructorHomeworks.type_locked') : undefined"
+        :hint="isEdit ? t('instructorAssessments.type_locked') : undefined"
       >
         <USelectMenu
           v-model="state.quiz_type"
@@ -180,7 +184,7 @@ onMounted(async () => {
 
       <UCheckbox
         v-model="state.random_question"
-        :label="t('instructorHomeworks.random_question')"
+        :label="t('instructorAssessments.random_question')"
       />
 
       <div class="flex justify-end">
@@ -189,7 +193,7 @@ onMounted(async () => {
           size="lg"
           :loading="store.isSubmitting"
         >
-          {{ isEdit ? t('instructorHomeworks.save') : t('instructorHomeworks.start') }}
+          {{ isEdit ? t('instructorAssessments.save') : t('instructorAssessments.start') }}
         </UButton>
       </div>
     </UForm>

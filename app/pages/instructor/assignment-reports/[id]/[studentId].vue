@@ -1,14 +1,12 @@
 <script setup lang="ts">
 definePageMeta({
   layout: 'dashboard',
-  title: 'instructorHomeworks.edit_title',
+  title: 'instructorAssessments.assignment.reports_title',
   middleware: 'role-guard',
   roles: ['instructor']
 })
-
-const route = useRoute()
 </script>
 
 <template>
-  <InstructorHomeworkForm :homework-id="String(route.params.homeworkId)" />
+  <InstructorAssessmentReportAnswers kind="assignment" />
 </template>

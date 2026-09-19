@@ -1,6 +1,6 @@
 // --- Level 1: one exam in the instructor's report list
 
-export interface InstructorExamReport {
+export interface AssessmentExamReport {
   id: string
   title: string
   publishedAt: string
@@ -12,7 +12,7 @@ export interface InstructorExamReport {
   mark: string
 }
 
-export interface RawInstructorExamReport {
+export interface RawAssessmentExamReport {
   id?: string | number
   title?: string
   published_at?: string
@@ -26,7 +26,7 @@ function text(value: unknown): string {
   return value == null || value === '' ? '' : String(value)
 }
 
-export function toInstructorExamReport(raw: RawInstructorExamReport): InstructorExamReport {
+export function toAssessmentExamReport(raw: RawAssessmentExamReport): AssessmentExamReport {
   return {
     id: String(raw.id ?? ''),
     title: raw.title ?? '',

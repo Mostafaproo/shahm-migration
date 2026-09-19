@@ -1,30 +1,35 @@
 <script setup lang="ts">
+import { assessmentConfig } from '~/types/assessmentKind'
+import type { AssessmentKind } from '~/types/assessmentKind'
 import { PER_PAGE_OPTIONS } from '~/utils/pagination'
 
-definePageMeta({
-  layout: 'dashboard',
-  title: 'instructorReports.page_title',
-  middleware: 'role-guard',
-  roles: ['instructor']
-})
+const props = defineProps<{ kind: AssessmentKind }>()
 
-const store = useInstructorHomeworkReportsStore()
+const config = computed(() => assessmentConfig(props.kind))
+
+
+const exportName = (what: string) =>
+  `Course-${props.kind === 'exam' ? 'Exam' : 'Homework'}-Students-${what}-Report.xls`
+
+const store = useInstructorAssessmentReportsStore()
 const route = useRoute()
 const localePath = useLocalePath()
 const { t } = useI18n()
 
-const examId = computed(() => String(route.params.id ?? ''))
+const assessmentId = computed(() => String(route.params.id ?? ''))
 const perPageItems = PER_PAGE_OPTIONS.map(n => ({ label: String(n), value: n }))
 
 const headings = computed(() => [
-  t('instructorReports.student_name'),
-  t('instructorReports.student_score'),
-  t('instructorReports.actions')
+  t('instructorAssessments.student_name'),
+  t('instructorAssessments.student_score'),
+  t('instructorAssessments.actions')
 ])
 
 onMounted(() => {
+  // The stores are singletons; each screen declares which kind it drives.
+  store.kind = props.kind
   store.resetStudents()
-  store.fetchStudents(examId.value, 1)
+  store.fetchStudents(assessmentId.value, 1)
 })
 </script>
 
@@ -32,13 +37,13 @@ onMounted(() => {
   <div class="space-y-5">
     <div class="flex flex-wrap items-center justify-between gap-3">
       <UButton
-        :to="localePath('/instructor/homework-reports')"
+        :to="localePath(config.reportsPath)"
         color="neutral"
         variant="ghost"
         icon="i-lucide-arrow-right"
         class="rtl:[&_span:first-child]:rotate-180"
       >
-        {{ t('instructorReports.back') }}
+        {{ t('instructorAssessments.back') }}
       </UButton>
 
       <div class="flex flex-wrap items-center gap-2">
@@ -49,32 +54,32 @@ onMounted(() => {
           variant="outline"
           icon="i-lucide-download"
           :loading="store.isExportingScores"
-          @click="store.exportScores(examId, 'Course-Homework-Students-Scores-Report.xls')"
+          @click="store.exportScores(assessmentId, exportName('Scores'))"
         >
-          {{ t('instructorReports.download') }}
+          {{ t('instructorAssessments.download') }}
         </UButton>
         <UButton
           color="neutral"
           variant="outline"
           icon="i-lucide-file-spreadsheet"
           :loading="store.isExportingGrades"
-          @click="store.exportGrades(examId, 'Course-Homework-Students-Grades-Report.xls')"
+          @click="store.exportGrades(assessmentId, exportName('Grades'))"
         >
-          {{ t('instructorReports.export_grades') }}
+          {{ t('instructorAssessments.export_grades') }}
         </UButton>
       </div>
     </div>
 
     <div class="flex items-center justify-end gap-2 text-sm text-muted">
-      <span>{{ t('instructorReports.show') }}</span>
+      <span>{{ t('instructorAssessments.show') }}</span>
       <USelectMenu
         :model-value="store.studentsPerPage"
         :items="perPageItems"
         value-key="value"
         class="w-24"
-        @update:model-value="value => store.setStudentsPerPage(examId, Number(value))"
+        @update:model-value="value => store.setStudentsPerPage(assessmentId, Number(value))"
       />
-      <span>{{ t('instructorReports.entries') }}</span>
+      <span>{{ t('instructorAssessments.entries') }}</span>
     </div>
 
     <template v-if="store.isLoadingStudents || store.students.length">
@@ -97,20 +102,20 @@ onMounted(() => {
             <UButton
               v-if="student.attended"
               :to="localePath({
-                path: `/instructor/homework-reports/${examId}/${student.id}`,
+                path: `${config.reportsPath}/${assessmentId}/${student.id}`,
                 query: { student_name: student.name }
               })"
               size="xs"
               variant="soft"
               icon="i-lucide-file-search"
             >
-              {{ t('instructorReports.view_answers') }}
+              {{ t('instructorAssessments.view_answers') }}
             </UButton>
             <span
               v-else
               class="text-sm text-muted"
             >
-              {{ t('instructorReports.not_attended') }}
+              {{ t('instructorAssessments.not_attended') }}
             </span>
           </td>
         </tr>
@@ -121,7 +126,7 @@ onMounted(() => {
         :total="store.studentsTotal"
         :per-page="store.studentsPerPage"
         :total-pages="store.studentsTotalPages"
-        @update:page="p => store.fetchStudents(examId, p)"
+        @update:page="p => store.fetchStudents(assessmentId, p)"
       />
     </template>
 
@@ -129,7 +134,7 @@ onMounted(() => {
       v-else
       class="rounded-xl border border-default bg-default py-16 text-center text-muted"
     >
-      {{ t('instructorReports.no_students') }}
+      {{ t('instructorAssessments.no_students') }}
     </p>
   </div>
 </template>

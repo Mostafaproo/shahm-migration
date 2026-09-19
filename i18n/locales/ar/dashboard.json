@@ -11,7 +11,9 @@
       "computerized": "الاختبار المحوسب",
       "media_library": "مكتبة الوسائط",
       "exam_reports": "تقارير الاختبارات",
-      "exams": "الاختبارات"
+      "exams": "الاختبارات",
+      "assignments": "الواجبات",
+      "assignment_reports": "تقارير الواجبات"
     },
     "logout": "تسجيل خروج",
     "open_sidebar": "فتح القائمة الجانبية",

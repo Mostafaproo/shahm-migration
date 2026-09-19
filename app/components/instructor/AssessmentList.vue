@@ -1,15 +1,14 @@
 <script setup lang="ts">
+import { assessmentConfig, kindKey } from '~/types/assessmentKind'
+import type { AssessmentKind } from '~/types/assessmentKind'
 import { PER_PAGE_OPTIONS } from '~/utils/pagination'
-import type { InstructorHomework } from '~/types/instructorHomework'
+import type { InstructorAssessment } from '~/types/instructorAssessment'
 
-definePageMeta({
-  layout: 'dashboard',
-  title: 'instructorHomeworks.page_title',
-  middleware: 'role-guard',
-  roles: ['instructor']
-})
+const props = defineProps<{ kind: AssessmentKind }>()
 
-const store = useInstructorHomeworksStore()
+const config = computed(() => assessmentConfig(props.kind))
+
+const store = useInstructorAssessmentsStore()
 const coursesStore = useInstructorCoursesStore()
 const localePath = useLocalePath()
 const { t } = useI18n()
@@ -17,29 +16,29 @@ const { t } = useI18n()
 const perPageItems = PER_PAGE_OPTIONS.map(n => ({ label: String(n), value: n }))
 
 const courseItems = computed(() => [
-  { label: t('instructorHomeworks.all_courses'), value: null as string | null },
+  { label: t('instructorAssessments.all_courses'), value: null as string | null },
   ...coursesStore.courses.map(c => ({ label: c.name, value: c.id as string | null }))
 ])
 
 const headings = computed(() => [
-  t('instructorHomeworks.exam_title'),
-  t('instructorHomeworks.published_at'),
-  t('instructorHomeworks.start_date'),
-  t('instructorHomeworks.end_date'),
-  t('instructorHomeworks.actions')
+  t(kindKey(props.kind, 'title_label')),
+  t('instructorAssessments.published_at'),
+  t('instructorAssessments.start_date'),
+  t('instructorAssessments.end_date'),
+  t('instructorAssessments.actions')
 ])
 
-function can(row: InstructorHomework, key: string): boolean {
+function can(row: InstructorAssessment, key: string): boolean {
   return row.actions.some(a => a.key === key)
 }
 
 // --- confirm before publishing or deleting, as the legacy popconfirm does
-type Pending = { row: InstructorHomework, kind: 'publish' | 'unpublish' | 'delete' }
+type Pending = { row: InstructorAssessment, action: 'publish' | 'unpublish' | 'delete' }
 const pending = ref<Pending | null>(null)
 
 const confirmText = computed(() => {
   if (!pending.value) return ''
-  return t(`instructorHomeworks.confirm.${pending.value.kind}`)
+  return t(kindKey(props.kind, `confirm_${pending.value.action}`))
 })
 
 async function confirmAction() {
@@ -47,7 +46,7 @@ async function confirmAction() {
   if (!job) return
   pending.value = null
 
-  const ok = job.kind === 'delete'
+  const ok = job.action === 'delete'
     ? await store.remove(job.row.id)
     : await store.publish(job.row.id)
 
@@ -57,6 +56,8 @@ async function confirmAction() {
 const route = useRoute()
 
 onMounted(() => {
+  // The stores are singletons; each screen declares which kind it drives.
+  store.kind = props.kind
   // Publishing from the builder sends you here with `?course_id=`. The legacy
   // set that query too but never read it, so the filter came back empty.
   const fromQuery = route.query.course_id
@@ -75,13 +76,13 @@ onMounted(() => {
         :items="courseItems"
         value-key="value"
         class="w-full sm:w-72"
-        :placeholder="t('instructorHomeworks.filter_course')"
+        :placeholder="t('instructorAssessments.filter_course')"
         @update:model-value="value => store.setCourse((value as string | null) ?? null)"
       />
 
       <div class="flex flex-wrap items-center gap-3">
         <div class="flex items-center gap-2 text-sm text-muted">
-          <span>{{ t('instructorHomeworks.show') }}</span>
+          <span>{{ t('instructorAssessments.show') }}</span>
           <USelectMenu
             :model-value="store.perPage"
             :items="perPageItems"
@@ -89,14 +90,14 @@ onMounted(() => {
             class="w-24"
             @update:model-value="value => store.setPerPage(Number(value))"
           />
-          <span>{{ t('instructorHomeworks.entries') }}</span>
+          <span>{{ t('instructorAssessments.entries') }}</span>
         </div>
 
         <UButton
-          :to="localePath('/instructor/homeworks/create')"
+          :to="localePath(`${config.authoringPath}/create`)"
           icon="i-lucide-plus"
         >
-          {{ t('instructorHomeworks.create_title') }}
+          {{ t(kindKey(kind, 'create_title')) }}
         </UButton>
       </div>
     </div>
@@ -131,9 +132,9 @@ onMounted(() => {
                 color="info"
                 icon="i-lucide-send"
                 :loading="store.isBusy(`publish:${row.id}`)"
-                @click="pending = { row, kind: 'publish' }"
+                @click="pending = { row, action: 'publish' }"
               >
-                {{ t('instructorHomeworks.publish') }}
+                {{ t('instructorAssessments.publish') }}
               </UButton>
 
               <UButton
@@ -143,19 +144,19 @@ onMounted(() => {
                 color="warning"
                 icon="i-lucide-undo-2"
                 :loading="store.isBusy(`publish:${row.id}`)"
-                @click="pending = { row, kind: 'unpublish' }"
+                @click="pending = { row, action: 'unpublish' }"
               >
-                {{ t('instructorHomeworks.unpublish') }}
+                {{ t('instructorAssessments.unpublish') }}
               </UButton>
 
               <UButton
                 v-if="can(row, 'edit_homework')"
-                :to="localePath(`/instructor/homeworks/${row.courseId}/${row.id}`)"
+                :to="localePath(`${config.authoringPath}/${row.courseId}/${row.id}`)"
                 size="xs"
                 variant="soft"
                 icon="i-lucide-pencil"
               >
-                {{ t('instructorHomeworks.edit') }}
+                {{ t(kindKey(kind, 'edit')) }}
               </UButton>
 
               <UButton
@@ -165,9 +166,9 @@ onMounted(() => {
                 color="error"
                 icon="i-lucide-trash-2"
                 :loading="store.isBusy(`delete:${row.id}`)"
-                @click="pending = { row, kind: 'delete' }"
+                @click="pending = { row, action: 'delete' }"
               >
-                {{ t('instructorHomeworks.delete') }}
+                {{ t(kindKey(kind, 'delete')) }}
               </UButton>
             </div>
           </td>
@@ -188,8 +189,8 @@ onMounted(() => {
       class="rounded-xl border border-default bg-default py-16 text-center text-muted"
     >
       {{ store.courseId
-        ? t('instructorHomeworks.no_exams_in_course')
-        : t('instructorHomeworks.no_exams') }}
+        ? t(kindKey(kind, 'no_items_in_course'))
+        : t(kindKey(kind, 'no_items')) }}
     </p>
 
     <UModal
@@ -204,13 +205,13 @@ onMounted(() => {
             variant="ghost"
             @click="pending = null"
           >
-            {{ t('instructorHomeworks.no') }}
+            {{ t('instructorAssessments.no') }}
           </UButton>
           <UButton
-            :color="pending?.kind === 'delete' ? 'error' : 'primary'"
+            :color="pending?.action === 'delete' ? 'error' : 'primary'"
             @click="confirmAction"
           >
-            {{ t('instructorHomeworks.yes') }}
+            {{ t('instructorAssessments.yes') }}
           </UButton>
         </div>
       </template>

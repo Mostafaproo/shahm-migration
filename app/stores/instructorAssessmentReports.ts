@@ -1,28 +1,31 @@
 import { defineStore } from 'pinia'
+import { assessmentConfig } from '~/types/assessmentKind'
+import type { AssessmentKind } from '~/types/assessmentKind'
 import { toReportQuestionLink } from '~/types/homeworkReport'
 import type { RawReportQuestionLink, ReportQuestionLink } from '~/types/homeworkReport'
 import {
   toExamStudentScore,
-  toInstructorExamReport
-} from '~/types/instructorHomeworkReport'
+  toAssessmentExamReport
+} from '~/types/instructorAssessmentReport'
 import type {
   ExamStudentScore,
-  InstructorExamReport,
+  AssessmentExamReport,
   RawExamStudentScore,
-  RawInstructorExamReport
-} from '~/types/instructorHomeworkReport'
+  RawAssessmentExamReport
+} from '~/types/instructorAssessmentReport'
 import type { HomeworkQuestion } from '~/types/homeworkQuestion'
 
 const BASE = 'general-quizzes/course-homework/instructor'
 
-const QUIZ_TYPES = 'quiz,final_exam'
-
-export const useInstructorHomeworkReportsStore = defineStore('instructorHomeworkReports', () => {
+export const useInstructorAssessmentReportsStore = defineStore('instructorAssessmentReports', () => {
   const http = useHttp()
   const nuxtApp = useNuxtApp()
 
   // --- Level 1: the exams
-  const exams = ref<InstructorExamReport[]>([])
+  /** Set by the page: exams and homework share these screens. */
+  const kind = ref<AssessmentKind>('exam')
+
+  const exams = ref<AssessmentExamReport[]>([])
   const courseId = ref<string | null>(null)
   const page = ref(1)
   const perPage = ref(10)
@@ -60,8 +63,8 @@ export const useInstructorHomeworkReportsStore = defineStore('instructorHomework
     isLoading.value = true
     try {
       const res = await http.get<{
-        data?: RawInstructorExamReport[] | {
-          data?: RawInstructorExamReport[]
+        data?: RawAssessmentExamReport[] | {
+          data?: RawAssessmentExamReport[]
           meta?: { pagination?: Record<string, number> }
         }
         meta?: { pagination?: Record<string, number> }
@@ -69,7 +72,7 @@ export const useInstructorHomeworkReportsStore = defineStore('instructorHomework
         query: {
           page: targetPage,
           per_page: perPage.value,
-          quiz_type: QUIZ_TYPES,
+          quiz_type: assessmentConfig(kind.value).quizTypes,
           report: true,
           // Omitted entirely for "all courses" — the legacy has no explicit
           // all-courses value, clearing the picker just drops the param.
@@ -79,7 +82,7 @@ export const useInstructorHomeworkReportsStore = defineStore('instructorHomework
 
       const doc = res?.data
       const rows = Array.isArray(doc) ? doc : (doc?.data ?? [])
-      exams.value = rows.map(toInstructorExamReport)
+      exams.value = rows.map(toAssessmentExamReport)
 
       const pagination = (Array.isArray(doc) ? undefined : doc?.meta?.pagination)
         ?? res?.meta?.pagination
@@ -266,6 +269,7 @@ export const useInstructorHomeworkReportsStore = defineStore('instructorHomework
   }
 
   return {
+    kind,
     exams,
     courseId,
     page,

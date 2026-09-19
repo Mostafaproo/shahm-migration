@@ -59,16 +59,32 @@ const STUDENT: DashboardNavItem[] = [
 
 const INSTRUCTOR: DashboardNavItem[] = [
   { label: 'dashboard.nav.courses', icon: 'i-lucide-book-open', to: '/instructor/courses' },
-  // The legacy groups the exam list and its reports under one heading.
+  // The legacy groups each kind's list with its own reports.
   {
     label: 'dashboard.nav.exams',
     icon: 'i-lucide-file-question',
     children: [
-      { label: 'dashboard.nav.exams', icon: 'i-lucide-file-question', to: '/instructor/homeworks' },
+      { label: 'dashboard.nav.exams', icon: 'i-lucide-file-question', to: '/instructor/exams' },
       {
         label: 'dashboard.nav.exam_reports',
         icon: 'i-lucide-history',
-        to: '/instructor/homework-reports'
+        to: '/instructor/exam-reports'
+      }
+    ]
+  },
+  {
+    label: 'dashboard.nav.assignments',
+    icon: 'i-lucide-notebook-pen',
+    children: [
+      {
+        label: 'dashboard.nav.assignments',
+        icon: 'i-lucide-notebook-pen',
+        to: '/instructor/assignments'
+      },
+      {
+        label: 'dashboard.nav.assignment_reports',
+        icon: 'i-lucide-clipboard-check',
+        to: '/instructor/assignment-reports'
       }
     ]
   },

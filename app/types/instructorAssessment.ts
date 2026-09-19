@@ -1,12 +1,10 @@
-
-
-export interface HomeworkAction {
+export interface AssessmentAction {
   key: string
   label: string
   endpointUrl: string
 }
 
-export interface InstructorHomework {
+export interface InstructorAssessment {
   id: string
   title: string
   publishedAt: string
@@ -19,16 +17,16 @@ export interface InstructorHomework {
   courseId: string
   courseName: string
   /** Drives every row button — the backend decides what this user may do. */
-  actions: HomeworkAction[]
+  actions: AssessmentAction[]
 }
 
-export interface RawHomeworkAction {
+export interface RawAssessmentAction {
   key?: string
   label?: string
   endpoint_url?: string
 }
 
-export interface RawInstructorHomework {
+export interface RawInstructorAssessment {
   id?: string | number
   title?: string
   published_at?: string
@@ -38,10 +36,10 @@ export interface RawInstructorHomework {
   random_question?: boolean
   quiz_type?: string
   course?: { data?: { id?: string | number, name?: string } }
-  actions?: { data?: RawHomeworkAction[] }
+  actions?: { data?: RawAssessmentAction[] }
 }
 
-export function toInstructorHomework(raw: RawInstructorHomework): InstructorHomework {
+export function toInstructorAssessment(raw: RawInstructorAssessment): InstructorAssessment {
   const course = raw.course?.data
   return {
     id: String(raw.id ?? ''),
@@ -62,23 +60,23 @@ export function toInstructorHomework(raw: RawInstructorHomework): InstructorHome
   }
 }
 
-export function hasAction(homework: InstructorHomework | null, key: string): boolean {
+export function hasAction(homework: InstructorAssessment | null, key: string): boolean {
   return Boolean(homework?.actions.some(a => a.key === key))
 }
 
 // --- The question list on the builder page
 
-export interface HomeworkQuestionRow {
+export interface AssessmentQuestionRow {
   id: string
   description: string
 }
 
-export interface RawHomeworkQuestionRow {
+export interface RawAssessmentQuestionRow {
   id?: string | number
   questionData?: { data?: { description?: string, question?: string } }
 }
 
-export function toHomeworkQuestionRow(raw: RawHomeworkQuestionRow): HomeworkQuestionRow {
+export function toAssessmentQuestionRow(raw: RawAssessmentQuestionRow): AssessmentQuestionRow {
   const q = raw.questionData?.data
   return {
     id: String(raw.id ?? ''),
@@ -86,10 +84,7 @@ export function toHomeworkQuestionRow(raw: RawHomeworkQuestionRow): HomeworkQues
   }
 }
 
-/**
- * The seven types the builder offers, in the legacy's order. They are passed
- * straight through to the question app as a `questionType` query param.
- */
+
 export const BUILDER_QUESTION_TYPES = [
   'true_false',
   'true_false_with_correct',
