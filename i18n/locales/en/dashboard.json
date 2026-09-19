@@ -10,7 +10,8 @@
       "certificates": "Certificates",
       "computerized": "Computerized test",
       "media_library": "Media library",
-      "exam_reports": "Exam reports"
+      "exam_reports": "Exam reports",
+      "exams": "Exams"
     },
     "logout": "Sign out",
     "open_sidebar": "Open sidebar",

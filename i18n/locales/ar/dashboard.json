@@ -10,7 +10,8 @@
       "certificates": "الشهادات",
       "computerized": "الاختبار المحوسب",
       "media_library": "مكتبة الوسائط",
-      "exam_reports": "تقارير الاختبارات"
+      "exam_reports": "تقارير الاختبارات",
+      "exams": "الاختبارات"
     },
     "logout": "تسجيل خروج",
     "open_sidebar": "فتح القائمة الجانبية",

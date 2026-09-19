@@ -1,12 +1,25 @@
 import type { UserType } from './home'
 
-export interface DashboardNavItem {
+export interface DashboardNavLink {
   /** i18n key. */
   label: string
   icon: string
   to: string
   /** Hidden unless the tenant has this feature enabled. */
   feature?: string
+}
+
+export interface DashboardNavGroup {
+  label: string
+  icon: string
+  children: DashboardNavLink[]
+  feature?: string
+}
+
+export type DashboardNavItem = DashboardNavLink | DashboardNavGroup
+
+export function isNavGroup(item: DashboardNavItem): item is DashboardNavGroup {
+  return 'children' in item
 }
 
 /** Shown to every signed-in role, above the role-specific items. */
@@ -44,14 +57,20 @@ const STUDENT: DashboardNavItem[] = [
   }
 ]
 
-// Mirrors the legacy instructor sidebar. Entries are added as each module is
-// migrated — an unmigrated one would only be a dead link.
 const INSTRUCTOR: DashboardNavItem[] = [
   { label: 'dashboard.nav.courses', icon: 'i-lucide-book-open', to: '/instructor/courses' },
+  // The legacy groups the exam list and its reports under one heading.
   {
-    label: 'dashboard.nav.exam_reports',
-    icon: 'i-lucide-clipboard-list',
-    to: '/instructor/homework-reports'
+    label: 'dashboard.nav.exams',
+    icon: 'i-lucide-file-question',
+    children: [
+      { label: 'dashboard.nav.exams', icon: 'i-lucide-file-question', to: '/instructor/homeworks' },
+      {
+        label: 'dashboard.nav.exam_reports',
+        icon: 'i-lucide-history',
+        to: '/instructor/homework-reports'
+      }
+    ]
   },
   { label: 'dashboard.nav.media_library', icon: 'i-lucide-folder-open', to: '/instructor/media-library' }
 ]
@@ -65,14 +84,17 @@ const BY_ROLE: Record<UserType, DashboardNavItem[]> = {
   parent: PARENT
 }
 
-/**
- * The sidebar for a role, already filtered by the tenant's features.
- * An unknown/absent role gets the shared items only — never another role's.
- */
 export function dashboardNav(
   userType: UserType | null | undefined,
   features: Record<string, boolean>
 ): DashboardNavItem[] {
-  const items = [...SHARED, ...(userType ? BY_ROLE[userType] ?? [] : [])]
-  return items.filter(item => !item.feature || features[item.feature])
+  const enabled = (item: { feature?: string }) => !item.feature || features[item.feature]
+
+  return [...SHARED, ...(userType ? BY_ROLE[userType] ?? [] : [])]
+    .filter(enabled)
+    .map(item => (isNavGroup(item)
+      ? { ...item, children: item.children.filter(enabled) }
+      : item))
+    // A group whose every child is feature-gated off is an empty heading.
+    .filter(item => !isNavGroup(item) || item.children.length > 0)
 }
