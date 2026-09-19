@@ -18,8 +18,7 @@
     "view_answers": "عرض الإجابات",
     "not_attended": "لم يختبر بعد",
     "no_students": "لا يوجد طلاب لهذا الاختبار",
-    "export_scores": "تصدير الدرجات",
-    "export_grades": "تصدير درجات الأسئلة",
+    "export_grades": "تصدير بدرجات الاسئلة",
     "back": "رجوع",
     "back_to_students": "رجوع لقائمة الطلاب",
     "no_answers": "لا توجد إجابات",
@@ -30,6 +29,8 @@
     "grade_saved": "تم حفظ الدرجة بنجاح",
     "already_graded": "تم تصحيح هذه الإجابة",
     "grade_min": "الدرجة لا يمكن أن تكون بالسالب",
-    "grade_max": "الحد الأقصى للدرجة هو {max}"
+    "grade_max": "الحد الأقصى للدرجة هو {max}",
+    "actions": "الاجراءات",
+    "download": "تحميل"
   }
 }

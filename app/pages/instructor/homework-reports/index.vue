@@ -27,7 +27,7 @@ const headings = computed(() => [
   t('instructorReports.end_date'),
   t('instructorReports.average'),
   t('instructorReports.total_grade'),
-  ''
+  t('instructorReports.actions')
 ])
 
 onMounted(() => {

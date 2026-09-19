@@ -19,7 +19,7 @@ const perPageItems = PER_PAGE_OPTIONS.map(n => ({ label: String(n), value: n }))
 const headings = computed(() => [
   t('instructorReports.student_name'),
   t('instructorReports.student_score'),
-  ''
+  t('instructorReports.actions')
 ])
 
 onMounted(() => {
@@ -42,20 +42,22 @@ onMounted(() => {
       </UButton>
 
       <div class="flex flex-wrap items-center gap-2">
+        <!-- Same two labels and icons as the legacy, and a busy flag each:
+             one shared flag spins both buttons for a single export. -->
         <UButton
           color="neutral"
           variant="outline"
-          icon="i-lucide-file-spreadsheet"
-          :loading="store.isExporting"
+          icon="i-lucide-download"
+          :loading="store.isExportingScores"
           @click="store.exportScores(examId, 'Course-Homework-Students-Scores-Report.xls')"
         >
-          {{ t('instructorReports.export_scores') }}
+          {{ t('instructorReports.download') }}
         </UButton>
         <UButton
           color="neutral"
           variant="outline"
           icon="i-lucide-file-spreadsheet"
-          :loading="store.isExporting"
+          :loading="store.isExportingGrades"
           @click="store.exportGrades(examId, 'Course-Homework-Students-Grades-Report.xls')"
         >
           {{ t('instructorReports.export_grades') }}

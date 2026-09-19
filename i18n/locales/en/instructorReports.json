@@ -18,8 +18,7 @@
     "view_answers": "View answers",
     "not_attended": "Did not attend",
     "no_students": "No students for this exam",
-    "export_scores": "Export scores",
-    "export_grades": "Export question grades",
+    "export_grades": "Export Grades",
     "back": "Back",
     "back_to_students": "Back to students",
     "no_answers": "No answers",
@@ -30,6 +29,8 @@
     "grade_saved": "Grade saved successfully",
     "already_graded": "This answer has been graded",
     "grade_min": "The score cannot be negative",
-    "grade_max": "The maximum score is {max}"
+    "grade_max": "The maximum score is {max}",
+    "actions": "Actions",
+    "download": "Download"
   }
 }

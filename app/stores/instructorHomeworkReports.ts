@@ -37,7 +37,9 @@ export const useInstructorHomeworkReportsStore = defineStore('instructorHomework
   const studentsTotal = ref(0)
   const studentsTotalPages = ref(1)
   const isLoadingStudents = ref(false)
-  const isExporting = ref(false)
+  /** One flag per export, as in the legacy — a shared one spins both buttons. */
+  const isExportingScores = ref(false)
+  const isExportingGrades = ref(false)
 
   // --- Level 3: one student's answers
   const questionLinks = ref<ReportQuestionLink[]>([])
@@ -145,19 +147,21 @@ export const useInstructorHomeworkReportsStore = defineStore('instructorHomework
   async function exportScores(homeworkId: string, filename: string) {
     await runExport(
       `${locale()}/${BASE}/${homeworkId}/export-students-scores`,
-      filename
+      filename,
+      isExportingScores
     )
   }
 
   async function exportGrades(homeworkId: string, filename: string) {
     await runExport(
       `${locale()}/${BASE}/export/students-grades/${homeworkId}`,
-      filename
+      filename,
+      isExportingGrades
     )
   }
 
-  async function runExport(url: string, filename: string) {
-    isExporting.value = true
+  async function runExport(url: string, filename: string, busy: Ref<boolean>) {
+    busy.value = true
     try {
       const blob = await http.download(url, {
         query: {
@@ -170,7 +174,7 @@ export const useInstructorHomeworkReportsStore = defineStore('instructorHomework
     } catch {
       // The http client already surfaced the error toast.
     } finally {
-      isExporting.value = false
+      busy.value = false
     }
   }
 
@@ -275,7 +279,8 @@ export const useInstructorHomeworkReportsStore = defineStore('instructorHomework
     studentsTotal,
     studentsTotalPages,
     isLoadingStudents,
-    isExporting,
+    isExportingScores,
+    isExportingGrades,
     questionLinks,
     activeIndex,
     question,
