@@ -53,13 +53,20 @@ export interface HomeworkQuestion {
   is_correct_answer?: boolean
   is_true?: boolean
   question_feedback?: string
+  /** Marks this question is out of — the ceiling on an essay grade. */
+  score?: number | string
   /** Previous attempt, choice-style questions. */
   selected_options?: { answer_id?: string }[]
   /** Previous attempt, free-text / true-false questions. */
   student_answer?: {
+    /** The answer row's own id, which the essay-grading PUT is keyed by. */
+    id?: string | number
     answer_text?: string
     answer_text_true_false?: boolean
     option_id?: string
+    /** True once an instructor has already scored this essay. */
+    is_reviewed?: boolean
+    score?: number | string
   }[]
 }
 

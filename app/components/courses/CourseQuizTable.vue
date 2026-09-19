@@ -54,18 +54,7 @@ watch(
 
 <template>
   <div class="space-y-4">
-    <div
-      v-if="store.isLoading && !rows.length"
-      class="space-y-2"
-    >
-      <USkeleton
-        v-for="n in 5"
-        :key="n"
-        class="h-12 w-full"
-      />
-    </div>
-
-    <template v-else-if="rows.length">
+    <template v-if="store.isLoading || rows.length">
       <div class="flex items-center justify-end gap-2 text-sm text-muted">
         <span>{{ t('quizzes.show') }}</span>
         <USelectMenu
@@ -78,7 +67,10 @@ watch(
         <span>{{ t('quizzes.entries') }}</span>
       </div>
 
-      <SharedDataDisplayAppTable :headings="[titleLabel, t('quizzes.start_date'), t('quizzes.end_date'), t('quizzes.status'), t('quizzes.actions')]">
+      <SharedDataDisplayAppTable
+        :headings="[titleLabel, t('quizzes.start_date'), t('quizzes.end_date'), t('quizzes.status'), t('quizzes.actions')]"
+        :loading="store.isLoading"
+      >
         <tr
           v-for="{ quiz, action } in rows"
           :key="quiz.id"

@@ -1,34 +1,41 @@
 <script setup lang="ts">
-import { useHomeworkReportsStore } from '~/stores/homeworkReports'
-
 definePageMeta({
-  layout: 'dashboard', title: 'reports.page_title',
+  layout: 'dashboard',
+  title: 'instructorReports.page_title',
   middleware: 'role-guard',
-  roles: ['student']
+  roles: ['instructor']
 })
 
+const store = useInstructorHomeworkReportsStore()
 const route = useRoute()
-const store = useHomeworkReportsStore()
 const localePath = useLocalePath()
 const { t } = useI18n()
+const { $appToast: toast } = useNuxtApp()
 
-const homeworkName = computed(() => String(route.query.homework_name ?? ''))
-const backLink = computed(() => localePath('/student/homework-reports'))
+const examId = computed(() => String(route.params.id ?? ''))
+const studentId = computed(() => String(route.params.studentId ?? ''))
+const studentName = computed(() => String(route.query.student_name ?? ''))
 
-const total = computed(() => store.questionLinks.length)
-const isLast = computed(() => store.activeIndex >= total.value - 1)
+const backLink = computed(() => localePath(`/instructor/homework-reports/${examId.value}`))
+const isLast = computed(() => store.activeIndex >= store.totalQuestions - 1)
 
-// Review is read-only; the renderer still needs a model, so this is a sink.
+// The renderer is read-only here but still needs a model, so this is a sink.
 const answerSink = ref(null)
 
 function go(index: number) {
-  if (index < 0 || index >= total.value || store.isLoadingFeedback) return
+  if (index < 0 || index >= store.totalQuestions || store.isLoadingFeedback) return
   store.fetchQuestion(index)
+}
+
+async function grade(payload: { answerId: string, score: number }) {
+  const message = await store.gradeEssay(examId.value, payload.answerId, payload.score)
+  if (message === null) return
+  toast.success(message || t('instructorReports.grade_saved'))
 }
 
 onMounted(() => {
   store.resetFeedback()
-  store.fetchFeedback(String(route.params.id))
+  store.fetchFeedback(examId.value, studentId.value)
 })
 
 onBeforeUnmount(() => store.resetFeedback())
@@ -45,14 +52,14 @@ onBeforeUnmount(() => store.resetFeedback())
         icon="i-lucide-arrow-right"
         class="ltr:[&_span:first-child]:rotate-180"
       >
-        {{ t('reports.back') }}
+        {{ t('instructorReports.back_to_students') }}
       </UButton>
 
       <p
-        v-if="homeworkName"
+        v-if="studentName"
         class="font-medium"
       >
-        {{ homeworkName }}
+        {{ studentName }}
       </p>
     </div>
 
@@ -73,7 +80,7 @@ onBeforeUnmount(() => store.resetFeedback())
         v-else-if="!store.question"
         class="py-16 text-center text-muted"
       >
-        {{ t('reports.no_answers') }}
+        {{ t('instructorReports.no_answers') }}
       </p>
 
       <div
@@ -81,13 +88,22 @@ onBeforeUnmount(() => store.resetFeedback())
         class="space-y-6"
       >
         <p class="text-sm text-muted">
-          {{ t('questions.counter', { current: store.activeIndex + 1, total }) }}
+          {{ t('questions.counter', {
+            current: store.activeIndex + 1,
+            total: store.totalQuestions
+          }) }}
         </p>
 
         <QuestionsQuestionRenderer
           v-model="answerSink"
           :question="store.question"
           feedback
+        />
+
+        <QuestionsQuestionEssayGrade
+          :question="store.question"
+          :saving="store.isSavingGrade"
+          @submit="grade"
         />
 
         <div class="flex flex-wrap items-center justify-between gap-3 border-t border-default pt-4">
@@ -119,11 +135,11 @@ onBeforeUnmount(() => store.resetFeedback())
       </div>
     </div>
 
-    <!-- Question navigator — green/red shows how each one was graded. -->
     <QuestionsQuestionNavigator
       :links="store.questionLinks"
       :active-index="store.activeIndex"
       :disabled="store.isLoadingFeedback"
+      show-legend
       @select="go"
     />
   </div>

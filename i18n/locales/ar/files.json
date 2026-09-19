@@ -12,6 +12,16 @@
     "all_types": "كل الأنواع",
     "load_more": "عرض المزيد",
     "no_files": "لا يوجد ملفات",
-    "deleted_successfully": "تم الحذف بنجاح"
+    "deleted_successfully": "تم الحذف بنجاح",
+    "media_library": "مكتبة الوسائط",
+    "course": "الدورة",
+    "all_courses": "كل الدورات",
+    "choose_course": "اختر الدورة",
+    "file_type": "نوع الملف",
+    "start_date": "من تاريخ",
+    "end_date": "إلى تاريخ",
+    "download_count": "عدد التحميلات",
+    "no_media": "لا توجد ملفات",
+    "reset_filters": "إعادة تعيين"
   }
 }

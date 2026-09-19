@@ -8,7 +8,9 @@
       "invitations": "اولياء الامور",
       "pathways": "المسارات التعليمية",
       "certificates": "الشهادات",
-      "computerized": "الاختبار المحوسب"
+      "computerized": "الاختبار المحوسب",
+      "media_library": "مكتبة الوسائط",
+      "exam_reports": "تقارير الاختبارات"
     },
     "logout": "تسجيل خروج",
     "open_sidebar": "فتح القائمة الجانبية",

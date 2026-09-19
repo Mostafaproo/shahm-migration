@@ -68,18 +68,23 @@ export interface ReportQuestionLink {
   id: string
   endpointUrl: string
   isCorrect: boolean | null
+  isAnswered: boolean
 }
 
 export interface RawReportQuestionLink {
   id?: string | number
   is_correct_answer?: boolean | null
+  is_correct?: boolean | null
+  is_answered?: boolean
   actions?: { data?: { endpoint_url?: string }[] }
 }
 
 export function toReportQuestionLink(raw: RawReportQuestionLink): ReportQuestionLink {
+  const isCorrect = raw.is_correct_answer ?? raw.is_correct ?? null
   return {
     id: String(raw.id ?? ''),
     endpointUrl: raw.actions?.data?.[0]?.endpoint_url ?? '',
-    isCorrect: raw.is_correct_answer ?? null
+    isCorrect,
+    isAnswered: raw.is_answered ?? isCorrect != null
   }
 }

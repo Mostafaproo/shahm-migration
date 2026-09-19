@@ -10,10 +10,20 @@
 //
 // For action-driven CRUD grids use `AppCrudDataTable` instead; this is for the
 // hand-built tables (quizzes, files, reports).
-defineProps<{
+withDefaults(defineProps<{
   /** Column headings, already localized. An empty string renders a blank cell. */
   headings: string[]
-}>()
+  /**
+   * Swaps the rows for placeholders while keeping the header and the shell in
+   * place. A skeleton block rendered *instead of* the table makes the whole
+   * page jump the moment data lands, and says nothing about what is coming.
+   */
+  loading?: boolean
+  loadingRows?: number
+}>(), {
+  loading: false,
+  loadingRows: 6
+})
 </script>
 
 <template>
@@ -31,7 +41,21 @@ defineProps<{
         </tr>
       </thead>
       <tbody class="divide-y divide-default">
-        <slot />
+        <template v-if="loading">
+          <tr
+            v-for="row in loadingRows"
+            :key="`skeleton-${row}`"
+          >
+            <td
+              v-for="(heading, index) in headings"
+              :key="index"
+              class="p-4"
+            >
+              <USkeleton class="h-4 w-full" />
+            </td>
+          </tr>
+        </template>
+        <slot v-else />
       </tbody>
     </table>
   </div>

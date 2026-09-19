@@ -86,7 +86,10 @@ watch(courseId, (id) => {
 
 <template>
   <div class="space-y-5">
-    <div class="flex justify-center">
+    <div
+      v-if="TABS.length > 1"
+      class="flex justify-center"
+    >
       <div class="flex max-w-full gap-1 overflow-x-auto rounded-full bg-elevated p-1">
         <button
           v-for="item in TABS"

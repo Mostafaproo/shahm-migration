@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { detachAction, readExtensionFilters, toMediaFile } from '~/types/media'
+import { detachAction, readMetaFilter, toMediaFile } from '~/types/media'
 import type { MediaFile, MediaFilterOption, RawMediaFile, RawMetaFilter } from '~/types/media'
 
 export type FileManagerVariant = 'student' | 'instructor'
@@ -20,6 +20,13 @@ export const useCourseFilesStore = defineStore('courseFiles', () => {
   const currentCourseId = ref('')
   const busyIds = ref<Set<string>>(new Set())
 
+  // --- media-library only. The library hits the SAME instructor list endpoint
+  // with no course segment (all courses) and adds a date range, so these stay
+  // empty on the course-scoped Files tab.
+  const courseOptions = ref<MediaFilterOption[]>([])
+  const from = ref('')
+  const to = ref('')
+
   const page = ref(1)
   const totalPages = ref(1)
   const isLoading = ref(false)
@@ -34,18 +41,24 @@ export const useCourseFilesStore = defineStore('courseFiles', () => {
     const res = await http.get<{
       data?: RawMediaFile[] | { data?: RawMediaFile[] }
       meta?: { pagination?: { current_page?: number, total_pages?: number }, filters?: RawMetaFilter[] }
-    }>(`${locale()}/${ENDPOINTS[variant.value]}/${courseId}`, {
+    // No course id at all is the media library's "every course" case — the
+    // segment is genuinely optional on this endpoint, it is not a "/0".
+    }>(`${locale()}/${ENDPOINTS[variant.value]}${courseId ? `/${courseId}` : ''}`, {
       query: {
         page: targetPage,
-        ...(extension.value && { extension: extension.value })
+        ...(extension.value && { extension: extension.value }),
+        ...(from.value && { from: from.value }),
+        ...(to.value && { to: to.value })
       }
     })
 
     const doc = res?.data
     const rows = Array.isArray(doc) ? doc : (doc?.data ?? [])
 
-    const options = readExtensionFilters(res?.meta?.filters)
+    const options = readMetaFilter(res?.meta?.filters, 'extension')
     if (options.length) filterOptions.value = options
+    const courses = readMetaFilter(res?.meta?.filters, 'course_name')
+    if (courses.length) courseOptions.value = courses
 
     const pagination = res?.meta?.pagination
     page.value = pagination?.current_page ?? targetPage
@@ -85,6 +98,19 @@ export const useCourseFilesStore = defineStore('courseFiles', () => {
   async function setExtension(courseId: string, next: string | null) {
     extension.value = next
     await fetchList(courseId, variant.value)
+  }
+
+  async function setLibraryFilters(next: {
+    courseId?: string
+    extension?: string | null
+    from?: string
+    to?: string
+  }) {
+    if (next.courseId !== undefined) currentCourseId.value = next.courseId
+    if (next.extension !== undefined) extension.value = next.extension
+    if (next.from !== undefined) from.value = next.from
+    if (next.to !== undefined) to.value = next.to
+    await fetchList(currentCourseId.value, 'instructor')
   }
 
   function isBusy(key: string): boolean {
@@ -232,6 +258,9 @@ export const useCourseFilesStore = defineStore('courseFiles', () => {
     items.value = []
     filterOptions.value = []
     extension.value = null
+    courseOptions.value = []
+    from.value = ''
+    to.value = ''
     currentCourseId.value = ''
     page.value = 1
     totalPages.value = 1
@@ -251,6 +280,10 @@ export const useCourseFilesStore = defineStore('courseFiles', () => {
     fetchList,
     loadMore,
     setExtension,
+    setLibraryFilters,
+    courseOptions,
+    from,
+    to,
     toggleActive,
     detach,
     attachMedia,

@@ -12,6 +12,16 @@
     "all_types": "All types",
     "load_more": "Load more",
     "no_files": "No files available",
-    "deleted_successfully": "Deleted successfully"
+    "deleted_successfully": "Deleted successfully",
+    "media_library": "Media library",
+    "course": "Course",
+    "all_courses": "All courses",
+    "choose_course": "Choose a course",
+    "file_type": "File type",
+    "start_date": "From",
+    "end_date": "To",
+    "download_count": "Downloads",
+    "no_media": "No files available",
+    "reset_filters": "Reset filters"
   }
 }

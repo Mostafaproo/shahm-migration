@@ -13,6 +13,9 @@ export interface MediaFile {
   extension: string
   /** Instructor view only: whether students can see the file. */
   active: boolean
+  /** Media-library only: which course the file hangs off. */
+  courseTitle: string
+  downloadsCount: number
   actions: MediaAction[]
 }
 
@@ -24,6 +27,8 @@ export interface RawMediaFile {
   extension?: string
   icon?: string
   active?: boolean
+  course_title?: string
+  downloads_count?: number | string
   actions?: { data?: { key?: string, method?: string, endpoint_url?: string }[] }
 }
 
@@ -50,6 +55,8 @@ export function toMediaFile(raw: RawMediaFile): MediaFile {
     url: raw.url ?? '',
     extension: (extension ?? '').toUpperCase(),
     active: Boolean(raw.active),
+    courseTitle: raw.course_title ?? '',
+    downloadsCount: Number(raw.downloads_count ?? 0) || 0,
     actions: (raw.actions?.data ?? []).map(a => ({
       key: a.key ?? '',
       method: (a.method ?? 'GET').toUpperCase(),
@@ -72,8 +79,8 @@ export interface RawMetaFilter {
   data?: { key?: string | number, value?: string }[]
 }
 
-export function readExtensionFilters(filters?: RawMetaFilter[]): MediaFilterOption[] {
-  const entry = (filters ?? []).find(f => f.name === 'extension')
+export function readMetaFilter(filters: RawMetaFilter[] | undefined, name: string): MediaFilterOption[] {
+  const entry = (filters ?? []).find(f => f.name === name)
   return (entry?.data ?? []).map(o => ({
     key: String(o.key ?? ''),
     value: o.value ?? ''

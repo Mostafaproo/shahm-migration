@@ -1,32 +1,42 @@
 <script setup lang="ts">
-import { assessmentTypeKey } from '~/types/homeworkReport'
 import { PER_PAGE_OPTIONS } from '~/utils/pagination'
-import { useHomeworkReportsStore } from '~/stores/homeworkReports'
 
 definePageMeta({
-  layout: 'dashboard', title: 'reports.page_title',
+  layout: 'dashboard',
+  title: 'instructorReports.page_title',
   middleware: 'role-guard',
-  roles: ['student']
+  roles: ['instructor']
 })
 
-const store = useHomeworkReportsStore()
+const store = useInstructorHomeworkReportsStore()
+const coursesStore = useInstructorCoursesStore()
 const localePath = useLocalePath()
 const { t } = useI18n()
 
 const perPageItems = PER_PAGE_OPTIONS.map(n => ({ label: String(n), value: n }))
 
 const courseItems = computed(() => [
-  { label: t('reports.all_courses'), value: null as string | null },
-  ...store.courseOptions.map(c => ({ label: c.title, value: c.id as string | null }))
+  { label: t('instructorReports.all_courses'), value: null as string | null },
+  ...coursesStore.courses.map(c => ({ label: c.name, value: c.id as string | null }))
 ])
 
-/** Localize the assessment type, falling back to the raw value like the legacy. */
-function typeLabel(raw: string): string {
-  const key = assessmentTypeKey(raw)
-  return key ? t(key) : raw
-}
+const headings = computed(() => [
+  t('instructorReports.exam_title'),
+  t('instructorReports.published_at'),
+  t('instructorReports.start_date'),
+  t('instructorReports.end_date'),
+  t('instructorReports.average'),
+  t('instructorReports.total_grade'),
+  ''
+])
 
-onMounted(() => store.fetchList(1))
+onMounted(() => {
+  store.fetchExams(1)
+  // Only page one, like the legacy — an instructor with more courses than one
+  // page cannot filter by the rest. Skipped when the courses page already
+  // loaded them, so its infinite scroll is not reset out from under it.
+  if (!coursesStore.courses.length) coursesStore.fetchCourses()
+})
 </script>
 
 <template>
@@ -37,12 +47,12 @@ onMounted(() => store.fetchList(1))
         :items="courseItems"
         value-key="value"
         class="w-full sm:w-72"
-        :placeholder="t('reports.filter_course')"
+        :placeholder="t('instructorReports.filter_course')"
         @update:model-value="value => store.setCourse((value as string | null) ?? null)"
       />
 
       <div class="flex items-center gap-2 text-sm text-muted">
-        <span>{{ t('reports.show') }}</span>
+        <span>{{ t('instructorReports.show') }}</span>
         <USelectMenu
           :model-value="store.perPage"
           :items="perPageItems"
@@ -50,57 +60,46 @@ onMounted(() => store.fetchList(1))
           class="w-24"
           @update:model-value="value => store.setPerPage(Number(value))"
         />
-        <span>{{ t('reports.entries') }}</span>
+        <span>{{ t('instructorReports.entries') }}</span>
       </div>
     </div>
 
-    <template v-if="store.isLoading || store.items.length">
+    <template v-if="store.isLoading || store.exams.length">
       <SharedDataDisplayAppTable
-        :headings="[
-          t('reports.title'),
-          t('reports.assessment_type'),
-          t('reports.start_date'),
-          t('reports.end_date'),
-          t('reports.grade'),
-          t('reports.actions')
-        ]"
+        :headings="headings"
         :loading="store.isLoading"
       >
         <tr
-          v-for="row in store.items"
-          :key="row.id"
+          v-for="exam in store.exams"
+          :key="exam.id"
         >
           <td class="p-4 font-medium">
-            {{ row.title }}
+            {{ exam.title }}
           </td>
           <td class="p-4 text-muted">
-            {{ typeLabel(row.assessmentType) || '—' }}
+            {{ exam.publishedAt || '—' }}
           </td>
           <td class="p-4 text-muted">
-            {{ row.startAt || '—' }}
+            {{ exam.startAt || '—' }}
           </td>
           <td class="p-4 text-muted">
-            {{ row.endAt || '—' }}
+            {{ exam.endAt || '—' }}
           </td>
-          <td class="p-4">
-            {{ row.score || '—' }}
+          <td class="p-4 text-muted">
+            {{ exam.average || '—' }}
           </td>
-          <td class="p-4">
+          <td class="p-4 text-muted">
+            {{ exam.mark || '—' }}
+          </td>
+          <td class="p-4 text-end">
             <UButton
-              v-if="row.hasAnswers"
+              :to="localePath(`/instructor/homework-reports/${exam.id}`)"
               size="xs"
               variant="soft"
-              :to="localePath({
-                path: `/student/homework-reports/${row.id}`,
-                query: { homework_name: row.title }
-              })"
+              icon="i-lucide-users"
             >
-              {{ t('reports.view_answers') }}
+              {{ t('instructorReports.view_students') }}
             </UButton>
-            <span
-              v-else
-              class="text-muted"
-            >{{ t('reports.not_attended') }}</span>
           </td>
         </tr>
       </SharedDataDisplayAppTable>
@@ -118,7 +117,7 @@ onMounted(() => store.fetchList(1))
       v-else
       class="rounded-xl border border-default bg-default py-16 text-center text-muted"
     >
-      {{ t('reports.no_reports') }}
+      {{ t('instructorReports.no_exams') }}
     </p>
   </div>
 </template>

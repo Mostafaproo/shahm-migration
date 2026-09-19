@@ -86,18 +86,7 @@ onBeforeUnmount(() => {
       {{ t('computerized.previous_attempts') }}
     </h2>
 
-    <div
-      v-if="store.isLoadingList && !store.exams.length"
-      class="space-y-2"
-    >
-      <USkeleton
-        v-for="n in 5"
-        :key="n"
-        class="h-12 w-full"
-      />
-    </div>
-
-    <template v-else-if="store.exams.length">
+    <template v-if="store.isLoadingList || store.exams.length">
       <SharedDataDisplayAppTable
         :headings="[
           t('computerized.serial'),
@@ -108,6 +97,7 @@ onBeforeUnmount(() => {
           t('computerized.time_spent_minutes'),
           t('computerized.actions')
         ]"
+        :loading="store.isLoadingList"
       >
         <tr
           v-for="(exam, index) in store.exams"

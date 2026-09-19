@@ -19,6 +19,10 @@
     "reset": "Reset",
     "all_placed": "All options have been placed",
     "unsupported_type": "This question type isn't supported yet ({type})",
-    "success_finish": "Exam finished Successfully"
+    "success_finish": "Exam finished Successfully",
+    "correct_answer": "Correct answer",
+    "wrong_answer": "Wrong answer",
+    "not_answered": "Not answered",
+    "explanation": "Explanation"
   }
 }

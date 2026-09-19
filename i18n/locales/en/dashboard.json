@@ -8,7 +8,9 @@
       "invitations": "Parents",
       "pathways": "Learning pathways",
       "certificates": "Certificates",
-      "computerized": "Computerized test"
+      "computerized": "Computerized test",
+      "media_library": "Media library",
+      "exam_reports": "Exam reports"
     },
     "logout": "Sign out",
     "open_sidebar": "Open sidebar",

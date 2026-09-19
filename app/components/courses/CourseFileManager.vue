@@ -72,19 +72,11 @@ watch(
       />
     </div>
 
-    <div
-      v-if="store.isLoading && !store.items.length"
-      class="space-y-2"
-    >
-      <USkeleton
-        v-for="n in 5"
-        :key="n"
-        class="h-14 w-full"
-      />
-    </div>
-
-    <template v-else-if="store.items.length">
-      <SharedDataDisplayAppTable :headings="headings">
+    <template v-if="store.isLoading || store.items.length">
+      <SharedDataDisplayAppTable
+        :headings="headings"
+        :loading="store.isLoading"
+      >
         <tr
           v-for="file in store.items"
           :key="file.id"
@@ -125,7 +117,7 @@ watch(
 
           <td class="p-4 text-end">
             <UButton
-              v-if="isStudent && file.url"
+              v-if="file.url"
               :to="file.url"
               target="_blank"
               external
