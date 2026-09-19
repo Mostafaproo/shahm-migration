@@ -7,17 +7,18 @@ import {
   type TenantSettingsResponse
 } from '~/core/http'
 
-/** Confirm/extend against real shaham endpoints once known. */
-const TENANT_HEADER_URL_PARTS = [
-  'auth/login',
-  'auth/register',
-  'translation/'
-] as const
+function isTenantApiUrl(url: string, tenantApiBase: string): boolean {
+  if (!tenantApiBase) return false
+  try {
+    if (!/^https?:\/\//i.test(url)) return true
+    return new URL(url).origin === new URL(tenantApiBase).origin
+  } catch {
+    return false
+  }
+}
 
 const SUPPORTED_LOCALES = ['en', 'ar'] as const
 
-/** i18n `strategy: 'prefix'` always puts the locale first — read it straight
- * off the path so this 'pre' plugin never has to wait on the i18n module. */
 function resolveLocaleFromPath(pathname: string): string {
   const first = pathname.split('/').filter(Boolean)[0]
   return (SUPPORTED_LOCALES as readonly string[]).includes(first ?? '') ? first! : 'ar'
@@ -93,9 +94,7 @@ export default defineNuxtPlugin({
       onRequest({ request, options }) {
         const headers = new Headers(options.headers as HeadersInit)
         const url = resolveRequestUrl(request, options as { baseURL?: string })
-        const needsTenantHeader = TENANT_HEADER_URL_PARTS.some(part =>
-          url.includes(part)
-        )
+        const needsTenantHeader = isTenantApiUrl(url, settings.env.BASE_URL ?? '')
 
         if (settings.settingsId && needsTenantHeader) {
           headers.set('X-Tenant-ID', settings.settingsId)

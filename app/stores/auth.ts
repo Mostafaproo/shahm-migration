@@ -3,6 +3,21 @@ import { defineStore } from 'pinia'
 import { decodeJwt, resolveAuthHomePath, toAuthUser } from '~/core/auth'
 import type { AuthContextData, AuthUser, UserType } from '~/core/auth'
 
+// ── Cookie helpers ──────────────────────────────────────────────────────────
+function writeRawCookie(name: string, value: string, opts: { path?: string, sameSite?: string, maxAge?: number } = {}) {
+  if (!import.meta.client) return
+  let str = `${encodeURIComponent(name)}=${encodeURIComponent(value)}`
+  if (opts.path) str += `; path=${opts.path}`
+  if (opts.sameSite) str += `; samesite=${opts.sameSite}`
+  if (opts.maxAge != null) str += `; max-age=${Math.floor(opts.maxAge)}`
+  document.cookie = str
+}
+
+function deleteRawCookie(name: string, path = '/') {
+  if (!import.meta.client) return
+  document.cookie = `${encodeURIComponent(name)}=; path=${path}; max-age=0`
+}
+
 export const useAuthStore = defineStore('auth', {
   state: (): {
     ctx: AuthContextData | null
@@ -28,40 +43,48 @@ export const useAuthStore = defineStore('auth', {
       this.ctx = null
       this.user = null
       this.token = null
-      const session = useCookie('shaham_session')
-      const user = useCookie('shaham_user')
-      session.value = null
-      user.value = null
-      refreshCookie('shaham_session')
-      refreshCookie('shaham_user')
+
+      // Direct delete — useCookie's watcher has the same problem on clear().
+      deleteRawCookie('shaham_session')
+      deleteRawCookie('shaham_user')
+
+      try {
+        const session = useCookie('shaham_session')
+        const user = useCookie('shaham_user')
+        session.value = null
+        user.value = null
+      } catch {
+      }
     },
 
-    /**
-     * Persists the session (token + profile cookies) and hydrates store state.
-     * `rememberMe: false` writes a session-only cookie (cleared when the
-     * browser closes) instead of one that outlives the token's own `exp`.
-     */
+   
     applyAuthSession(token: string, profile: AuthUser, tenantId: string, rememberMe = true) {
       this.token = token
 
-      // The token may be an opaque (non-JWT) bearer credential — fall back to
-      // the cookie's default lifetime rather than failing the whole login.
       let maxAge: number | undefined
       if (rememberMe) {
         try {
-          maxAge = decodeJwt(token).exp - Math.floor(Date.now() / 1000)
+          const seconds = decodeJwt(token).exp - Math.floor(Date.now() / 1000)
+          if (Number.isFinite(seconds) && seconds > 0) maxAge = seconds
         } catch {
           maxAge = undefined
         }
       }
-      const cookieOptions = { path: '/', sameSite: 'lax' as const, ...(maxAge ? { maxAge } : {}) }
 
-      const session = useCookie<string | null>('shaham_session', cookieOptions)
-      session.value = token
-      const userCookie = useCookie<AuthUser | null>('shaham_user', cookieOptions)
-      userCookie.value = profile
-      refreshCookie('shaham_session')
-      refreshCookie('shaham_user')
+      const rawOpts = { path: '/', sameSite: 'lax', maxAge }
+
+      writeRawCookie('shaham_session', token, rawOpts)
+      writeRawCookie('shaham_user', JSON.stringify(profile), rawOpts)
+
+      try {
+        const cookieOptions = { path: '/', sameSite: 'lax' as const, ...(maxAge ? { maxAge } : {}) }
+        const session = useCookie<string | null>('shaham_session', cookieOptions)
+        session.value = token
+        const userCookie = useCookie<AuthUser | null>('shaham_user', cookieOptions)
+        userCookie.value = profile
+      } catch {
+        // useCookie outside Nuxt context — raw write already handled it.
+      }
 
       this.user = profile
       this.ctx = { userId: profile.id, tenantId, userType: profile.user_type, capabilities: [] }
@@ -91,6 +114,14 @@ export const useAuthStore = defineStore('auth', {
 
       return nuxtApp.runWithContext(async () => {
         this.applyAuthSession(token, profile, tenant.tenantId, payload.rememberMe ?? true)
+
+        // Let the cookie watcher flush before navigating — leaving on the
+        // same tick can drop the write and log the user straight back out.
+        await nextTick()
+
+        const message = serverMessage(result)
+        if (message) nuxtApp.$appToast.success(message)
+
         await navigateTo(localePath(resolveAuthHomePath({ userType: this.userType })))
         return true
       })
@@ -140,10 +171,16 @@ export const useAuthStore = defineStore('auth', {
         const profile = toAuthUser(res.data)
         this.user = profile
 
+        // Persist updated profile — direct write for reliability.
+        writeRawCookie('shaham_user', JSON.stringify(profile), { path: '/', sameSite: 'lax' })
+
         await nuxtApp.runWithContext(() => {
-          const userCookie = useCookie<AuthUser | null>('shaham_user', { path: '/', sameSite: 'lax' })
-          userCookie.value = profile
-          refreshCookie('shaham_user')
+          try {
+            const userCookie = useCookie<AuthUser | null>('shaham_user', { path: '/', sameSite: 'lax' })
+            userCookie.value = profile
+          } catch {
+            // Best-effort — raw write already persisted the cookie.
+          }
         })
       } catch {
         // A stale navbar is better than dropping the session over a refresh.

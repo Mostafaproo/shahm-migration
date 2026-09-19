@@ -15,6 +15,24 @@ export class HttpError extends Error {
     return this.status === null
   }
 
+
+  get isSessionExpired(): boolean {
+    if (this.status !== 401) return false
+    return this.errorTitle === 'unauthorized_action'
+  }
+
+ 
+  get isForbidden(): boolean {
+    return this.status === 403
+  }
+
+  /** First JSON:API error title, which is how this backend classifies faults. */
+  get errorTitle(): string | null {
+    const body = this.data as { errors?: { title?: unknown }[] } | null
+    const title = body?.errors?.[0]?.title
+    return typeof title === 'string' ? title : null
+  }
+
   /** Coerce any thrown value into an HttpError, extracting the best message(s). */
   static from(err: unknown): HttpError {
     if (err instanceof HttpError) return err

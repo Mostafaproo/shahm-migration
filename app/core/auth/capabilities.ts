@@ -3,7 +3,7 @@ import type { UserType } from './home'
 export interface AuthContextData {
   userId: string
   tenantId: string
-  userType: UserType
+  userType: UserType | null
   capabilities: string[]
 }
 

@@ -1,4 +1,3 @@
-
 export const CKEDITOR_CDN_URL = 'https://cdn.ckeditor.com/4.14.0/full-all/ckeditor.js'
 
 export interface CkEditorNamespace {

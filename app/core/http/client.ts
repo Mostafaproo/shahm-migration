@@ -151,14 +151,8 @@ export function createHttpClient(config: HttpClientConfig = {}): HttpClient {
       return res as T
     } catch (err) {
       const httpError = HttpError.from(err)
-      // `onUnauthorized`/toast may call Nuxt composables (useCookie, ...) —
-      // this catch runs after the `await` above, so the Nuxt app context is
-      // no longer implicitly active here. Restore it explicitly, otherwise
-      // e.g. `auth.clear()`'s `useCookie()` throws "Must be called at the
-      // top of a setup function" and THAT becomes the rejection instead of
-      // the real HttpError.
       await nuxtApp.runWithContext(() => {
-        if (httpError.status === 401) config.onUnauthorized?.()
+        if (httpError.isSessionExpired) config.onUnauthorized?.()
         if (!preventToast)
           httpError.messages?.forEach(msg => $appToast.error(msg))
       })

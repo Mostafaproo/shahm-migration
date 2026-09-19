@@ -12,7 +12,26 @@ export default defineNuxtPlugin({
       getToken: () =>
         auth.token || useCookie<string | null>('shaham_session').value,
       BASE_API_URL: tenant.env.BASE_URL || (runtimeConfig.public.BASE_API_URL as string) || undefined,
-      onUnauthorized: () => auth.clear(),
+      onUnauthorized: () => {
+        if (!import.meta.client) return
+        auth.clear()
+
+        const { $i18n, $localePath } = nuxtApp as unknown as {
+          $i18n?: { localeCodes?: unknown }
+          $localePath?: (path: string) => string
+        }
+
+        const localeCodes: string[] = (unref($i18n?.localeCodes) as string[]) ?? []
+        const currentPath = useRoute().path
+        const [first = '', ...rest] = currentPath.split('/').filter(Boolean)
+        const path = localeCodes.includes(first) ? `/${rest.join('/')}` : currentPath
+        if (path === '/auth' || path.startsWith('/auth/')) return
+
+        void navigateTo(
+          $localePath ? $localePath('/auth/login') : '/auth/login',
+          { replace: true }
+        )
+      },
       headers: () => {
         const locale = unref(
           (nuxtApp.$i18n as { locale?: unknown } | undefined)?.locale
